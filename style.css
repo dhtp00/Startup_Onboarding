@@ -631,3 +631,48 @@ input:focus, select:focus, textarea:focus {
   border-color: var(--accent-color);
 }
 
+/* Chat Attachment style classes */
+.attachment-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(79, 70, 229, 0.08);
+  border: 1px solid rgba(79, 70, 229, 0.15);
+  color: var(--accent-color);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.attachment-remove {
+  background: none;
+  border: none;
+  color: var(--danger);
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.chat-file-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-top: 6px;
+  transition: all 0.2s ease;
+}
+
+.chat-file-link:hover {
+  background-color: rgba(79, 70, 229, 0.05);
+  border-color: var(--accent-color);
+}
+
+

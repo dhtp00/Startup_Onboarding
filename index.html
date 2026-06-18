@@ -25,8 +25,8 @@
       
       <form id="login-form">
         <div class="form-group" style="margin-bottom: 16px;">
-          <label for="login-email">이메일 계정</label>
-          <input type="email" id="login-email" placeholder="example@hannam.ac.kr" required>
+          <label for="login-email">아이디 (이메일 또는 대표자명)</label>
+          <input type="text" id="login-email" placeholder="osy0922@hnu.kr 또는 대표자명" required>
         </div>
         <div class="form-group" style="margin-bottom: 20px;">
           <label for="login-password">비밀번호</label>
@@ -53,11 +53,11 @@
       
       <form id="signup-form">
         <div class="form-group" style="margin-bottom: 12px;">
-          <label for="signup-email">이메일 계정</label>
-          <input type="email" id="signup-email" placeholder="example@domain.com" required>
+          <label for="signup-email">사용할 로그인 아이디 (대표자 실명)</label>
+          <input type="text" id="signup-email" placeholder="홍길동" required>
         </div>
         <div class="form-group" style="margin-bottom: 12px;">
-          <label for="signup-password">비밀번호</label>
+          <label for="signup-password">로그인 비밀번호 설정</label>
           <input type="password" id="signup-password" placeholder="••••••••" required>
         </div>
         <div class="form-group" style="margin-bottom: 12px;">
@@ -160,7 +160,7 @@
         <div>
           <div class="section-title">
             <span>지원기업 사업비 집행 및 모니터링 현황</span>
-            <button class="action-btn" id="btn-add-company" style="background-color: var(--accent-color); border: none; display: none;">+ 기업 추가</button>
+            <button class="action-btn" id="btn-add-company" style="background-color: var(--accent-color); border: none; display: none;">+ 신규 기업 등록</button>
           </div>
           <div class="table-container">
             <table>
@@ -188,26 +188,18 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 8px;">
           <!-- Milestones Card -->
           <div class="card" style="background-color: #ffffff;">
-            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">🎯 2026년 프로그램 주요 이정표 (Milestone)</h3>
-            <ul style="list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 0.85rem;">
-              <li style="display: flex; align-items: center; gap: 10px; color: var(--text-secondary);">
-                <span style="color: var(--success); font-weight: bold;">✔</span> <strong>1단계:</strong> 기업 사전 실태 및 교육 수요조사 완료 (26.6)
-              </li>
-              <li style="display: flex; align-items: center; gap: 10px;">
-                <span style="color: var(--success); font-weight: bold;">✔</span> <strong>2단계:</strong> 전담 코칭(멘토링/교육) 및 상시 피드백 운영 (진행중)
-              </li>
-              <li style="display: flex; align-items: center; gap: 10px; color: var(--warning); font-weight: bold;">
-                <span style="color: var(--warning); font-weight: bold;">⏳</span> <strong>3단계:</strong> 필수 3대 분야(노무, 회계, 법률) 교육 이수 달성 (진행중)
-              </li>
-              <li style="display: flex; align-items: center; gap: 10px; color: var(--text-secondary);">
-                <span style="color: var(--text-secondary); font-weight: bold;">○</span> <strong>4단계:</strong> 기업별 사업화 정착 모니터링 결과보고서 1건 필수 제출 (~27.1)
-              </li>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+              <h3 style="font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">🎯 2026년 프로그램 주요 이정표 (Milestone)</h3>
+              <button class="action-btn" id="btn-edit-milestone" style="font-size:0.75rem; padding: 4px 8px; display:none;">✏️ 이정표 수정</button>
+            </div>
+            <ul id="milestone-list" style="list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 0.85rem;">
+              <!-- Dynamic Milestones -->
             </ul>
           </div>
 
           <!-- Notice Board Card -->
           <div class="card" style="background-color: #ffffff;">
-            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 16px;">📢 창업지원단 통합 공지사항</h3>
+            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 16px;">📢 창업중심대학 통합 공지사항</h3>
             <div style="display: flex; flex-direction: column; gap: 12px;">
               <div style="border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
                 <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 4px;">
@@ -254,9 +246,15 @@
             <div class="chat-messages" id="chat-messages-container">
               <!-- Messages -->
             </div>
-            <div class="chat-input-area">
-              <input type="text" class="chat-input" id="chat-text-input" placeholder="질문이나 코칭 피드백 내용을 입력하세요...">
-              <button class="send-btn" id="btn-send-message">전송</button>
+            <!-- Message Input with File Attachment -->
+            <div class="chat-input-area" style="flex-direction: column; gap: 8px;">
+              <div id="attachment-preview-area" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+              <div style="display: flex; width: 100%; gap: 12px;">
+                <button class="action-btn" id="btn-trigger-file" style="padding: 0 16px;">📎 파일</button>
+                <input type="file" id="chat-file-input" style="display: none;" accept="image/*,application/pdf">
+                <input type="text" class="chat-input" id="chat-text-input" placeholder="질문이나 코칭 피드백 내용을 입력하세요...">
+                <button class="send-btn" id="btn-send-message">전송</button>
+              </div>
             </div>
           </div>
         </div>
@@ -270,17 +268,17 @@
         <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr);">
           <div class="card">
             <div class="card-title">기본 노무 실무 교육</div>
-            <div class="card-value">80%</div>
+            <div class="card-value" id="edu-stat-hr">80%</div>
             <div class="card-desc">5개사 중 4개사 이수 완료</div>
           </div>
           <div class="card">
             <div class="card-title">스타트업 회계/세무 기초</div>
-            <div class="card-value">60%</div>
+            <div class="card-value" id="edu-stat-acc">60%</div>
             <div class="card-desc">5개사 중 3개사 이수 완료</div>
           </div>
           <div class="card">
             <div class="card-title">창업 법률 및 계약서 검토</div>
-            <div class="card-value">40%</div>
+            <div class="card-value" id="edu-stat-law">40%</div>
             <div class="card-desc">5개사 중 2개사 이수 완료</div>
           </div>
         </div>
@@ -295,6 +293,7 @@
                   <th>회계 교육 상태</th>
                   <th>법률 교육 상태</th>
                   <th>추천 온라인 콘텐츠 (자기주도 학습 연계)</th>
+                  <th class="coach-only-cell" style="display:none;">관리</th>
                 </tr>
               </thead>
               <tbody id="education-table-body">
@@ -418,6 +417,178 @@
       <div class="modal-footer" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 16px;">
         <button class="action-btn" id="btn-close-detail-footer">확인 완료</button>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL: 이정표(Milestone) 편집 모달 -->
+  <div class="modal-overlay" id="milestone-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>2026년 이정표(Milestone) 편집</h3>
+        <button class="close-btn" id="btn-close-milestone">&times;</button>
+      </div>
+      <form id="milestone-form">
+        <div class="form-group">
+          <label for="ms-step1">1단계 (수요조사)</label>
+          <input type="text" id="ms-step1" required>
+        </div>
+        <div class="form-group">
+          <label for="ms-step2">2단계 (전담코칭)</label>
+          <input type="text" id="ms-step2" required>
+        </div>
+        <div class="form-group">
+          <label for="ms-step3">3단계 (필수교육)</label>
+          <input type="text" id="ms-step3" required>
+        </div>
+        <div class="form-group">
+          <label for="ms-step4">4단계 (모니터링 보고서)</label>
+          <input type="text" id="ms-step4" required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="action-btn" id="btn-cancel-milestone">취소</button>
+          <button type="submit" class="action-btn" style="background-color: var(--accent-color); border: none;">변경 사항 저장</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: 창업기업 등록 및 정보 수정 통합 모달 -->
+  <div class="modal-overlay" id="company-modal">
+    <div class="modal" style="width: 550px; max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header">
+        <h3 id="company-modal-title">신규 기업 등록</h3>
+        <button class="close-btn" id="btn-close-company">&times;</button>
+      </div>
+      <form id="company-form">
+        <input type="hidden" id="company-edit-id">
+        <div class="form-group">
+          <label for="c-name">창업기업명</label>
+          <input type="text" id="c-name" required placeholder="예: (주)한남테크">
+        </div>
+        <div class="form-group">
+          <label for="c-type">기업 구분</label>
+          <select id="c-type" required>
+            <option value="초기(1년 미만)">초기 창업기업 (업력 1년 미만)</option>
+            <option value="예비 창업기업">예비 창업기업 (사업자 미등록)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="c-rep">대표자 실명</label>
+          <input type="text" id="c-rep" required placeholder="예: 홍길동">
+        </div>
+        <div class="form-group">
+          <label for="c-rep-desc">대표자 상세 정보 (대표 ID 발급용)</label>
+          <input type="text" id="c-rep-desc" required placeholder="예: 홍길동 (34세, 남성)">
+        </div>
+        <div class="form-group">
+          <label for="c-password">스타트업 로그인 비밀번호</label>
+          <input type="text" id="c-password" required placeholder="기본 비밀번호 지정 (예: 1234)">
+        </div>
+        <div class="form-group">
+          <label for="c-key">가입 키 (Invitation Key)</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="c-key" required placeholder="HN-NEW-1234" style="flex-grow: 1; text-transform: uppercase;">
+            <button type="button" class="action-btn" id="btn-gen-key">자동 생성</button>
+          </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-top: 1px solid var(--border-color); padding-top: 12px;">
+          <div class="form-group">
+            <label for="c-sales">핵심 지표 (매출)</label>
+            <input type="text" id="c-sales" placeholder="예: 5,400천원" required>
+          </div>
+          <div class="form-group">
+            <label for="c-emp">핵심 지표 (고용)</label>
+            <input type="text" id="c-emp" placeholder="예: 2명" required>
+          </div>
+          <div class="form-group">
+            <label for="c-restartup">재창업 여부</label>
+            <select id="c-restartup" required>
+              <option value="아니오">아니오 (첫 창업)</option>
+              <option value="예">예 (재창업 기업)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="c-doc">모니터링 보고서</label>
+            <select id="c-doc" required>
+              <option value="미작성">미작성</option>
+              <option value="작성중">작성중</option>
+              <option value="제출완료">제출완료</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; border-top: 1px solid var(--border-color); padding-top: 12px;">
+          <div class="form-group">
+            <label for="c-budget-total">총 협약예산 (천원)</label>
+            <input type="text" id="c-budget-total" placeholder="50,000" required>
+          </div>
+          <div class="form-group">
+            <label for="c-budget-exec">현재 집행금액 (천원)</label>
+            <input type="text" id="c-budget-exec" placeholder="12,500" required>
+          </div>
+          <div class="form-group">
+            <label for="c-budget-status">사업비 집행 평가</label>
+            <select id="c-budget-status" required>
+              <option value="safe">정상 집행</option>
+              <option value="warn">집행 지연</option>
+              <option value="danger">미집행 경고</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer" style="border-top: 1px solid var(--border-color); padding-top: 16px;">
+          <button type="button" class="action-btn" id="btn-cancel-company">취소</button>
+          <button type="submit" class="action-btn" style="background-color: var(--accent-color); border: none;">등록/저장</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: 추천온라인콘텐츠 및 교육이수상태 편집 모달 (코치 전용) -->
+  <div class="modal-overlay" id="edu-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="edu-modal-company-title">교육 이수 상태 및 추천 정보 편집</h3>
+        <button class="close-btn" id="btn-close-edu">&times;</button>
+      </div>
+      <form id="edu-form">
+        <input type="hidden" id="edu-modal-company-id">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label for="edu-hr">노무 교육 상태</label>
+            <select id="edu-hr" required>
+              <option value="이수">이수</option>
+              <option value="대기">대기</option>
+              <option value="미이수">미이수</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edu-acc">회계 교육 상태</label>
+            <select id="edu-acc" required>
+              <option value="이수">이수</option>
+              <option value="대기">대기</option>
+              <option value="미이수">미이수</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edu-law">법률 교육 상태</label>
+            <select id="edu-law" required>
+              <option value="이수">이수</option>
+              <option value="대기">대기</option>
+              <option value="미이수">미이수</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top: 12px;">
+          <label for="edu-content">추천 온라인 교육 및 연계 안내</label>
+          <input type="text" id="edu-content" required placeholder="예: 창업에듀 노무기초 및 정부지원금 강좌 연계 수강중">
+        </div>
+        <div class="modal-footer" style="border-top: 1px solid var(--border-color); padding-top: 16px;">
+          <button type="button" class="action-btn" id="btn-cancel-edu">취소</button>
+          <button type="submit" class="action-btn" style="background-color: var(--accent-color); border: none;">저장</button>
+        </div>
+      </form>
     </div>
   </div>
 
