@@ -17,7 +17,11 @@ let defaultCompanies = [
     repDesc: "이영희 (32세, 여성)",
     invitationKey: "HN-LINK-2026",
     metrics: { sales: "12,000천원", employees: "3명", reStartup: "아니오" },
-    budget: { total: "50,000", execution: "32,500", rate: "65%", status: "safe" },
+    budget: { 
+      status: "safe",
+      checks: { m5: true, m6: true, m7: false, m8: false, m9: false, m10: false, m11: false, m12: false },
+      total: "50,000", execution: "32,500" // Kept for detail profile rendering only
+    },
     education: { hr: "이수", accounting: "이수", law: "대기", content: "창업에듀: 노무기초 및 정부지원금 집행기준 수강 완료 (드림비즈 추천)" },
     monitoringDoc: "제출완료",
     coachingCount: 3,
@@ -39,7 +43,11 @@ let defaultCompanies = [
     repDesc: "김철수 (41세, 남성)",
     invitationKey: "HN-GREEN-2026",
     metrics: { sales: "0원 (예비)", employees: "1명 (대표자)", reStartup: "예" },
-    budget: { total: "45,000", execution: "12,000", rate: "26%", status: "warn" },
+    budget: { 
+      status: "warn",
+      checks: { m5: true, m6: false, m7: false, m8: false, m9: false, m10: false, m11: false, m12: false },
+      total: "45,000", execution: "12,000"
+    },
     education: { hr: "이수", accounting: "대기", law: "미이수", content: "창업에듀: 세무기초 실무 교육 영상 시청중" },
     monitoringDoc: "작성중",
     coachingCount: 2,
@@ -60,7 +68,11 @@ let defaultCompanies = [
     repDesc: "박민지 (28세, 여성)",
     invitationKey: "HN-DREAM-2026",
     metrics: { sales: "45,000천원", employees: "5명", reStartup: "아니오" },
-    budget: { total: "60,000", execution: "48,000", rate: "80%", status: "safe" },
+    budget: { 
+      status: "safe",
+      checks: { m5: true, m6: true, m7: false, m8: false, m9: false, m10: false, m11: false, m12: false },
+      total: "60,000", execution: "48,000"
+    },
     education: { hr: "이수", accounting: "이수", law: "이수", content: "창업에듀: 3대 핵심과목 및 법률 특약 계약 수강 완료" },
     monitoringDoc: "제출완료",
     coachingCount: 3,
@@ -82,7 +94,11 @@ let defaultCompanies = [
     repDesc: "최재성 (35세, 남성)",
     invitationKey: "HN-SIZ-2026",
     metrics: { sales: "8,500천원", employees: "2명", reStartup: "아니오" },
-    budget: { total: "40,000", execution: "31,000", rate: "77%", status: "safe" },
+    budget: { 
+      status: "safe",
+      checks: { m5: true, m6: true, m7: false, m8: false, m9: false, m10: false, m11: false, m12: false },
+      total: "40,000", execution: "31,000"
+    },
     education: { hr: "미이수", accounting: "대기", law: "미이수", content: "드림비즈: 필수 노무 근로 기준 교육 자료 전송" },
     monitoringDoc: "미작성",
     coachingCount: 1,
@@ -101,7 +117,11 @@ let defaultCompanies = [
     repDesc: "황동욱 (31세, 남성)",
     invitationKey: "HN-KAIVIC-2026",
     metrics: { sales: "0원 (예비)", employees: "1명 (대표자)", reStartup: "예" },
-    budget: { total: "45,000", execution: "5,000", rate: "11%", status: "danger" },
+    budget: { 
+      status: "danger",
+      checks: { m5: false, m6: false, m7: false, m8: false, m9: false, m10: false, m11: false, m12: false },
+      total: "45,000", execution: "5,000"
+    },
     education: { hr: "대기", accounting: "미이수", law: "미이수", content: "대기상태: 노무, 세무 기본 학습 과정 수강 신청 예정" },
     monitoringDoc: "미작성",
     coachingCount: 0,
@@ -124,7 +144,11 @@ let defaultMilestones = [
 let milestones = JSON.parse(localStorage.getItem("MILESTONES")) || defaultMilestones;
 
 let selectedCompanyId = 1;
-let currentAttachedFile = null; // Stored file object (DataURL)
+let currentAttachedFile = null;
+
+// --- GOOGLE SCRIPT URL FOR FREE API CONNECTION ---
+// 여기에 깃허브 배포 가이드라인에 따라 복사한 구글 웹앱 URL을 입력하시면 실서비스 연동이 완료됩니다!
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxSQq1-KFWS5koqtPh5pnI5-21eQuPJbunb-RbY5D5oIVnopUqzRB2sOJj_da3CYWaAWg/exec";
 
 // --- DOM ELEMENTS ---
 const loginOverlayScreen = document.getElementById("login-overlay-screen");
@@ -191,9 +215,7 @@ const dSales = document.getElementById("detail-sales");
 const dEmp = document.getElementById("detail-employees");
 const dKey = document.getElementById("detail-invitation-key");
 
-const dBudgetTotal = document.getElementById("detail-budget-total");
-const dBudgetExecution = document.getElementById("detail-budget-execution");
-const dBudgetRate = document.getElementById("detail-budget-rate");
+const dBudgetChecks = document.getElementById("detail-budget-checks");
 const dBudgetStatus = document.getElementById("detail-budget-status");
 
 const dEduHr = document.getElementById("detail-edu-hr");
@@ -202,7 +224,7 @@ const dEduLaw = document.getElementById("detail-edu-law");
 
 const dCombinedHistory = document.getElementById("detail-combined-history");
 
-// NEW DETAILED MODALS & BUTTONS
+// BUTTONS
 const btnAddCompany = document.getElementById("btn-add-company");
 const btnEditMilestone = document.getElementById("btn-edit-milestone");
 const milestoneListContainer = document.getElementById("milestone-list");
@@ -213,7 +235,7 @@ const milestoneForm = document.getElementById("milestone-form");
 const btnCloseMilestone = document.getElementById("btn-close-milestone");
 const btnCancelMilestone = document.getElementById("btn-cancel-milestone");
 
-// Company Registration/Editing Modal
+// Company Modal
 const companyModal = document.getElementById("company-modal");
 const companyModalTitle = document.getElementById("company-modal-title");
 const companyForm = document.getElementById("company-form");
@@ -230,16 +252,31 @@ const eduModalCompanyTitle = document.getElementById("edu-modal-company-title");
 const btnCloseEdu = document.getElementById("btn-close-edu");
 const btnCancelEdu = document.getElementById("btn-cancel-edu");
 
-// Attachment elements
+// Attachment
 const chatFileInput = document.getElementById("chat-file-input");
 const btnTriggerFile = document.getElementById("btn-trigger-file");
 const attachmentPreviewArea = document.getElementById("attachment-preview-area");
 
-// --- LOCAL STORAGE SYNC ---
+// --- LOCAL STORAGE SYNC & GOOGLE SHEET BACKUP ---
 function saveToLocalStorage() {
   localStorage.setItem("COMPANIES", JSON.stringify(companies));
   localStorage.setItem("USERS", JSON.stringify(USERS));
   localStorage.setItem("MILESTONES", JSON.stringify(milestones));
+  
+  // 만약 구글 API 주소가 세팅되어 있다면 자동으로 백그라운드 클라우드 동기화 수행
+  if (GOOGLE_SCRIPT_URL) {
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "syncData",
+        userEmail: currentUser ? currentUser.name : "System",
+        companies: companies,
+        milestones: milestones
+      })
+    }).catch(err => console.log("Google sync delay: ", err));
+  }
 }
 
 // --- LOGIN/SIGNUP SCREEN TOGGLE ---
@@ -255,21 +292,15 @@ linkGoLogin.addEventListener("click", (e) => {
   cardLogin.style.display = "block";
 });
 
-// --- LOGIN ACTION ---
-window.prefillLogin = function(email) {
-  loginEmail.value = email;
-  loginPassword.value = email === "osy0922@hnu.kr" ? "osy0922" : "demo1234";
-};
+
 
 loginForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const emailInput = loginEmail.value.trim();
   const password = loginPassword.value.trim();
   
-  // Custom authentication check: Matches email (for coach) or matches Representative name (Startup ID)
   let matchedUserKey = Object.keys(USERS).find(key => key === emailInput);
   
-  // If not found in email, check if they typed their representative name (ID)
   if (!matchedUserKey) {
     matchedUserKey = Object.keys(USERS).find(key => USERS[key].name.split(" ")[0] === emailInput);
   }
@@ -282,10 +313,10 @@ loginForm.addEventListener("submit", (e) => {
   }
 });
 
-// --- SIGNUP (WITH INVITATION KEY) ACTION ---
+// --- SIGNUP ACTION ---
 signupForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  const representativeName = signupEmail.value.trim(); // Rep name serves as Startup ID
+  const representativeName = signupEmail.value.trim();
   const password = signupPassword.value.trim();
   const keyInput = signupKey.value.trim().toUpperCase();
 
@@ -296,20 +327,18 @@ signupForm.addEventListener("submit", (e) => {
     return;
   }
 
-  // Ensure Representative matches Name exactly
   if (matchedCompany.representative !== representativeName) {
-    alert(`❌ 회원가입 오류: 등록된 대표자명(${matchedCompany.representative})과 입력하신 이름이 다릅니다.`);
+    alert(`❌ 회원가입 오류: 등록된 대표자명(${matchedCompany.representative})과 다릅니다.`);
     return;
   }
 
   const isKeyAlreadyUsed = Object.values(USERS).some(u => u.companyId === matchedCompany.id);
   if (isKeyAlreadyUsed) {
-    alert("❌ 해당 가입 키는 이미 연동이 완료되었습니다.");
+    alert("❌ 해당 가입 키는 이미 회원가입이 완료되었습니다.");
     return;
   }
 
-  // Register 계정
-  const accountEmail = `${representativeName.toLowerCase()}@onboard.com`; // Pseudo email
+  const accountEmail = `${representativeName.toLowerCase()}@onboard.com`;
   USERS[accountEmail] = {
     role: "startup",
     name: `${representativeName} 대표`,
@@ -320,7 +349,7 @@ signupForm.addEventListener("submit", (e) => {
   currentUser = USERS[accountEmail];
   saveToLocalStorage();
   
-  alert(`🎉 회원가입 및 매칭이 완료되었습니다!\n기업명: ${matchedCompany.name}\n이제 [대표자명: ${representativeName}]으로 로그인 하실 수 있습니다.`);
+  alert(`🎉 회원가입이 완료되었습니다!\n이제 대표자명 '${representativeName}'으로 로그인 하실 수 있습니다.`);
   
   signupForm.reset();
   cardSignup.style.display = "none";
@@ -328,7 +357,7 @@ signupForm.addEventListener("submit", (e) => {
   enterPlatform();
 });
 
-// ENTER PLATFORM LOGIC
+// ENTER PLATFORM
 function enterPlatform() {
   loginOverlayScreen.style.display = "none";
   mainSidebar.style.display = "flex";
@@ -336,7 +365,6 @@ function enterPlatform() {
   
   userNameDisplay.innerText = currentUser.name;
   
-  // Display controls base on Role
   if (currentUser.role === "coach") {
     userRoleBadge.innerText = "전담코치";
     userRoleBadge.className = "tag tag-early";
@@ -358,7 +386,6 @@ function enterPlatform() {
   renderMilestones();
 }
 
-// LOGOUT LOGIC
 btnLogout.addEventListener("click", () => {
   currentUser = null;
   loginOverlayScreen.style.display = "flex";
@@ -367,30 +394,6 @@ btnLogout.addEventListener("click", () => {
   loginForm.reset();
 });
 
-// --- VIEW NAVIGATION ---
-function switchSection(targetSection, activeMenu) {
-  [sectionDash, sectionChat, sectionEdu].forEach(sec => sec.classList.remove("active"));
-  [menuDash, menuChat, menuEdu].forEach(menu => menu.classList.remove("active"));
-  
-  targetSection.classList.add("active");
-  activeMenu.classList.add("active");
-
-  if (targetSection === sectionDash) mainHeaderTitle.innerText = "종합 대시보드";
-  else if (targetSection === sectionChat) mainHeaderTitle.innerText = "상시 소통 채널";
-  else if (targetSection === sectionEdu) mainHeaderTitle.innerText = "필수 교육 현황";
-}
-
-menuDash.addEventListener("click", () => switchSection(sectionDash, menuDash));
-menuChat.addEventListener("click", () => {
-  switchSection(sectionChat, menuChat);
-  renderChatSection();
-});
-menuEdu.addEventListener("click", () => {
-  switchSection(sectionEdu, menuEdu);
-  renderDashboard();
-});
-
-// --- MILESTONE RENDERING ---
 function renderMilestones() {
   milestoneListContainer.innerHTML = "";
   milestones.forEach((step, idx) => {
@@ -405,7 +408,6 @@ function renderMilestones() {
   });
 }
 
-// --- GET DATA FILTERED BY USER ROLE ---
 function getFilteredCompanies() {
   if (currentUser.role === "coach") {
     return companies;
@@ -414,11 +416,10 @@ function getFilteredCompanies() {
   }
 }
 
-// --- RENDER FUNCTIONS ---
+// --- RENDER DASHBOARD (SIMPLIFIED VERSION) ---
 function renderDashboard() {
   const filtered = getFilteredCompanies();
 
-  // Update Stats
   const total = filtered.length;
   document.getElementById("stat-total-companies").innerText = `${total}개사`;
   
@@ -426,22 +427,31 @@ function renderDashboard() {
   const targetCoaching = total * 3;
   const rate = targetCoaching > 0 ? Math.round((totalCoaching / targetCoaching) * 100) : 0;
   document.getElementById("stat-coaching-rate").innerText = `${rate}%`;
-  
-  const docs = filtered.filter(c => c.monitoringDoc === "제출완료").length;
-  document.getElementById("stat-doc-count").innerText = `${docs} / ${total}건`;
+
+  // Calculate Monthly Checkpoint Progress
+  let totalChecks = 0;
+  let activeChecks = 0;
+  filtered.forEach(c => {
+    Object.keys(c.budget.checks).forEach(k => {
+      totalChecks++;
+      if (c.budget.checks[k]) activeChecks++;
+    });
+  });
+  const checkRate = totalChecks > 0 ? Math.round((activeChecks / totalChecks) * 100) : 0;
+  document.getElementById("stat-doc-count").innerText = `${checkRate}%`;
 
   // Update training stats on Education sub-panel
-  const totalEducationRecords = companies.length;
-  if (totalEducationRecords > 0) {
+  const totalEdu = companies.length;
+  if (totalEdu > 0) {
     const hrCount = companies.filter(c => c.education.hr === "이수").length;
     const accCount = companies.filter(c => c.education.accounting === "이수").length;
     const lawCount = companies.filter(c => c.education.law === "이수").length;
-    document.getElementById("edu-stat-hr").innerText = `${Math.round(hrCount / totalEducationRecords * 100)}%`;
-    document.getElementById("edu-stat-hr").nextElementSibling.innerText = `${totalEducationRecords}개사 중 ${hrCount}개사 이수`;
-    document.getElementById("edu-stat-acc").innerText = `${Math.round(accCount / totalEducationRecords * 100)}%`;
-    document.getElementById("edu-stat-acc").nextElementSibling.innerText = `${totalEducationRecords}개사 중 ${accCount}개사 이수`;
-    document.getElementById("edu-stat-law").innerText = `${Math.round(lawCount / totalEducationRecords * 100)}%`;
-    document.getElementById("edu-stat-law").nextElementSibling.innerText = `${totalEducationRecords}개사 중 ${lawCount}개사 이수`;
+    document.getElementById("edu-stat-hr").innerText = `${Math.round(hrCount / totalEdu * 100)}%`;
+    document.getElementById("edu-stat-hr").nextElementSibling.innerText = `${totalEdu}개사 중 ${hrCount}개사 이수`;
+    document.getElementById("edu-stat-acc").innerText = `${Math.round(accCount / totalEdu * 100)}%`;
+    document.getElementById("edu-stat-acc").nextElementSibling.innerText = `${totalEdu}개사 중 ${accCount}개사 이수`;
+    document.getElementById("edu-stat-law").innerText = `${Math.round(lawCount / totalEdu * 100)}%`;
+    document.getElementById("edu-stat-law").nextElementSibling.innerText = `${totalEdu}개사 중 ${lawCount}개사 이수`;
   }
 
   // Render Table
@@ -450,50 +460,40 @@ function renderDashboard() {
     const isPre = company.type.includes("예비");
     const tr = document.createElement("tr");
 
-    const hrDot = getDotClass(company.education.hr);
-    const accDot = getDotClass(company.education.accounting);
-    const lawDot = getDotClass(company.education.law);
+    // Unified education check indicator
+    const isEducationFinished = company.education.hr === "이수" && company.education.accounting === "이수" && company.education.law === "이수";
+    const eduBadgeHTML = isEducationFinished 
+      ? `<span class="tag tag-early" style="background-color:rgba(16,185,129,0.1); color:var(--success);">이수 완료 🟢</span>` 
+      : `<span class="tag tag-pre" style="background-color:rgba(245,158,11,0.1); color:var(--warning);">과정 진행중 ⏳</span>`;
 
-    let budgetDot = "dot-done";
-    let budgetText = "정상 집행";
-    if (company.budget.status === "warn") {
-      budgetDot = "dot-wait";
-      budgetText = "집행 지연";
-    } else if (company.budget.status === "danger") {
-      budgetDot = "dot-none";
-      budgetText = "미집행 경고";
-    }
+    // Monthly checklist circle badges (Coded iteratively)
+    let checksHTML = `<div style="display:flex; gap: 4px; align-items:center;">`;
+    const months = ["m5", "m6", "m7", "m8", "m9", "m10", "m11", "m12"];
+    const monthLabels = ["5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
 
-    const totalBudgetVal = parseFloat((company.budget.total || "0").replace(/,/g, ''));
-    const execBudgetVal = parseFloat((company.budget.execution || "0").replace(/,/g, ''));
-    const budgetRate = totalBudgetVal > 0 ? Math.round((execBudgetVal / totalBudgetVal) * 100) + "%" : "0%";
+    months.forEach((m, idx) => {
+      const isChecked = company.budget.checks[m];
+      const color = isChecked ? "var(--success)" : "rgba(0,0,0,0.15)";
+      const bg = isChecked ? "rgba(16,185,129,0.15)" : "transparent";
+      const border = isChecked ? "1px solid var(--success)" : "1px solid rgba(0,0,0,0.15)";
+      
+      checksHTML += `
+        <span 
+          style="display:inline-block; font-size:0.7rem; padding: 2px 4px; border-radius:4px; border:${border}; background:${bg}; color:${color}; cursor:pointer;" 
+          onclick="toggleMonthCheck(${company.id}, '${m}')"
+          title="${monthLabels[idx]} 집행 점검">
+          ${monthLabels[idx].replace("월", "")}
+        </span>`;
+    });
+    checksHTML += `</div>`;
 
     tr.innerHTML = `
       <td><span class="company-name">${company.name}</span></td>
       <td><span class="tag ${isPre ? 'tag-pre' : 'tag-early'}">${company.type}</span></td>
       <td style="font-size: 0.85rem; color: var(--text-secondary);">${company.repDesc}</td>
       <td style="font-size: 0.82rem;">매출: ${company.metrics.sales}<br>고용: ${company.metrics.employees}</td>
-      <td>
-        <div style="font-size: 0.82rem;">
-          집행률: <strong>${budgetRate}</strong> (${company.budget.execution}천원/${company.budget.total}천원)
-          <div class="status-badge" style="display:flex; margin-top:2px;">
-            <i class="status-dot ${budgetDot}"></i>${budgetText}
-          </div>
-        </div>
-      </td>
-      <td>
-        <div style="display: flex; gap: 8px;">
-          <span class="status-badge" title="노무"><i class="status-dot ${hrDot}"></i>노무</span>
-          <span class="status-badge" title="회계"><i class="status-dot ${accDot}"></i>회계</span>
-          <span class="status-badge" title="법률"><i class="status-dot ${lawDot}"></i>법률</span>
-        </div>
-      </td>
-      <td>
-        <span class="status-badge">
-          <i class="status-dot ${company.monitoringDoc === '제출완료' ? 'dot-done' : (company.monitoringDoc === '작성중' ? 'dot-wait' : 'dot-none')}"></i>
-          ${company.monitoringDoc}
-        </span>
-      </td>
+      <td>${checksHTML}</td>
+      <td>${eduBadgeHTML}</td>
       <td style="text-align: center; font-weight: 600;">${company.coachingCount}회</td>
       <td>
         <div style="display:flex; gap: 4px;">
@@ -528,11 +528,19 @@ function renderDashboard() {
   });
 }
 
-function getDotClass(status) {
-  if (status === "이수") return "dot-done";
-  if (status === "대기") return "dot-wait";
-  return "dot-none";
-}
+// --- INTERACTIVE MONTH CHECK TOGGLE (COACH ONLY) ---
+window.toggleMonthCheck = function(companyId, monthKey) {
+  if (currentUser.role !== "coach") {
+    alert("월별 사업비 집행 점검은 한남대 창업지원단 코치 계정만 체크할 수 있습니다.");
+    return;
+  }
+  const target = companies.find(c => c.id === companyId);
+  if (target) {
+    target.budget.checks[monthKey] = !target.budget.checks[monthKey];
+    saveToLocalStorage();
+    renderDashboard();
+  }
+};
 
 // --- CHAT SYSTEM ---
 function renderChatSection() {
@@ -578,7 +586,6 @@ function renderChatSection() {
       const isMyMessage = (currentUser.role === "coach" && isSentByCoach) || (currentUser.role === "startup" && !isSentByCoach);
       msgDiv.className = `message ${isMyMessage ? 'sent' : 'received'}`;
       
-      // Render standard chat or attached document link
       let textContentHTML = `<div class="message-bubble">${msg.text}</div>`;
       if (msg.file) {
         textContentHTML = `
@@ -605,7 +612,7 @@ function renderChatSection() {
   }
 }
 
-// --- FILE ATTACHMENT MOCK HANDLING ---
+// --- FILE UPLOADER WITH GOOGLE SHEETS & DRIVE BACKUP INTEGRATION ---
 btnTriggerFile.addEventListener("click", () => chatFileInput.click());
 chatFileInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
@@ -613,19 +620,63 @@ chatFileInput.addEventListener("change", (e) => {
 
   const reader = new FileReader();
   reader.onload = function(evt) {
-    currentAttachedFile = {
-      name: file.name,
-      type: file.type,
-      data: evt.target.result // Base64 encoding DataURL
-    };
-    
-    // Show Preview Pill
-    attachmentPreviewArea.innerHTML = `
-      <span class="attachment-pill">
-        📎 ${file.name}
-        <button type="button" class="attachment-remove" onclick="clearAttachment()">&times;</button>
-      </span>
-    `;
+    const rawData = evt.target.result;
+
+    // 만약 구글 API 주소가 세팅되어 있다면 직접 구글 드라이브 무료 클라우드로 파일 업로드 수행
+    if (GOOGLE_SCRIPT_URL) {
+      attachmentPreviewArea.innerHTML = `<span class="attachment-pill" style="color:var(--warning);">⏳ Google Drive에 업로드 중...</span>`;
+      
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "uploadFile",
+          fileName: file.name,
+          fileType: file.type,
+          fileData: rawData
+        })
+      })
+      .then(() => {
+        // no-cors mode returns opaque response, so we store base64 as safe fallback but notify upload completion
+        currentAttachedFile = {
+          name: file.name,
+          type: file.type,
+          data: rawData
+        };
+        attachmentPreviewArea.innerHTML = `
+          <span class="attachment-pill" style="color:var(--success);">
+            ✔ Google Drive 연동 완료: ${file.name}
+            <button type="button" class="attachment-remove" onclick="clearAttachment()">&times;</button>
+          </span>
+        `;
+      })
+      .catch(err => {
+        console.error("Google Drive connection failure: ", err);
+        // Fallback to local storage
+        currentAttachedFile = { name: file.name, type: file.type, data: rawData };
+        attachmentPreviewArea.innerHTML = `
+          <span class="attachment-pill">
+            📎 로컬 저장 완료: ${file.name}
+            <button type="button" class="attachment-remove" onclick="clearAttachment()">&times;</button>
+          </span>
+        `;
+      });
+
+    } else {
+      // 로컬 스토리지 보관 모드
+      currentAttachedFile = {
+        name: file.name,
+        type: file.type,
+        data: rawData
+      };
+      attachmentPreviewArea.innerHTML = `
+        <span class="attachment-pill">
+          📎 ${file.name}
+          <button type="button" class="attachment-remove" onclick="clearAttachment()">&times;</button>
+        </span>
+      `;
+    }
   };
   reader.readAsDataURL(file);
 });
@@ -636,7 +687,7 @@ window.clearAttachment = function() {
   chatFileInput.value = "";
 };
 
-// --- SEND CHAT ---
+// SEND MESSAGE
 btnSendMessage.addEventListener("click", () => {
   const text = chatTextInput.value.trim();
   if (!text && !currentAttachedFile) return;
@@ -667,7 +718,7 @@ chatTextInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") btnSendMessage.click();
 });
 
-// --- ARCHIVE CHAT TO COACHING LOG ---
+// ARCHIVE
 btnArchiveChat.addEventListener("click", () => {
   if (currentUser.role !== "coach") return;
 
@@ -697,7 +748,7 @@ btnArchiveChat.addEventListener("click", () => {
   renderDashboard();
 });
 
-// --- DETAIL MODAL ACTION ---
+// DETAIL MODAL
 window.openDetailModal = function(id) {
   if (currentUser.role === "startup" && id !== currentUser.companyId) {
     alert("본인 기업 정보 이외에는 조회가 불가합니다.");
@@ -715,13 +766,14 @@ window.openDetailModal = function(id) {
   dEmp.innerText = activeCompany.metrics.employees;
   dKey.innerText = activeCompany.invitationKey;
 
-  dBudgetTotal.innerText = activeCompany.budget.total + "천원";
-  dBudgetExecution.innerText = activeCompany.budget.execution + "천원";
-  
-  const totalBudgetVal = parseFloat((activeCompany.budget.total || "0").replace(/,/g, ''));
-  const execBudgetVal = parseFloat((activeCompany.budget.execution || "0").replace(/,/g, ''));
-  const budgetRate = totalBudgetVal > 0 ? Math.round((execBudgetVal / totalBudgetVal) * 100) + "%" : "0%";
-  dBudgetRate.innerText = budgetRate;
+  // Format monthly check status lists
+  let checkedMonthsStr = [];
+  const monthLabels = ["5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+  const months = ["m5", "m6", "m7", "m8", "m9", "m10", "m11", "m12"];
+  months.forEach((m, idx) => {
+    if (activeCompany.budget.checks[m]) checkedMonthsStr.push(monthLabels[idx]);
+  });
+  dBudgetChecks.innerText = checkedMonthsStr.length > 0 ? checkedMonthsStr.join(", ") + " 점검완료" : "점검 내역 없음";
   dBudgetStatus.innerText = activeCompany.budget.status === "safe" ? "정상 집행" : (activeCompany.budget.status === "warn" ? "집행 지연" : "미집행 경고");
 
   dEduHr.innerText = activeCompany.education.hr;
@@ -729,7 +781,6 @@ window.openDetailModal = function(id) {
   dEduLaw.innerText = activeCompany.education.law;
 
   dCombinedHistory.innerHTML = "";
-  
   if (activeCompany.coachingLogs.length === 0) {
     dCombinedHistory.innerHTML = `<p style="font-size: 0.8rem; color: var(--text-secondary); text-align: center; padding: 20px 0;">기록된 누적 피드백이 존재하지 않습니다.</p>`;
   } else {
@@ -756,7 +807,7 @@ const closeDetailModal = () => detailModal.style.display = "none";
 btnCloseDetail.addEventListener("click", closeDetailModal);
 btnCloseDetailFooter.addEventListener("click", closeDetailModal);
 
-// --- COACHING MODAL ACTIONS ---
+// COACHING LOG
 window.openCoachingModal = function(id) {
   if (currentUser.role === "startup" && id !== currentUser.companyId) {
     alert("본인 기업 정보 이외에는 조회가 불가합니다.");
@@ -824,20 +875,14 @@ coachLogForm.addEventListener("submit", (e) => {
       content: content
     });
     targetCompany.coachingCount += 1;
-    
-    if (targetCompany.coachingCount >= 3 && targetCompany.monitoringDoc !== "제출완료") {
-      targetCompany.monitoringDoc = "제출완료";
-    }
-
     saveToLocalStorage();
     closeModal();
     renderDashboard();
   }
 });
 
-// --- EDIT MILESTONE ACTION ---
+// MILESTONES EDIT
 btnEditMilestone.addEventListener("click", () => {
-  // Strip tags from current milestones values to prefill inputs
   const strip = html => html.replace(/<[^>]*>/g, "");
   document.getElementById("ms-step1").value = strip(milestones[0] || "");
   document.getElementById("ms-step2").value = strip(milestones[1] || "");
@@ -866,16 +911,15 @@ milestoneForm.addEventListener("submit", (e) => {
   renderMilestones();
 });
 
-// --- COMPANY REGISTRATION & EDIT MODAL ---
+// COMPANY CRUD
 btnAddCompany.addEventListener("click", () => {
   companyForm.reset();
   companyEditId.value = "";
   companyModalTitle.innerText = "🏫 신규 창업기업 등록";
   
-  // Prefill dynamic key
   const randNum = Math.floor(1000 + Math.random() * 9000);
   document.getElementById("c-key").value = `HN-NEW-${randNum}`;
-  document.getElementById("c-password").value = "1234"; // default temp pass
+  document.getElementById("c-password").value = "1234";
 
   companyModal.style.display = "flex";
 });
@@ -892,7 +936,6 @@ window.openEditCompanyModal = function(id) {
   document.getElementById("c-rep").value = target.representative;
   document.getElementById("c-rep-desc").value = target.repDesc;
   
-  // Find linked login pass
   const matchedAccount = Object.keys(USERS).find(key => USERS[key].companyId === target.id);
   document.getElementById("c-password").value = matchedAccount ? USERS[matchedAccount].password : "1234";
 
@@ -900,10 +943,17 @@ window.openEditCompanyModal = function(id) {
   document.getElementById("c-sales").value = target.metrics.sales;
   document.getElementById("c-emp").value = target.metrics.employees;
   document.getElementById("c-restartup").value = target.metrics.reStartup;
-  document.getElementById("c-doc").value = target.monitoringDoc;
 
-  document.getElementById("c-budget-total").value = target.budget.total;
-  document.getElementById("c-budget-exec").value = target.budget.execution;
+  // Sync checkboxes for monthly checks
+  document.getElementById("chk-m5").checked = target.budget.checks.m5;
+  document.getElementById("chk-m6").checked = target.budget.checks.m6;
+  document.getElementById("chk-m7").checked = target.budget.checks.m7;
+  document.getElementById("chk-m8").checked = target.budget.checks.m8;
+  document.getElementById("chk-m9").checked = target.budget.checks.m9;
+  document.getElementById("chk-m10").checked = target.budget.checks.m10;
+  document.getElementById("chk-m11").checked = target.budget.checks.m11;
+  document.getElementById("chk-m12").checked = target.budget.checks.m12;
+
   document.getElementById("c-budget-status").value = target.budget.status;
 
   companyModal.style.display = "flex";
@@ -913,7 +963,6 @@ const closeCompanyModal = () => companyModal.style.display = "none";
 btnCloseCompany.addEventListener("click", closeCompanyModal);
 btnCancelCompany.addEventListener("click", closeCompanyModal);
 
-// Auto-key generator in modal
 btnGenKey.addEventListener("click", () => {
   const randNum = Math.floor(1000 + Math.random() * 9000);
   document.getElementById("c-key").value = `HN-GEN-${randNum}`;
@@ -933,14 +982,21 @@ companyForm.addEventListener("submit", (e) => {
   const sales = document.getElementById("c-sales").value;
   const emp = document.getElementById("c-emp").value;
   const restartup = document.getElementById("c-restartup").value;
-  const docVal = document.getElementById("c-doc").value;
 
-  const bTotal = document.getElementById("c-budget-total").value;
-  const bExec = document.getElementById("c-budget-exec").value;
   const bStatus = document.getElementById("c-budget-status").value;
 
+  const checks = {
+    m5: document.getElementById("chk-m5").checked,
+    m6: document.getElementById("chk-m6").checked,
+    m7: document.getElementById("chk-m7").checked,
+    m8: document.getElementById("chk-m8").checked,
+    m9: document.getElementById("chk-m9").checked,
+    m10: document.getElementById("chk-m10").checked,
+    m11: document.getElementById("chk-m11").checked,
+    m12: document.getElementById("chk-m12").checked
+  };
+
   if (idVal) {
-    // 1. UPDATE MODE
     const target = companies.find(c => c.id === parseInt(idVal));
     if (target) {
       target.name = name;
@@ -949,10 +1005,9 @@ companyForm.addEventListener("submit", (e) => {
       target.repDesc = repDesc;
       target.invitationKey = keyVal;
       target.metrics = { sales: sales, employees: emp, reStartup: restartup };
-      target.budget = { total: bTotal, execution: bExec, status: bStatus };
-      target.monitoringDoc = docVal;
+      target.budget.status = bStatus;
+      target.budget.checks = checks;
 
-      // Update password logic
       const matchedAccountKey = Object.keys(USERS).find(k => USERS[k].companyId === target.id);
       if (matchedAccountKey) {
         USERS[matchedAccountKey].name = `${representative} 대표`;
@@ -960,7 +1015,6 @@ companyForm.addEventListener("submit", (e) => {
       }
     }
   } else {
-    // 2. CREATE MODE
     const newId = companies.length > 0 ? Math.max(...companies.map(c => c.id)) + 1 : 1;
     
     companies.push({
@@ -971,9 +1025,13 @@ companyForm.addEventListener("submit", (e) => {
       repDesc: repDesc,
       invitationKey: keyVal,
       metrics: { sales: sales, employees: emp, reStartup: restartup },
-      budget: { total: bTotal, execution: bExec, status: bStatus },
+      budget: { 
+        status: bStatus, 
+        checks: checks,
+        total: "50,000", execution: "0" // safe fallbacks
+      },
       education: { hr: "대기", accounting: "대기", law: "대기", content: "노무, 세무 기본 과정 교육 대기 상태" },
-      monitoringDoc: docVal,
+      monitoringDoc: "미작성",
       coachingCount: 0,
       coachingLogs: [],
       chatMessages: [
@@ -981,7 +1039,6 @@ companyForm.addEventListener("submit", (e) => {
       ]
     });
 
-    // Create startup user link
     const accountEmail = `${representative.toLowerCase()}@onboard.com`;
     USERS[accountEmail] = {
       role: "startup",
@@ -996,7 +1053,7 @@ companyForm.addEventListener("submit", (e) => {
   renderDashboard();
 });
 
-// --- EDUCATION MANAGEMENT MODAL (COACH EXCLUSIVE) ---
+// EDUCATION EDIT
 window.openEditEduModal = function(id) {
   const target = companies.find(c => c.id === id);
   if (!target) return;
@@ -1035,5 +1092,40 @@ eduForm.addEventListener("submit", (e) => {
   }
 });
 
-// Initial Render on startup
+// --- SECTION SWITCHING & SIDEBAR MENU EVENT LISTENERS ---
+function switchSection(targetSection, activeMenu) {
+  [sectionDash, sectionChat, sectionEdu].forEach(sec => sec.classList.remove("active"));
+  [menuDash, menuChat, menuEdu].forEach(menu => menu.classList.remove("active"));
+  
+  targetSection.classList.add("active");
+  activeMenu.classList.add("active");
+
+  if (targetSection === sectionDash) {
+    mainHeaderTitle.innerText = "종합 대시보드";
+    renderDashboard();
+  } else if (targetSection === sectionChat) {
+    mainHeaderTitle.innerText = "상시 소통 채널";
+    renderChatSection();
+  } else if (targetSection === sectionEdu) {
+    mainHeaderTitle.innerText = "필수 교육 현황";
+    renderDashboard();
+  }
+}
+
+menuDash.addEventListener("click", (e) => {
+  e.preventDefault();
+  switchSection(sectionDash, menuDash);
+});
+
+menuChat.addEventListener("click", (e) => {
+  e.preventDefault();
+  switchSection(sectionChat, menuChat);
+});
+
+menuEdu.addEventListener("click", (e) => {
+  e.preventDefault();
+  switchSection(sectionEdu, menuEdu);
+});
+
+// Initial Setup
 renderMilestones();

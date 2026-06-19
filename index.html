@@ -43,7 +43,7 @@
       </div>
     </div>
 
-    <!-- 2. SIGNUP CARD (Hidden by default) -->
+    <!-- 2. SIGNUP CARD -->
     <div class="login-card" id="card-signup" style="display: none;">
       <div style="text-align: center; margin-bottom: 24px;">
         <span style="font-size: 2.5rem;">🔑</span>
@@ -150,16 +150,16 @@
             <div class="card-desc">기업별 3회 목표 (진행 9/15)</div>
           </div>
           <div class="card">
-            <div class="card-title">모니터링 자료 산출</div>
-            <div class="card-value" id="stat-doc-count">3 / 5건</div>
-            <div class="card-desc">연간 기업별 1건 필수 산출</div>
+            <div class="card-title">사업비 집행 점검율</div>
+            <div class="card-value" id="stat-doc-count">0%</div>
+            <div class="card-desc">월별 집행 점검 완료 비중</div>
           </div>
         </div>
 
-        <!-- Startup Companies List Table -->
+        <!-- Startup Companies List Table (Simplified) -->
         <div>
           <div class="section-title">
-            <span>지원기업 사업비 집행 및 모니터링 현황</span>
+            <span>지원기업 사업비 집행 및 모니터링 현황 (단순화 버전)</span>
             <button class="action-btn" id="btn-add-company" style="background-color: var(--accent-color); border: none; display: none;">+ 신규 기업 등록</button>
           </div>
           <div class="table-container">
@@ -170,9 +170,8 @@
                   <th>구분</th>
                   <th>대표자 정보</th>
                   <th>핵심 지표(매출/고용)</th>
-                  <th>사업비 집행 현황</th>
+                  <th>월별 사업비 집행 점검 (5~12월)</th>
                   <th>필수 교육 이수</th>
-                  <th>모니터링 보고서</th>
                   <th>누적 코칭</th>
                   <th>관리</th>
                 </tr>
@@ -379,10 +378,8 @@
         <div style="background: rgba(0,0,0,0.02); padding: 16px; border-radius: 8px; border: 1px solid var(--border-color);">
           <h4 style="font-size: 0.9rem; margin-bottom: 8px; color: var(--accent-color);">💰 사업비(정부지원금) 집행 모니터링</h4>
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.82rem;">
-            <div><strong>총 협약예산:</strong> <span id="detail-budget-total">-</span></div>
-            <div><strong>현재 집행금액:</strong> <span id="detail-budget-execution">-</span></div>
-            <div><strong>집행 비율:</strong> <span id="detail-budget-rate">-</span></div>
             <div><strong>모니터링 평가:</strong> <span id="detail-budget-status">-</span></div>
+            <div style="grid-column: span 2;"><strong>점검 완료 월:</strong> <span id="detail-budget-checks">-</span></div>
           </div>
         </div>
 
@@ -501,34 +498,32 @@
             <label for="c-emp">핵심 지표 (고용)</label>
             <input type="text" id="c-emp" placeholder="예: 2명" required>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="grid-column: span 2;">
             <label for="c-restartup">재창업 여부</label>
             <select id="c-restartup" required>
               <option value="아니오">아니오 (첫 창업)</option>
               <option value="예">예 (재창업 기업)</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="c-doc">모니터링 보고서</label>
-            <select id="c-doc" required>
-              <option value="미작성">미작성</option>
-              <option value="작성중">작성중</option>
-              <option value="제출완료">제출완료</option>
-            </select>
+        </div>
+
+        <div style="border-top: 1px solid var(--border-color); padding-top: 12px;">
+          <label style="font-weight:600; font-size:0.8rem; color:var(--text-secondary); margin-bottom:8px; display:block;">🗓️ 월별 사업비 집행 점검 (체크 시 완료)</label>
+          <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+            <label style="font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="chk-m5"> 5월</label>
+            <label style="font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="chk-m6"> 6월</label>
+            <label style="font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="chk-m7"> 7월</label>
+            <label style="font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="chk-m8"> 8월</label>
+            <label style="font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="chk-m9"> 9월</label>
+            <label style="font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="chk-m10"> 10월</label>
+            <label style="font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="chk-m11"> 11월</label>
+            <label style="font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="chk-m12"> 12월</label>
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; border-top: 1px solid var(--border-color); padding-top: 12px;">
+        <div style="margin-top: 12px; border-top: 1px solid var(--border-color); padding-top: 12px;">
           <div class="form-group">
-            <label for="c-budget-total">총 협약예산 (천원)</label>
-            <input type="text" id="c-budget-total" placeholder="50,000" required>
-          </div>
-          <div class="form-group">
-            <label for="c-budget-exec">현재 집행금액 (천원)</label>
-            <input type="text" id="c-budget-exec" placeholder="12,500" required>
-          </div>
-          <div class="form-group">
-            <label for="c-budget-status">사업비 집행 평가</label>
+            <label for="c-budget-status">사업비 최종 점검 평가</label>
             <select id="c-budget-status" required>
               <option value="safe">정상 집행</option>
               <option value="warn">집행 지연</option>
