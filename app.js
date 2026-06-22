@@ -16,11 +16,22 @@ let defaultCompanies = [
     representative: "이영희",
     repDesc: "이영희 (32세, 여성)",
     invitationKey: "HN-LINK-2026",
+    establishmentDate: "2025-11-15",
+    address: "대전광역시 대덕구 한남로 70, 창업보육센터 302호",
+    repAge: 32,
+    repGender: "여성",
+    oneStopLink: "대전창조경제혁신센터 법률분야 매칭 연계 완료",
+    surveyData: {
+      coachingField: ["BM고도화", "법률", "투자유치"],
+      requiredEdu: "투자유치 IR 기초 및 특허 출원 교육",
+      preferredMethod: "1:1 대면 밀착 멘토링",
+      customStrategy: "법인 설립 완료 상태로 특허 및 투자 계약서 중심의 자문 집중 지원 필요."
+    },
     metrics: { sales: "12,000천원", employees: "3명", reStartup: "아니오" },
     budget: { 
       status: "safe",
       checks: { m5: true, m6: true, m7: false, m8: false, m9: false, m10: false, m11: false, m12: false },
-      total: "50,000", execution: "32,500" // Kept for detail profile rendering only
+      total: "50,000", execution: "32,500"
     },
     education: { hr: "이수", accounting: "이수", law: "대기", content: "창업에듀: 노무기초 및 정부지원금 집행기준 수강 완료 (드림비즈 추천)" },
     monitoringDoc: "제출완료",
@@ -42,6 +53,12 @@ let defaultCompanies = [
     representative: "김철수",
     repDesc: "김철수 (41세, 남성)",
     invitationKey: "HN-GREEN-2026",
+    establishmentDate: "사업자 미등록 (예비)",
+    address: "대전광역시 동구 동대전로 144",
+    repAge: 41,
+    repGender: "남성",
+    oneStopLink: "대기 (7월 중 대전테크노파크 매칭 예정)",
+    surveyData: null,
     metrics: { sales: "0원 (예비)", employees: "1명 (대표자)", reStartup: "예" },
     budget: { 
       status: "warn",
@@ -57,7 +74,7 @@ let defaultCompanies = [
     ],
     chatMessages: [
       { sender: "startup", text: "세무 기장은 법인 설립 후 바로 해야 하나요?", time: "어제" },
-      { sender: "coach", text: "네, 매출이 아직 없더라도 기초적인 세무 신고와 기장 처리가 안전합니다. 관련 가이드를 송부해드릴게요.", time: "어제" }
+      { sender: "coach", text: "네, 매출이 아직 없더라도 기초적인 세무 신고 and 기장 처리가 안전합니다. 관련 가이드를 송부해드릴게요.", time: "어제" }
     ]
   },
   {
@@ -67,6 +84,17 @@ let defaultCompanies = [
     representative: "박민지",
     repDesc: "박민지 (28세, 여성)",
     invitationKey: "HN-DREAM-2026",
+    establishmentDate: "2025-08-20",
+    address: "대전광역시 서구 둔산서로 17",
+    repAge: 28,
+    repGender: "여성",
+    oneStopLink: "해당 없음",
+    surveyData: {
+      coachingField: ["BM고도화", "회계", "마케팅"],
+      requiredEdu: "인적 자원 관리 교육 및 고용 표준 지침",
+      preferredMethod: "온라인 동영상 강의",
+      customStrategy: "교육 이수 상태 최상. BM 고도화와 고용 안정화에 중점을 둔 성장 전략 코칭 진행."
+    },
     metrics: { sales: "45,000천원", employees: "5명", reStartup: "아니오" },
     budget: { 
       status: "safe",
@@ -93,6 +121,12 @@ let defaultCompanies = [
     representative: "최재성",
     repDesc: "최재성 (35세, 남성)",
     invitationKey: "HN-SIZ-2026",
+    establishmentDate: "2025-12-01",
+    address: "대전광역시 대덕구 오정로 66",
+    repAge: 35,
+    repGender: "남성",
+    oneStopLink: "대기 (지원센터 특허 전문가 매칭 요청 상태)",
+    surveyData: null,
     metrics: { sales: "8,500천원", employees: "2명", reStartup: "아니오" },
     budget: { 
       status: "safe",
@@ -116,6 +150,12 @@ let defaultCompanies = [
     representative: "황동욱",
     repDesc: "황동욱 (31세, 남성)",
     invitationKey: "HN-KAIVIC-2026",
+    establishmentDate: "사업자 미등록 (예비)",
+    address: "대전광역시 유성구 대학로 99",
+    repAge: 31,
+    repGender: "남성",
+    oneStopLink: "해당 없음",
+    surveyData: null,
     metrics: { sales: "0원 (예비)", employees: "1명 (대표자)", reStartup: "예" },
     budget: { 
       status: "danger",
@@ -176,10 +216,14 @@ const btnLogout = document.getElementById("btn-logout");
 const menuDash = document.getElementById("menu-dash");
 const menuChat = document.getElementById("menu-chat");
 const menuEdu = document.getElementById("menu-edu");
+const menuSurvey = document.getElementById("menu-survey");
+const menuReport = document.getElementById("menu-report");
 
 const sectionDash = document.getElementById("section-dash");
 const sectionChat = document.getElementById("section-chat");
 const sectionEdu = document.getElementById("section-edu");
+const sectionSurvey = document.getElementById("section-survey");
+const sectionReport = document.getElementById("section-report");
 
 const mainHeaderTitle = document.getElementById("main-header-title");
 
@@ -213,6 +257,9 @@ const dRep = document.getElementById("detail-representative");
 const dRe = document.getElementById("detail-restartup");
 const dSales = document.getElementById("detail-sales");
 const dEmp = document.getElementById("detail-employees");
+const dEstDate = document.getElementById("detail-est-date");
+const dAddress = document.getElementById("detail-address");
+const dOneStop = document.getElementById("detail-onestop");
 const dKey = document.getElementById("detail-invitation-key");
 
 const dBudgetChecks = document.getElementById("detail-budget-checks");
@@ -764,6 +811,9 @@ window.openDetailModal = function(id) {
   dRe.innerText = activeCompany.metrics.reStartup;
   dSales.innerText = activeCompany.metrics.sales;
   dEmp.innerText = activeCompany.metrics.employees;
+  dEstDate.innerText = activeCompany.establishmentDate || "-";
+  dAddress.innerText = activeCompany.address || "-";
+  dOneStop.innerText = activeCompany.oneStopLink || "대기";
   dKey.innerText = activeCompany.invitationKey;
 
   // Format monthly check status lists
@@ -942,7 +992,12 @@ window.openEditCompanyModal = function(id) {
   document.getElementById("c-key").value = target.invitationKey;
   document.getElementById("c-sales").value = target.metrics.sales;
   document.getElementById("c-emp").value = target.metrics.employees;
+  document.getElementById("c-est-date").value = target.establishmentDate || "";
+  document.getElementById("c-address").value = target.address || "";
+  document.getElementById("c-age").value = target.repAge || "";
+  document.getElementById("c-gender").value = target.repGender || "남성";
   document.getElementById("c-restartup").value = target.metrics.reStartup;
+  document.getElementById("c-onestop").value = target.oneStopLink || "";
 
   // Sync checkboxes for monthly checks
   document.getElementById("chk-m5").checked = target.budget.checks.m5;
@@ -981,7 +1036,12 @@ companyForm.addEventListener("submit", (e) => {
   const keyVal = document.getElementById("c-key").value.toUpperCase();
   const sales = document.getElementById("c-sales").value;
   const emp = document.getElementById("c-emp").value;
+  const estDate = document.getElementById("c-est-date").value;
+  const address = document.getElementById("c-address").value;
+  const ageVal = parseInt(document.getElementById("c-age").value) || 30;
+  const genderVal = document.getElementById("c-gender").value;
   const restartup = document.getElementById("c-restartup").value;
+  const onestopVal = document.getElementById("c-onestop").value;
 
   const bStatus = document.getElementById("c-budget-status").value;
 
@@ -1004,6 +1064,11 @@ companyForm.addEventListener("submit", (e) => {
       target.representative = representative;
       target.repDesc = repDesc;
       target.invitationKey = keyVal;
+      target.establishmentDate = estDate;
+      target.address = address;
+      target.repAge = ageVal;
+      target.repGender = genderVal;
+      target.oneStopLink = onestopVal;
       target.metrics = { sales: sales, employees: emp, reStartup: restartup };
       target.budget.status = bStatus;
       target.budget.checks = checks;
@@ -1024,6 +1089,12 @@ companyForm.addEventListener("submit", (e) => {
       representative: representative,
       repDesc: repDesc,
       invitationKey: keyVal,
+      establishmentDate: estDate,
+      address: address,
+      repAge: ageVal,
+      repGender: genderVal,
+      oneStopLink: onestopVal,
+      surveyData: null,
       metrics: { sales: sales, employees: emp, reStartup: restartup },
       budget: { 
         status: bStatus, 
@@ -1094,8 +1165,8 @@ eduForm.addEventListener("submit", (e) => {
 
 // --- SECTION SWITCHING & SIDEBAR MENU EVENT LISTENERS ---
 function switchSection(targetSection, activeMenu) {
-  [sectionDash, sectionChat, sectionEdu].forEach(sec => sec.classList.remove("active"));
-  [menuDash, menuChat, menuEdu].forEach(menu => menu.classList.remove("active"));
+  [sectionDash, sectionChat, sectionEdu, sectionSurvey, sectionReport].forEach(sec => sec.classList.remove("active"));
+  [menuDash, menuChat, menuEdu, menuSurvey, menuReport].forEach(menu => menu.classList.remove("active"));
   
   targetSection.classList.add("active");
   activeMenu.classList.add("active");
@@ -1109,9 +1180,267 @@ function switchSection(targetSection, activeMenu) {
   } else if (targetSection === sectionEdu) {
     mainHeaderTitle.innerText = "필수 교육 현황";
     renderDashboard();
+  } else if (targetSection === sectionSurvey) {
+    mainHeaderTitle.innerText = "기업 사전 조사";
+    renderSurveySection();
+  } else if (targetSection === sectionReport) {
+    mainHeaderTitle.innerText = "모니터링 보고서";
+    renderReportSection();
   }
 }
 
+// SURVEY SECTION RENDERING & SUBMIT
+function renderSurveySection() {
+  const form = document.getElementById("survey-form-el");
+  const strategyContainer = document.getElementById("survey-strategy-container");
+  const strategyTextarea = document.getElementById("sv-strategy");
+  const submitBtn = document.getElementById("btn-submit-survey");
+  
+  let targetCompany = null;
+  if (currentUser.role === "coach") {
+    // 코치는 드롭다운이나 선택된 기업 기준으로 사전 조사를 조회/수정할 수 있도록 유도
+    targetCompany = companies.find(c => c.id === selectedCompanyId) || companies[0];
+    strategyContainer.style.display = "flex";
+    strategyTextarea.removeAttribute("readonly");
+    submitBtn.innerText = "💾 코치 맞춤형 전략 저장";
+  } else {
+    // 스타트업 대표는 본인 회사 고정
+    targetCompany = companies.find(c => c.id === currentUser.companyId);
+    strategyContainer.style.display = "flex";
+    strategyTextarea.setAttribute("readonly", "true");
+    submitBtn.innerText = "📝 사전 조사 답변 제출";
+  }
+
+  if (!targetCompany) return;
+
+  // Pre-populate if survey data exists
+  if (targetCompany.surveyData) {
+    document.getElementById("sv-sales").value = targetCompany.metrics.sales || "";
+    document.getElementById("sv-employees").value = targetCompany.metrics.employees || "";
+    document.getElementById("sv-est-date").value = targetCompany.establishmentDate || "";
+    document.getElementById("sv-address").value = targetCompany.address || "";
+    document.getElementById("sv-age").value = targetCompany.repAge || "";
+    document.getElementById("sv-gender").value = targetCompany.repGender || "남성";
+    document.getElementById("sv-restartup").value = targetCompany.metrics.reStartup || "아니오";
+    
+    // Checkboxes
+    const fields = targetCompany.surveyData.coachingField || [];
+    document.querySelectorAll("input[name='sv-coach-fields']").forEach(chk => {
+      chk.checked = fields.includes(chk.value);
+    });
+    
+    document.getElementById("sv-req-edu").value = targetCompany.surveyData.requiredEdu || "";
+    document.getElementById("sv-pref-method").value = targetCompany.surveyData.preferredMethod || "온라인 동영상 강의";
+    strategyTextarea.value = targetCompany.surveyData.customStrategy || "";
+  } else {
+    // Fill basic details from existing profile
+    document.getElementById("sv-sales").value = targetCompany.metrics.sales || "";
+    document.getElementById("sv-employees").value = targetCompany.metrics.employees || "";
+    document.getElementById("sv-est-date").value = targetCompany.establishmentDate || "";
+    document.getElementById("sv-address").value = targetCompany.address || "";
+    document.getElementById("sv-age").value = targetCompany.repAge || "";
+    document.getElementById("sv-gender").value = targetCompany.repGender || "남성";
+    document.getElementById("sv-restartup").value = targetCompany.metrics.reStartup || "아니오";
+    
+    document.querySelectorAll("input[name='sv-coach-fields']").forEach(chk => chk.checked = false);
+    document.getElementById("sv-req-edu").value = "";
+    document.getElementById("sv-pref-method").value = "온라인 동영상 강의";
+    strategyTextarea.value = "";
+  }
+}
+
+// Submit Survey Form Listener
+document.getElementById("survey-form-el").addEventListener("submit", (e) => {
+  e.preventDefault();
+  
+  let targetCompany = null;
+  if (currentUser.role === "coach") {
+    targetCompany = companies.find(c => c.id === selectedCompanyId) || companies[0];
+  } else {
+    targetCompany = companies.find(c => c.id === currentUser.companyId);
+  }
+
+  if (!targetCompany) return;
+
+  const sales = document.getElementById("sv-sales").value;
+  const emp = document.getElementById("sv-employees").value;
+  const estDate = document.getElementById("sv-est-date").value;
+  const address = document.getElementById("sv-address").value;
+  const age = parseInt(document.getElementById("sv-age").value) || 30;
+  const gender = document.getElementById("sv-gender").value;
+  const restartup = document.getElementById("sv-restartup").value;
+  
+  const coachFields = [];
+  document.querySelectorAll("input[name='sv-coach-fields']:checked").forEach(chk => {
+    coachFields.push(chk.value);
+  });
+  
+  const reqEdu = document.getElementById("sv-req-edu").value;
+  const prefMethod = document.getElementById("sv-pref-method").value;
+  const strategy = document.getElementById("sv-strategy").value;
+
+  // Update local model
+  targetCompany.metrics.sales = sales;
+  targetCompany.metrics.employees = emp;
+  targetCompany.establishmentDate = estDate;
+  targetCompany.address = address;
+  targetCompany.repAge = age;
+  targetCompany.repGender = gender;
+  targetCompany.metrics.reStartup = restartup;
+  
+  targetCompany.surveyData = {
+    coachingField: coachFields,
+    requiredEdu: reqEdu,
+    preferredMethod: prefMethod,
+    customStrategy: strategy
+  };
+
+  saveToLocalStorage();
+
+  // Send to Google Sheets (action: "submitSurvey")
+  if (GOOGLE_SCRIPT_URL) {
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "submitSurvey",
+        companyId: targetCompany.id,
+        companyName: targetCompany.name,
+        representative: targetCompany.representative,
+        sales: sales,
+        employees: emp,
+        estDate: estDate,
+        address: address,
+        age: age,
+        gender: gender,
+        restartup: restartup,
+        coachFields: coachFields.join(", "),
+        reqEdu: reqEdu,
+        prefMethod: prefMethod,
+        customStrategy: strategy
+      })
+    }).then(() => {
+      alert("🎉 구글 스프레드시트 및 드라이브에 조사 데이터가 성공적으로 백업 연동되었습니다!");
+    }).catch(err => {
+      console.error("Google Sync error:", err);
+      alert("💾 로컬 저장 완료 (구글 시트 연동 실패: 인터넷 상태를 확인해 주세요)");
+    });
+  } else {
+    alert("💾 설문 결과가 로컬 스토리지에 안전하게 저장되었습니다!");
+  }
+
+  renderSurveySection();
+});
+
+// REPORT SECTION RENDERING
+function renderReportSection() {
+  const select = document.getElementById("report-company-select");
+  select.innerHTML = "";
+  
+  const filtered = getFilteredCompanies();
+  filtered.forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c.id;
+    opt.innerText = c.name;
+    if (c.id === selectedCompanyId) {
+      opt.selected = true;
+    }
+    select.appendChild(opt);
+  });
+
+  const activeCompany = filtered.find(c => c.id === parseInt(select.value)) || filtered[0];
+  if (!activeCompany) return;
+
+  // Map values
+  document.getElementById("report-print-date").innerText = new Date().toISOString().split('T')[0];
+  document.getElementById("rep-comp-name").innerText = activeCompany.name;
+  document.getElementById("rep-comp-type").innerText = activeCompany.type;
+  document.getElementById("rep-rep-name").innerText = activeCompany.representative;
+  document.getElementById("rep-rep-profile").innerText = `${activeCompany.repAge || "-"}세 / ${activeCompany.repGender || "-"}`;
+  document.getElementById("rep-est-date").innerText = activeCompany.establishmentDate || "-";
+  document.getElementById("rep-restartup").innerText = activeCompany.metrics.reStartup || "아니오";
+  document.getElementById("rep-address").innerText = activeCompany.address || "-";
+  
+  document.getElementById("rep-sales").innerText = activeCompany.metrics.sales || "-";
+  document.getElementById("rep-employees").innerText = activeCompany.metrics.employees || "-";
+  document.getElementById("rep-onestop").innerText = activeCompany.oneStopLink || "대기";
+
+  // Education
+  document.getElementById("rep-edu-hr").innerText = activeCompany.education.hr;
+  document.getElementById("rep-edu-acc").innerText = activeCompany.education.accounting;
+  document.getElementById("rep-edu-law").innerText = activeCompany.education.law;
+  document.getElementById("rep-edu-desc").innerText = `교육 비고 및 지도내용: ${activeCompany.education.content}`;
+
+  // Monthly Budget Checks
+  const months = ["m5", "m6", "m7", "m8", "m9", "m10", "m11", "m12"];
+  const budgetRow = document.getElementById("rep-budget-row");
+  budgetRow.innerHTML = "";
+  months.forEach(m => {
+    const isChecked = activeCompany.budget.checks[m];
+    const td = document.createElement("td");
+    td.innerText = isChecked ? "🟢" : "⚪";
+    budgetRow.appendChild(td);
+  });
+  const evalTd = document.createElement("td");
+  evalTd.style.fontWeight = "700";
+  const bStatus = activeCompany.budget.status;
+  if (bStatus === "safe") {
+    evalTd.innerText = "정상 집행";
+    evalTd.style.color = "var(--success)";
+  } else if (bStatus === "warn") {
+    evalTd.innerText = "집행 지연";
+    evalTd.style.color = "var(--warning)";
+  } else {
+    evalTd.innerText = "미집행 경고";
+    evalTd.style.color = "var(--danger)";
+  }
+  budgetRow.appendChild(evalTd);
+
+  // Survey data
+  if (activeCompany.surveyData) {
+    document.getElementById("rep-survey-fields").innerText = (activeCompany.surveyData.coachingField || []).join(", ") || "없음";
+    document.getElementById("rep-survey-req-edu").innerText = activeCompany.surveyData.requiredEdu || "-";
+    document.getElementById("rep-survey-pref").innerText = activeCompany.surveyData.preferredMethod || "-";
+    document.getElementById("rep-survey-strategy").innerText = activeCompany.surveyData.customStrategy || "코치 미작성 상태";
+  } else {
+    document.getElementById("rep-survey-fields").innerText = "사전조사 미제출";
+    document.getElementById("rep-survey-req-edu").innerText = "-";
+    document.getElementById("rep-survey-pref").innerText = "-";
+    document.getElementById("rep-survey-strategy").innerText = "사전조사 결과가 없어 맞춤형 지원 전략이 수립되지 않았습니다.";
+  }
+
+  // Coaching logs table
+  const logsBody = document.getElementById("rep-coaching-logs-body");
+  logsBody.innerHTML = "";
+  if (activeCompany.coachingLogs.length === 0) {
+    logsBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">밀착 코칭 및 상담 이력이 없습니다.</td></tr>`;
+  } else {
+    activeCompany.coachingLogs.forEach(log => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td style="text-align:center;">${log.date}</td>
+        <td style="text-align:center;"><span class="tag tag-early">${log.type}</span></td>
+        <td style="text-align:center; font-weight:600;">${log.field}</td>
+        <td>${log.content}</td>
+      `;
+      logsBody.appendChild(tr);
+    });
+  }
+}
+
+// Dropdown Change listener in Report view
+document.getElementById("report-company-select").addEventListener("change", (e) => {
+  selectedCompanyId = parseInt(e.target.value);
+  renderReportSection();
+});
+
+// Print Button
+document.getElementById("btn-print-report").addEventListener("click", () => {
+  window.print();
+});
+
+// MENU CLICKS
 menuDash.addEventListener("click", (e) => {
   e.preventDefault();
   switchSection(sectionDash, menuDash);
@@ -1125,6 +1454,16 @@ menuChat.addEventListener("click", (e) => {
 menuEdu.addEventListener("click", (e) => {
   e.preventDefault();
   switchSection(sectionEdu, menuEdu);
+});
+
+menuSurvey.addEventListener("click", (e) => {
+  e.preventDefault();
+  switchSection(sectionSurvey, menuSurvey);
+});
+
+menuReport.addEventListener("click", (e) => {
+  e.preventDefault();
+  switchSection(sectionReport, menuReport);
 });
 
 // Initial Setup
