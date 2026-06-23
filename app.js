@@ -1442,7 +1442,7 @@ document.getElementById("survey-form-el").addEventListener("submit", (e) => {
         teamNeeds: teamNeeds,
         financeSource: financeSource,
         financeFixedcost: financeFixedcost,
-        financeRunway: runway = financeRunway,
+        financeRunway: financeRunway,
         needPain: needPain,
         needGoal: needGoal,
         needDeliverable: needDeliverable,
