@@ -14,17 +14,39 @@ let defaultCompanies = [
     name: "(주)에이아이링크",
     type: "초기(1년 미만)",
     representative: "이영희",
-    repDesc: "이영희 (32세, 여성)",
+    repDesc: "이영희 대표",
     invitationKey: "HN-LINK-2026",
     establishmentDate: "2025-11-15",
     address: "대전광역시 대덕구 한남로 70, 창업보육센터 302호",
-    repAge: 32,
-    repGender: "여성",
+    contact: "010-1234-5678",
+    corpType: "법인사업자",
     oneStopLink: "대전창조경제혁신센터 법률분야 매칭 연계 완료",
     surveyData: {
-      coachingField: ["BM고도화", "법률", "투자유치"],
-      requiredEdu: "투자유치 IR 기초 및 특허 출원 교육",
-      preferredMethod: "1:1 대면 밀착 멘토링",
+      contact: "010-1234-5678",
+      corpType: "법인사업자",
+      estDate: "2025-11-15",
+      address: "대전광역시 대덕구 한남로 70, 창업보육센터 302호",
+      sales: "12,000천원",
+      employees: "3명",
+      itemIntro: "빅데이터 기반의 중고차 이력 실시간 매칭 플랫폼",
+      itemProblem: "중고차 구매 시 허위 매물 및 차량 이력 정보의 비대칭 문제",
+      itemTarget: "합리적인 차량 소비를 원하는 2030 사회 초년생 직장인",
+      itemModel: "중고차 거래 건당 3% 중개 수수료 및 프리미엄 차량 검증 서비스 구독료",
+      stageProduct: "정식 제품/서비스 상용화 단계",
+      stageHasSales: "매출 발생 완료",
+      stageSummary: "특허 출원 1건 완료, 디자이너 외주 용역 계약 체결, 상반기 BM 검증 테스트 완료",
+      marketTarget: "국내 연간 20조원 규모의 중고차 온라인 거래 시장",
+      marketCompetitor: "헤이딜러, 케이카, 개인 중고차 직거래 커뮤니티",
+      marketDifferent: "인공지능 기반의 차량 사진 분석을 통한 사고 흔적 자동 검출 기술",
+      teamComp: "기획/개발 대표자 1인, 시니어 개발자 1인, 마케터 1인 (총 3인)",
+      teamCore: "중고차 업계 10년 경력의 도메인 지식 및 모바일 앱 풀스택 개발 역량",
+      teamNeeds: "대규모 고객 유치를 위한 그로스해킹 디지털 마케팅 전문가 보완 필요",
+      financeSource: "엔젤투자 유치 예정 또는 신용보증기금 혁신스타트업 융자 신청",
+      financeFixedcost: "고정비 완벽 파악 중",
+      financeRunway: "6개월 ~ 1년",
+      needPain: "1. 정부지원금 정산 증빙 처리 오류 2. 타깃 마케팅 채널 선택의 어려움 3. 시제품 완성 후 시장 반응 확인법",
+      needGoal: "비즈니스 모델(BM) 피벗 및 하반기 크라우드 펀딩 런칭 계획 수립",
+      needDeliverable: "수정된 사업계획서 IR 장표 및 디지털 인스타그램 마케팅 광고 실행 체크리스트",
       customStrategy: "법인 설립 완료 상태로 특허 및 투자 계약서 중심의 자문 집중 지원 필요."
     },
     metrics: { sales: "12,000천원", employees: "3명", reStartup: "아니오" },
@@ -51,12 +73,12 @@ let defaultCompanies = [
     name: "그린에너지 솔루션",
     type: "예비 창업기업",
     representative: "김철수",
-    repDesc: "김철수 (41세, 남성)",
+    repDesc: "김철수 대표",
     invitationKey: "HN-GREEN-2026",
-    establishmentDate: "사업자 미등록 (예비)",
+    establishmentDate: "2026-03-01",
     address: "대전광역시 동구 동대전로 144",
-    repAge: 41,
-    repGender: "남성",
+    contact: "010-5678-1234",
+    corpType: "예비창업자",
     oneStopLink: "대기 (7월 중 대전테크노파크 매칭 예정)",
     surveyData: null,
     metrics: { sales: "0원 (예비)", employees: "1명 (대표자)", reStartup: "예" },
@@ -74,7 +96,7 @@ let defaultCompanies = [
     ],
     chatMessages: [
       { sender: "startup", text: "세무 기장은 법인 설립 후 바로 해야 하나요?", time: "어제" },
-      { sender: "coach", text: "네, 매출이 아직 없더라도 기초적인 세무 신고 and 기장 처리가 안전합니다. 관련 가이드를 송부해드릴게요.", time: "어제" }
+      { sender: "coach", text: "네, 매출이 아직 없더라도 기초적인 세무 신고 및 기장 처리가 안전합니다. 관련 가이드를 송부해드릴게요.", time: "어제" }
     ]
   },
   {
@@ -82,17 +104,39 @@ let defaultCompanies = [
     name: "드림 소프트",
     type: "초기(1년 미만)",
     representative: "박민지",
-    repDesc: "박민지 (28세, 여성)",
+    repDesc: "박민지 대표",
     invitationKey: "HN-DREAM-2026",
     establishmentDate: "2025-08-20",
     address: "대전광역시 서구 둔산서로 17",
-    repAge: 28,
-    repGender: "여성",
+    contact: "010-9999-8888",
+    corpType: "개인사업자",
     oneStopLink: "해당 없음",
     surveyData: {
-      coachingField: ["BM고도화", "회계", "마케팅"],
-      requiredEdu: "인적 자원 관리 교육 및 고용 표준 지침",
-      preferredMethod: "온라인 동영상 강의",
+      contact: "010-9999-8888",
+      corpType: "개인사업자",
+      estDate: "2025-08-20",
+      address: "대전광역시 서구 둔산서로 17",
+      sales: "45,000천원",
+      employees: "5명",
+      itemIntro: "소상공인을 위한 AI 기반 간편 급여/노무 관리 SaaS",
+      itemProblem: "매년 바뀌는 노무법과 복잡한 수당 계산으로 인한 소상공인의 시간 낭비 및 벌금 리스크",
+      itemTarget: "5인 미만 직원을 고용하고 있는 식음료 및 소매업 매장 점주",
+      itemModel: "월 9,900원 멤버십 정기 구독료",
+      stageProduct: "정식 제품/서비스 상용화 단계",
+      stageHasSales: "매출 발생 완료",
+      stageSummary: "대전 소재 프랜차이즈 가맹점 30개사 PoC(실증) 완료 및 월 구독 회원 10명 돌파",
+      marketTarget: "국내 300만 소상공인 사업체 시장",
+      marketCompetitor: "자비시, 알밤 등 수동 근무기록 앱",
+      marketDifferent: "별도 기기 설치 없는 모바일 GPS 간편 인증 및 노무사 자문 결합 서비스 제공",
+      teamComp: "대표(노무사 자격 보유) 1인, 풀스택 개발자 1인, 마케터 1인",
+      teamCore: "노무 도메인 전문 지식과 자체 특허 알고리즘 탑재 소프트웨어 신속 구현 능력",
+      teamNeeds: "초기 마케팅 예산 부족으로 효율적인 바이럴/SNS 마케팅 방법론 필요",
+      financeSource: "한남대 지원금 6천만 원 및 엔젤 매칭 펀드 신청 준비 중",
+      financeFixedcost: "고정비 완벽 파악 중",
+      financeRunway: "1년 이상",
+      needPain: "1. 유료 마케팅 전환 단가의 비효율성 2. 특허 등록 후 권리 침해 대응 방안",
+      needGoal: "효과적인 초기 고객 획득 마케팅 실행 및 지식재산권(IP) 보호 장치 마련",
+      needDeliverable: "소셜 퍼포먼스 마케팅 광고 카피 테스트 구조표 및 디자인 시나리오",
       customStrategy: "교육 이수 상태 최상. BM 고도화와 고용 안정화에 중점을 둔 성장 전략 코칭 진행."
     },
     metrics: { sales: "45,000천원", employees: "5명", reStartup: "아니오" },
@@ -119,12 +163,12 @@ let defaultCompanies = [
     name: "시즈모드",
     type: "초기(1년 미만)",
     representative: "최재성",
-    repDesc: "최재성 (35세, 남성)",
+    repDesc: "최재성 대표",
     invitationKey: "HN-SIZ-2026",
     establishmentDate: "2025-12-01",
     address: "대전광역시 대덕구 오정로 66",
-    repAge: 35,
-    repGender: "남성",
+    contact: "010-4444-5555",
+    corpType: "개인사업자",
     oneStopLink: "대기 (지원센터 특허 전문가 매칭 요청 상태)",
     surveyData: null,
     metrics: { sales: "8,500천원", employees: "2명", reStartup: "아니오" },
@@ -148,12 +192,12 @@ let defaultCompanies = [
     name: "카이빅테크",
     type: "예비 창업기업",
     representative: "황동욱",
-    repDesc: "황동욱 (31세, 남성)",
+    repDesc: "황동욱 대표",
     invitationKey: "HN-KAIVIC-2026",
     establishmentDate: "사업자 미등록 (예비)",
     address: "대전광역시 유성구 대학로 99",
-    repAge: 31,
-    repGender: "남성",
+    contact: "010-8888-7777",
+    corpType: "예비창업자",
     oneStopLink: "해당 없음",
     surveyData: null,
     metrics: { sales: "0원 (예비)", employees: "1명 (대표자)", reStartup: "예" },
@@ -994,8 +1038,8 @@ window.openEditCompanyModal = function(id) {
   document.getElementById("c-emp").value = target.metrics.employees;
   document.getElementById("c-est-date").value = target.establishmentDate || "";
   document.getElementById("c-address").value = target.address || "";
-  document.getElementById("c-age").value = target.repAge || "";
-  document.getElementById("c-gender").value = target.repGender || "남성";
+  document.getElementById("c-contact").value = target.contact || "";
+  document.getElementById("c-corp-type").value = target.corpType || "예비창업자";
   document.getElementById("c-restartup").value = target.metrics.reStartup;
   document.getElementById("c-onestop").value = target.oneStopLink || "";
 
@@ -1038,8 +1082,8 @@ companyForm.addEventListener("submit", (e) => {
   const emp = document.getElementById("c-emp").value;
   const estDate = document.getElementById("c-est-date").value;
   const address = document.getElementById("c-address").value;
-  const ageVal = parseInt(document.getElementById("c-age").value) || 30;
-  const genderVal = document.getElementById("c-gender").value;
+  const contactVal = document.getElementById("c-contact").value;
+  const corpTypeVal = document.getElementById("c-corp-type").value;
   const restartup = document.getElementById("c-restartup").value;
   const onestopVal = document.getElementById("c-onestop").value;
 
@@ -1066,8 +1110,8 @@ companyForm.addEventListener("submit", (e) => {
       target.invitationKey = keyVal;
       target.establishmentDate = estDate;
       target.address = address;
-      target.repAge = ageVal;
-      target.repGender = genderVal;
+      target.contact = contactVal;
+      target.corpType = corpTypeVal;
       target.oneStopLink = onestopVal;
       target.metrics = { sales: sales, employees: emp, reStartup: restartup };
       target.budget.status = bStatus;
@@ -1091,8 +1135,8 @@ companyForm.addEventListener("submit", (e) => {
       invitationKey: keyVal,
       establishmentDate: estDate,
       address: address,
-      repAge: ageVal,
-      repGender: genderVal,
+      contact: contactVal,
+      corpType: corpTypeVal,
       oneStopLink: onestopVal,
       surveyData: null,
       metrics: { sales: sales, employees: emp, reStartup: restartup },
@@ -1191,20 +1235,17 @@ function switchSection(targetSection, activeMenu) {
 
 // SURVEY SECTION RENDERING & SUBMIT
 function renderSurveySection() {
-  const form = document.getElementById("survey-form-el");
   const strategyContainer = document.getElementById("survey-strategy-container");
   const strategyTextarea = document.getElementById("sv-strategy");
   const submitBtn = document.getElementById("btn-submit-survey");
   
   let targetCompany = null;
   if (currentUser.role === "coach") {
-    // 코치는 드롭다운이나 선택된 기업 기준으로 사전 조사를 조회/수정할 수 있도록 유도
     targetCompany = companies.find(c => c.id === selectedCompanyId) || companies[0];
     strategyContainer.style.display = "flex";
     strategyTextarea.removeAttribute("readonly");
     submitBtn.innerText = "💾 코치 맞춤형 전략 저장";
   } else {
-    // 스타트업 대표는 본인 회사 고정
     targetCompany = companies.find(c => c.id === currentUser.companyId);
     strategyContainer.style.display = "flex";
     strategyTextarea.setAttribute("readonly", "true");
@@ -1215,36 +1256,71 @@ function renderSurveySection() {
 
   // Pre-populate if survey data exists
   if (targetCompany.surveyData) {
-    document.getElementById("sv-sales").value = targetCompany.metrics.sales || "";
-    document.getElementById("sv-employees").value = targetCompany.metrics.employees || "";
-    document.getElementById("sv-est-date").value = targetCompany.establishmentDate || "";
-    document.getElementById("sv-address").value = targetCompany.address || "";
-    document.getElementById("sv-age").value = targetCompany.repAge || "";
-    document.getElementById("sv-gender").value = targetCompany.repGender || "남성";
-    document.getElementById("sv-restartup").value = targetCompany.metrics.reStartup || "아니오";
-    
-    // Checkboxes
-    const fields = targetCompany.surveyData.coachingField || [];
-    document.querySelectorAll("input[name='sv-coach-fields']").forEach(chk => {
-      chk.checked = fields.includes(chk.value);
-    });
-    
-    document.getElementById("sv-req-edu").value = targetCompany.surveyData.requiredEdu || "";
-    document.getElementById("sv-pref-method").value = targetCompany.surveyData.preferredMethod || "온라인 동영상 강의";
+    document.getElementById("sv-contact").value = targetCompany.surveyData.contact || targetCompany.contact || "";
+    document.getElementById("sv-corp-type").value = targetCompany.surveyData.corpType || targetCompany.corpType || "예비창업자";
+    document.getElementById("sv-est-date").value = targetCompany.surveyData.estDate || targetCompany.establishmentDate || "";
+    document.getElementById("sv-address").value = targetCompany.surveyData.address || targetCompany.address || "";
+    document.getElementById("sv-sales").value = targetCompany.surveyData.sales || targetCompany.metrics.sales || "";
+    document.getElementById("sv-employees").value = targetCompany.surveyData.employees || targetCompany.metrics.employees || "";
+
+    document.getElementById("sv-item-intro").value = targetCompany.surveyData.itemIntro || "";
+    document.getElementById("sv-item-problem").value = targetCompany.surveyData.itemProblem || "";
+    document.getElementById("sv-item-target").value = targetCompany.surveyData.itemTarget || "";
+    document.getElementById("sv-item-model").value = targetCompany.surveyData.itemModel || "";
+
+    document.getElementById("sv-stage-product").value = targetCompany.surveyData.stageProduct || "아이디어 기획 단계";
+    document.getElementById("sv-stage-has-sales").value = targetCompany.surveyData.stageHasSales || "매출 미발생";
+    document.getElementById("sv-stage-summary").value = targetCompany.surveyData.stageSummary || "";
+
+    document.getElementById("sv-market-target").value = targetCompany.surveyData.marketTarget || "";
+    document.getElementById("sv-market-competitor").value = targetCompany.surveyData.marketCompetitor || "";
+    document.getElementById("sv-market-different").value = targetCompany.surveyData.marketDifferent || "";
+
+    document.getElementById("sv-team-comp").value = targetCompany.surveyData.teamComp || "";
+    document.getElementById("sv-team-core").value = targetCompany.surveyData.teamCore || "";
+    document.getElementById("sv-team-needs").value = targetCompany.surveyData.teamNeeds || "";
+
+    document.getElementById("sv-finance-source").value = targetCompany.surveyData.financeSource || "";
+    document.getElementById("sv-finance-fixedcost").value = targetCompany.surveyData.financeFixedcost || "고정비 완벽 파악 중";
+    document.getElementById("sv-finance-runway").value = targetCompany.surveyData.financeRunway || "3개월 ~ 6개월";
+
+    document.getElementById("sv-need-pain").value = targetCompany.surveyData.needPain || "";
+    document.getElementById("sv-need-goal").value = targetCompany.surveyData.needGoal || "";
+    document.getElementById("sv-need-deliverable").value = targetCompany.surveyData.needDeliverable || "";
     strategyTextarea.value = targetCompany.surveyData.customStrategy || "";
   } else {
     // Fill basic details from existing profile
-    document.getElementById("sv-sales").value = targetCompany.metrics.sales || "";
-    document.getElementById("sv-employees").value = targetCompany.metrics.employees || "";
+    document.getElementById("sv-contact").value = targetCompany.contact || "";
+    document.getElementById("sv-corp-type").value = targetCompany.corpType || "예비창업자";
     document.getElementById("sv-est-date").value = targetCompany.establishmentDate || "";
     document.getElementById("sv-address").value = targetCompany.address || "";
-    document.getElementById("sv-age").value = targetCompany.repAge || "";
-    document.getElementById("sv-gender").value = targetCompany.repGender || "남성";
-    document.getElementById("sv-restartup").value = targetCompany.metrics.reStartup || "아니오";
-    
-    document.querySelectorAll("input[name='sv-coach-fields']").forEach(chk => chk.checked = false);
-    document.getElementById("sv-req-edu").value = "";
-    document.getElementById("sv-pref-method").value = "온라인 동영상 강의";
+    document.getElementById("sv-sales").value = targetCompany.metrics.sales || "";
+    document.getElementById("sv-employees").value = targetCompany.metrics.employees || "";
+
+    document.getElementById("sv-item-intro").value = "";
+    document.getElementById("sv-item-problem").value = "";
+    document.getElementById("sv-item-target").value = "";
+    document.getElementById("sv-item-model").value = "";
+
+    document.getElementById("sv-stage-product").value = "아이디어 기획 단계";
+    document.getElementById("sv-stage-has-sales").value = "매출 미발생";
+    document.getElementById("sv-stage-summary").value = "";
+
+    document.getElementById("sv-market-target").value = "";
+    document.getElementById("sv-market-competitor").value = "";
+    document.getElementById("sv-market-different").value = "";
+
+    document.getElementById("sv-team-comp").value = "";
+    document.getElementById("sv-team-core").value = "";
+    document.getElementById("sv-team-needs").value = "";
+
+    document.getElementById("sv-finance-source").value = "";
+    document.getElementById("sv-finance-fixedcost").value = "고정비 완벽 파악 중";
+    document.getElementById("sv-finance-runway").value = "3개월 ~ 6개월";
+
+    document.getElementById("sv-need-pain").value = "";
+    document.getElementById("sv-need-goal").value = "";
+    document.getElementById("sv-need-deliverable").value = "";
     strategyTextarea.value = "";
   }
 }
@@ -1262,36 +1338,73 @@ document.getElementById("survey-form-el").addEventListener("submit", (e) => {
 
   if (!targetCompany) return;
 
-  const sales = document.getElementById("sv-sales").value;
-  const emp = document.getElementById("sv-employees").value;
+  const contact = document.getElementById("sv-contact").value;
+  const corpType = document.getElementById("sv-corp-type").value;
   const estDate = document.getElementById("sv-est-date").value;
   const address = document.getElementById("sv-address").value;
-  const age = parseInt(document.getElementById("sv-age").value) || 30;
-  const gender = document.getElementById("sv-gender").value;
-  const restartup = document.getElementById("sv-restartup").value;
-  
-  const coachFields = [];
-  document.querySelectorAll("input[name='sv-coach-fields']:checked").forEach(chk => {
-    coachFields.push(chk.value);
-  });
-  
-  const reqEdu = document.getElementById("sv-req-edu").value;
-  const prefMethod = document.getElementById("sv-pref-method").value;
+  const sales = document.getElementById("sv-sales").value;
+  const emp = document.getElementById("sv-employees").value;
+
+  const itemIntro = document.getElementById("sv-item-intro").value;
+  const itemProblem = document.getElementById("sv-item-problem").value;
+  const itemTarget = document.getElementById("sv-item-target").value;
+  const itemModel = document.getElementById("sv-item-model").value;
+
+  const stageProduct = document.getElementById("sv-stage-product").value;
+  const stageHasSales = document.getElementById("sv-stage-has-sales").value;
+  const stageSummary = document.getElementById("sv-stage-summary").value;
+
+  const marketTarget = document.getElementById("sv-market-target").value;
+  const marketCompetitor = document.getElementById("sv-market-competitor").value;
+  const marketDifferent = document.getElementById("sv-market-different").value;
+
+  const teamComp = document.getElementById("sv-team-comp").value;
+  const teamCore = document.getElementById("sv-team-core").value;
+  const teamNeeds = document.getElementById("sv-team-needs").value;
+
+  const financeSource = document.getElementById("sv-finance-source").value;
+  const financeFixedcost = document.getElementById("sv-finance-fixedcost").value;
+  const financeRunway = document.getElementById("sv-finance-runway").value;
+
+  const needPain = document.getElementById("sv-need-pain").value;
+  const needGoal = document.getElementById("sv-need-goal").value;
+  const needDeliverable = document.getElementById("sv-need-deliverable").value;
   const strategy = document.getElementById("sv-strategy").value;
 
-  // Update local model
-  targetCompany.metrics.sales = sales;
-  targetCompany.metrics.employees = emp;
+  // Sync basic metrics to company model
+  targetCompany.contact = contact;
+  targetCompany.corpType = corpType;
   targetCompany.establishmentDate = estDate;
   targetCompany.address = address;
-  targetCompany.repAge = age;
-  targetCompany.repGender = gender;
-  targetCompany.metrics.reStartup = restartup;
+  targetCompany.metrics.sales = sales;
+  targetCompany.metrics.employees = emp;
   
   targetCompany.surveyData = {
-    coachingField: coachFields,
-    requiredEdu: reqEdu,
-    preferredMethod: prefMethod,
+    contact,
+    corpType,
+    estDate,
+    address,
+    sales,
+    employees: emp,
+    itemIntro,
+    itemProblem,
+    itemTarget,
+    itemModel,
+    stageProduct,
+    stageHasSales,
+    stageSummary,
+    marketTarget,
+    marketCompetitor,
+    marketDifferent,
+    teamComp,
+    teamCore,
+    teamNeeds,
+    financeSource,
+    financeFixedcost,
+    financeRunway,
+    needPain,
+    needGoal,
+    needDeliverable,
     customStrategy: strategy
   };
 
@@ -1308,16 +1421,31 @@ document.getElementById("survey-form-el").addEventListener("submit", (e) => {
         companyId: targetCompany.id,
         companyName: targetCompany.name,
         representative: targetCompany.representative,
-        sales: sales,
-        employees: emp,
+        contact: contact,
+        corpType: corpType,
         estDate: estDate,
         address: address,
-        age: age,
-        gender: gender,
-        restartup: restartup,
-        coachFields: coachFields.join(", "),
-        reqEdu: reqEdu,
-        prefMethod: prefMethod,
+        sales: sales,
+        employees: emp,
+        itemIntro: itemIntro,
+        itemProblem: itemProblem,
+        itemTarget: itemTarget,
+        itemModel: itemModel,
+        stageProduct: stageProduct,
+        stageHasSales: stageHasSales,
+        stageSummary: stageSummary,
+        marketTarget: marketTarget,
+        marketCompetitor: marketCompetitor,
+        marketDifferent: marketDifferent,
+        teamComp: teamComp,
+        teamCore: teamCore,
+        teamNeeds: teamNeeds,
+        financeSource: financeSource,
+        financeFixedcost: financeFixedcost,
+        financeRunway: runway = financeRunway,
+        needPain: needPain,
+        needGoal: needGoal,
+        needDeliverable: needDeliverable,
         customStrategy: strategy
       })
     }).then(() => {
@@ -1355,9 +1483,9 @@ function renderReportSection() {
   // Map values
   document.getElementById("report-print-date").innerText = new Date().toISOString().split('T')[0];
   document.getElementById("rep-comp-name").innerText = activeCompany.name;
-  document.getElementById("rep-comp-type").innerText = activeCompany.type;
+  document.getElementById("rep-comp-type").innerText = activeCompany.corpType || activeCompany.type || "-";
   document.getElementById("rep-rep-name").innerText = activeCompany.representative;
-  document.getElementById("rep-rep-profile").innerText = `${activeCompany.repAge || "-"}세 / ${activeCompany.repGender || "-"}`;
+  document.getElementById("rep-rep-contact").innerText = activeCompany.contact || "-";
   document.getElementById("rep-est-date").innerText = activeCompany.establishmentDate || "-";
   document.getElementById("rep-restartup").innerText = activeCompany.metrics.reStartup || "아니오";
   document.getElementById("rep-address").innerText = activeCompany.address || "-";
@@ -1399,14 +1527,38 @@ function renderReportSection() {
 
   // Survey data
   if (activeCompany.surveyData) {
-    document.getElementById("rep-survey-fields").innerText = (activeCompany.surveyData.coachingField || []).join(", ") || "없음";
-    document.getElementById("rep-survey-req-edu").innerText = activeCompany.surveyData.requiredEdu || "-";
-    document.getElementById("rep-survey-pref").innerText = activeCompany.surveyData.preferredMethod || "-";
-    document.getElementById("rep-survey-strategy").innerText = activeCompany.surveyData.customStrategy || "코치 미작성 상태";
+    const sv = activeCompany.surveyData;
+    document.getElementById("rep-sv-intro").innerText = sv.itemIntro || "-";
+    document.getElementById("rep-sv-problem").innerText = sv.itemProblem || "-";
+    document.getElementById("rep-sv-target").innerText = sv.itemTarget || "-";
+    document.getElementById("rep-sv-model").innerText = sv.itemModel || "-";
+    document.getElementById("rep-sv-product-stage").innerText = sv.stageProduct || "-";
+    document.getElementById("rep-sv-sales-stage").innerText = sv.stageHasSales || "-";
+    document.getElementById("rep-sv-stage-summary").innerText = sv.stageSummary || "-";
+    document.getElementById("rep-sv-market-size").innerText = sv.marketTarget || "-";
+    document.getElementById("rep-sv-competitors").innerText = sv.marketCompetitor || "-";
+    document.getElementById("rep-sv-usp").innerText = sv.marketDifferent || "-";
+    document.getElementById("rep-sv-team-comp").innerText = sv.teamComp || "-";
+    document.getElementById("rep-sv-team-core").innerText = sv.teamCore || "-";
+    document.getElementById("rep-sv-team-needs").innerText = sv.teamNeeds || "-";
+    document.getElementById("rep-sv-runway").innerText = sv.financeRunway || "-";
+    document.getElementById("rep-sv-funding").innerText = sv.financeSource || "-";
+    document.getElementById("rep-sv-pains").innerText = sv.needPain || "-";
+    document.getElementById("rep-sv-goals").innerText = sv.needGoal || "-";
+    document.getElementById("rep-sv-deliverable").innerText = sv.needDeliverable || "-";
+    document.getElementById("rep-survey-strategy").innerText = sv.customStrategy || "코치 미작성 상태";
   } else {
-    document.getElementById("rep-survey-fields").innerText = "사전조사 미제출";
-    document.getElementById("rep-survey-req-edu").innerText = "-";
-    document.getElementById("rep-survey-pref").innerText = "-";
+    const emptyFields = [
+      "rep-sv-intro", "rep-sv-problem", "rep-sv-target", "rep-sv-model",
+      "rep-sv-product-stage", "rep-sv-sales-stage", "rep-sv-stage-summary",
+      "rep-sv-market-size", "rep-sv-competitors", "rep-sv-usp",
+      "rep-sv-team-comp", "rep-sv-team-core", "rep-sv-team-needs",
+      "rep-sv-runway", "rep-sv-funding", "rep-sv-pains", "rep-sv-goals",
+      "rep-sv-deliverable"
+    ];
+    emptyFields.forEach(id => {
+      document.getElementById(id).innerText = "사전조사 미제출";
+    });
     document.getElementById("rep-survey-strategy").innerText = "사전조사 결과가 없어 맞춤형 지원 전략이 수립되지 않았습니다.";
   }
 

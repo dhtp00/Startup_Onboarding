@@ -308,83 +308,165 @@
       <!-- SECTION 4: 기업 사전 조사 -->
       <section id="section-survey" class="view-section">
         <div class="section-title">
-          <span>📝 창업기업 기초 사전 조사 및 코칭 수요조사</span>
+          <span>📝 창업기업 기초 사전 조사 및 멘토링 요구사항 진단</span>
         </div>
         <div class="survey-card">
           <div id="survey-startup-info" style="margin-bottom: 20px; padding: 12px; background: rgba(79, 70, 229, 0.05); border-radius: 8px; border: 1px solid rgba(79, 70, 229, 0.1);">
-            <strong>ℹ️ 안내:</strong> 본 설문조사는 기업별 맞춤형 밀착 코칭 및 교육 전략을 수립하기 위한 기초 자료로 사용됩니다.
+            <strong>ℹ️ 안내:</strong> 본 설문조사는 기업의 현재 역량을 정확하게 진단하고 맞춤형 성장 전략을 수립하기 위한 서식입니다.
           </div>
           
           <form id="survey-form-el">
-            <div class="survey-section-title">1. 기업 기본 정보 파악</div>
+            <!-- 1. 기본 정보 -->
+            <div class="survey-section-title">1. 기본 정보 (Basic Info)</div>
             <div class="survey-grid-2">
               <div class="form-group">
-                <label for="sv-sales">현재 매출 규모</label>
-                <input type="text" id="sv-sales" placeholder="예: 1,500천원 (또는 '없음')" required>
+                <label for="sv-contact">대표자 연락처</label>
+                <input type="text" id="sv-contact" placeholder="예: 010-1234-5678" required>
+              </div>
+              <div class="form-group">
+                <label for="sv-corp-type">창업 형태</label>
+                <select id="sv-corp-type" required>
+                  <option value="예비창업자">예비창업자 (사업자등록 미필)</option>
+                  <option value="개인사업자">개인사업자</option>
+                  <option value="법인사업자">법인사업자</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="sv-est-date">개업(설립) 연월일</label>
+                <input type="date" id="sv-est-date" required>
+              </div>
+              <div class="form-group">
+                <label for="sv-address">사업장 소재지 (주소)</label>
+                <input type="text" id="sv-address" placeholder="예: 대전광역시 대덕구 한남로 70" required>
+              </div>
+              <div class="form-group">
+                <label for="sv-sales">현재 누적 매출액</label>
+                <input type="text" id="sv-sales" placeholder="예: 12,000천원 (혹은 '없음')" required>
               </div>
               <div class="form-group">
                 <label for="sv-employees">현재 고용 인원수 (대표자 제외)</label>
                 <input type="text" id="sv-employees" placeholder="예: 2명" required>
               </div>
+            </div>
+
+            <!-- 2. 아이템·사업 개요 -->
+            <div class="survey-section-title">2. 아이템 및 사업 개요 (Business Overview)</div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="sv-item-intro">사업 아이템 한 줄 소개</label>
+              <input type="text" id="sv-item-intro" placeholder="예: 빅데이터 기반의 중고차 이력 실시간 매칭 플랫폼" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="sv-item-problem">해결하고자 하는 시장의 문제점 (Problem)</label>
+              <textarea id="sv-item-problem" rows="2" placeholder="예: 중고차 구매 시 허위 매물 및 차량 이력 정보의 비대칭 문제" required></textarea>
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="sv-item-target">주요 타깃 고객층 (Target Customer)</label>
+              <input type="text" id="sv-item-target" placeholder="예: 합리적인 차량 소비를 원하는 2030 사회 초년생 직장인" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="sv-item-model">비즈니스 수익 모델 (Revenue Model)</label>
+              <input type="text" id="sv-item-model" placeholder="예: 중고차 거래 건당 3% 중개 수수료 및 프리미엄 차량 검증 서비스 구독료" required>
+            </div>
+
+            <!-- 3. 현재 단계·성과 -->
+            <div class="survey-section-title">3. 현재 단계 및 주요 성과 (Current Stage & Milestones)</div>
+            <div class="survey-grid-2">
               <div class="form-group">
-                <label for="sv-est-date">창업일 (사업자등록일)</label>
-                <input type="date" id="sv-est-date" required>
-              </div>
-              <div class="form-group">
-                <label for="sv-address">사업장 소재지 (도로명 주소)</label>
-                <input type="text" id="sv-address" placeholder="예: 대전광역시 대덕구 한남로 70" required>
-              </div>
-              <div class="form-group">
-                <label for="sv-age">대표자 나이</label>
-                <input type="number" id="sv-age" placeholder="예: 32" required min="10" max="100">
-              </div>
-              <div class="form-group">
-                <label for="sv-gender">대표자 성별</label>
-                <select id="sv-gender" required>
-                  <option value="남성">남성</option>
-                  <option value="여성">여성</option>
+                <label for="sv-stage-product">제품 개발 단계</label>
+                <select id="sv-stage-product" required>
+                  <option value="아이디어 기획 단계">아이디어 기획 단계</option>
+                  <option value="MVP(최소요구제품) 개발 단계">MVP 개발 단계</option>
+                  <option value="정식 제품/서비스 상용화 단계">정식 제품/서비스 상용화 단계</option>
+                  <option value="스케일업 및 해외 진출 단계">스케일업 및 해외 진출 단계</option>
                 </select>
               </div>
-              <div class="form-group" style="grid-column: span 2;">
-                <label for="sv-restartup">과거 창업 실패 후 재창업 여부</label>
-                <select id="sv-restartup" required>
-                  <option value="아니오">아니오 (최초 창업)</option>
-                  <option value="예">예 (재창업자)</option>
+              <div class="form-group">
+                <label for="sv-stage-has-sales">실제 매출 발생 여부</label>
+                <select id="sv-stage-has-sales" required>
+                  <option value="매출 미발생">매출 미발생 (개발중/기획중)</option>
+                  <option value="매출 발생 완료">매출 발생 완료 (수익 실현 상태)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 12px; margin-bottom: 12px;">
+              <label for="sv-stage-summary">주요 실행 내용 요약 (정부지원사업 수행 실적 등)</label>
+              <textarea id="sv-stage-summary" rows="2" placeholder="예: 특허 출원 1건 완료, 디자이너 외주 용역 계약 체결, 상반기 BM 검증 테스트 완료" required></textarea>
+            </div>
+
+            <!-- 4. 시장·경쟁 인식 -->
+            <div class="survey-section-title">4. 시장 규모 및 경쟁사 인식 (Market & Competition)</div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="sv-market-target">목표하는 전체/유효 시장 (Target Market Size)</label>
+              <input type="text" id="sv-market-target" placeholder="예: 국내 연간 20조원 규모의 중고차 온라인 거래 시장" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="sv-market-competitor">대표적인 경쟁사 혹은 대체재 (Competitors)</label>
+              <input type="text" id="sv-market-competitor" placeholder="예: 헤이딜러, 케이카, 개인 중고차 직거래 커뮤니티" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="sv-market-different">경쟁사 대비 우리 팀만의 독보적인 차별화 포인트 (USP)</label>
+              <textarea id="sv-market-different" rows="2" placeholder="예: 인공지능 기반의 차량 사진 분석을 통한 99.9% 정확도의 사고 흔적 자동 검출 기술" required></textarea>
+            </div>
+
+            <!-- 5. 팀 구성·역량 -->
+            <div class="survey-section-title">5. 팀 구성 및 역량 (Team Structure)</div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="sv-team-comp">핵심 팀 구성원 분포 (역할 분담)</label>
+              <input type="text" id="sv-team-comp" placeholder="예: 기획/개발 대표자 1인, 시니어 개발자 1인, 마케터 1인 (총 3인)" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="sv-team-core">우리 팀의 주요 핵심역량</label>
+              <input type="text" id="sv-team-core" placeholder="예: 중고차 업계 10년 경력의 도메인 지식 및 모바일 앱 풀스택 개발 역량" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="sv-team-needs">성장을 위해 현재 보완이 시급한 핵심 영역</label>
+              <input type="text" id="sv-team-needs" placeholder="예: 대규모 고객 유치를 위한 그로스해킹 디지털 마케팅 전문가 보완 필요" required>
+            </div>
+
+            <!-- 6. 자금·운영 -->
+            <div class="survey-section-title">6. 자금 조달 및 운영 계획 (Funding & Runway)</div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="sv-finance-source">창업 정부지원금 외 추가적인 자금 조달 계획</label>
+              <input type="text" id="sv-finance-source" placeholder="예: 엔젤투자 유치 예정 또는 신용보증기금 혁신스타트업 융자 신청" required>
+            </div>
+            <div class="survey-grid-2">
+              <div class="form-group">
+                <label for="sv-finance-fixedcost">고정비 파악 여부</label>
+                <select id="sv-finance-fixedcost" required>
+                  <option value="고정비 완벽 파악 중">매월 임차료, 급여 등 고정비 내역을 정기적으로 파악 중</option>
+                  <option value="고정비 파악 미비">아직 구체적인 고정비 계산 체계가 마련되지 않음</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="sv-finance-runway">생존 자금 런웨이 (Runway)</label>
+                <select id="sv-finance-runway" required>
+                  <option value="3개월 미만">3개월 미만 (신속한 추가 수급 필요)</option>
+                  <option value="3개월 ~ 6개월">3개월 ~ 6개월</option>
+                  <option value="6개월 ~ 1년">6개월 ~ 1년</option>
+                  <option value="1년 이상">1년 이상 (자금 안정적)</option>
                 </select>
               </div>
             </div>
 
-            <div class="survey-section-title">2. 코칭 및 교육 분야 수요 조사</div>
-            <div class="form-group" style="margin-bottom: 16px;">
-              <label style="margin-bottom: 8px; display: block;">🎯 희망 전담 코칭 분야 (중복 선택 가능)</label>
-              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" name="sv-coach-fields" value="BM고도화"> BM고도화/사업계획</label>
-                <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" name="sv-coach-fields" value="노무"> 노무/근로계약</label>
-                <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" name="sv-coach-fields" value="회계"> 회계/세무/재무</label>
-                <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" name="sv-coach-fields" value="법률"> 법률/특허/계약</label>
-                <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" name="sv-coach-fields" value="마케팅"> 마케팅/시장개척</label>
-                <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" name="sv-coach-fields" value="투자유치"> 투자유치(IR)/자금조달</label>
-              </div>
+            <!-- 7. 멘토링 니즈 -->
+            <div class="survey-section-title">7. 멘토링 니즈 (Mentoring Requirements)</div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="sv-need-pain">사업을 진행하며 느끼는 가장 큰 애로사항 (고민 1~3개)</label>
+              <textarea id="sv-need-pain" rows="2" placeholder="예: 1. 정부지원금 정산 증빙 처리 오류 2. 타깃 마케팅 채널 선택의 어려움 3. 시제품 완성 후 시장 반응 확인법" required></textarea>
             </div>
-
-            <div class="form-group" style="margin-bottom: 16px;">
-              <label for="sv-req-edu">가장 시급하게 수강을 희망하는 교육 콘텐츠</label>
-              <input type="text" id="sv-req-edu" placeholder="예: 정부지원금 정산 지침 교육, 근로계약서 작성법 등" required>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="sv-need-goal">이번 온보딩 멘토링 프로그램의 달성 목표</label>
+              <input type="text" id="sv-need-goal" placeholder="예: 비즈니스 모델(BM) 피벗 및 하반기 크라우드 펀딩 런칭 계획 수립" required>
             </div>
-
             <div class="form-group" style="margin-bottom: 24px;">
-              <label for="sv-pref-method">선호하는 학습 방법</label>
-              <select id="sv-pref-method" required>
-                <option value="온라인 동영상 강의">온라인 동영상 강의 (자기주도 학습)</option>
-                <option value="1:1 대면 밀착 멘토링">1:1 대면 밀착 멘토링</option>
-                <option value="집체 교육 및 세미나">집체 교육 및 오프라인 세미나</option>
-                <option value="서면 가이드북 및 서식 지원">서면 가이드북 및 서식 지원</option>
-              </select>
+              <label for="sv-need-deliverable">멘토링 과정에서 기대하는 최종 결과물</label>
+              <input type="text" id="sv-need-deliverable" placeholder="예: 수정된 사업계획서 IR 장표 및 디지털 인스타그램 마케팅 광고 실행 체크리스트" required>
             </div>
 
+            <!-- 코치 맞춤형 지원 전략 수립 -->
             <div class="form-group" style="margin-bottom: 24px;" id="survey-strategy-container">
-              <label for="sv-strategy">맞춤형 지원 전략 수립 (코치 기재란)</label>
-              <textarea id="sv-strategy" rows="3" placeholder="사전 설문 결과를 검토한 뒤 코치가 분석한 기업 지원 방향성 및 맞춤 전략을 입력합니다."></textarea>
+              <label for="sv-strategy">한남대 창업지원단 전담코치 맞춤형 지원 전략 수립 (코치 기재란)</label>
+              <textarea id="sv-strategy" rows="4" placeholder="스타트업의 위 사전설문 응답 결과를 정밀 분석한 뒤, 전담 코치가 진단한 육성 방향성 및 멘토링 지원 전략을 입력합니다."></textarea>
             </div>
 
             <div style="display: flex; justify-content: flex-end;">
@@ -426,17 +508,17 @@
             <tr>
               <th style="width: 20%;">창업기업명</th>
               <td style="width: 30%;" id="rep-comp-name">-</td>
-              <th style="width: 20%;">기업 구분</th>
+              <th style="width: 20%;">창업 형태</th>
               <td style="width: 30%;" id="rep-comp-type">-</td>
             </tr>
             <tr>
               <th>대표자명</th>
               <td id="rep-rep-name">-</td>
-              <th>나이 / 성별</th>
-              <td id="rep-rep-profile">-</td>
+              <th>대표자 연락처</th>
+              <td id="rep-rep-contact">-</td>
             </tr>
             <tr>
-              <th>창업일</th>
+              <th>설립연월일</th>
               <td id="rep-est-date">-</td>
               <th>재창업 여부</th>
               <td id="rep-restartup">-</td>
@@ -519,18 +601,80 @@
           <div class="report-section-header">5. 데이터 기반 사전 수요조사 및 맞춤형 지원 전략</div>
           <table class="report-table">
             <tr>
-              <th style="width: 25%;">희망 전담 코칭 분야</th>
-              <td colspan="3" id="rep-survey-fields">-</td>
+              <th colspan="4" style="background-color: #f1f5f9; text-align: left; font-weight: 700; color: #1e293b;">[아이템 및 사업 개요]</th>
             </tr>
             <tr>
-              <th>희망 시급 교육</th>
-              <td id="rep-survey-req-edu">-</td>
-              <th style="width: 20%;">선호 학습 방법</th>
-              <td id="rep-survey-pref">-</td>
+              <th style="width: 25%;">아이템 한 줄 소개</th>
+              <td colspan="3" id="rep-sv-intro">-</td>
             </tr>
             <tr>
-              <th>코치 맞춤형<br>지원 전략 수립</th>
-              <td colspan="3" style="background-color: #f8fafc; font-weight: 500; line-height: 1.5; white-space: pre-wrap;" id="rep-survey-strategy">-</td>
+              <th>해결 문제 (Problem)</th>
+              <td colspan="3" id="rep-sv-problem">-</td>
+            </tr>
+            <tr>
+              <th>타깃 고객 (Customer)</th>
+              <td style="width: 25%;" id="rep-sv-target">-</td>
+              <th style="width: 20%;">수익 모델 (Revenue)</th>
+              <td style="width: 30%;" id="rep-sv-model">-</td>
+            </tr>
+            <tr>
+              <th colspan="4" style="background-color: #f1f5f9; text-align: left; font-weight: 700; color: #1e293b;">[현재 단계 및 시장/경쟁]</th>
+            </tr>
+            <tr>
+              <th>제품 개발 단계</th>
+              <td id="rep-sv-product-stage">-</td>
+              <th>매출 발생 여부</th>
+              <td id="rep-sv-sales-stage">-</td>
+            </tr>
+            <tr>
+              <th>주요 실행 실적</th>
+              <td colspan="3" id="rep-sv-stage-summary">-</td>
+            </tr>
+            <tr>
+              <th>목표 시장 및 규모</th>
+              <td id="rep-sv-market-size">-</td>
+              <th>경쟁사 및 대체재</th>
+              <td id="rep-sv-competitors">-</td>
+            </tr>
+            <tr>
+              <th>우리만의 차별성 (USP)</th>
+              <td colspan="3" id="rep-sv-usp">-</td>
+            </tr>
+            <tr>
+              <th colspan="4" style="background-color: #f1f5f9; text-align: left; font-weight: 700; color: #1e293b;">[팀 구성 및 자금/운영]</th>
+            </tr>
+            <tr>
+              <th>팀 구성원 분포</th>
+              <td id="rep-sv-team-comp">-</td>
+              <th>우리 팀 핵심역량</th>
+              <td id="rep-sv-team-core">-</td>
+            </tr>
+            <tr>
+              <th>현재 보완 필요 영역</th>
+              <td id="rep-sv-team-needs">-</td>
+              <th>런웨이 (Runway)</th>
+              <td id="rep-sv-runway">-</td>
+            </tr>
+            <tr>
+              <th>자금 조달 계획</th>
+              <td colspan="3" id="rep-sv-funding">-</td>
+            </tr>
+            <tr>
+              <th colspan="4" style="background-color: #f1f5f9; text-align: left; font-weight: 700; color: #1e293b;">[멘토링 요구사항 및 전담코치 지원 전략]</th>
+            </tr>
+            <tr>
+              <th>가장 큰 고민/애로사항</th>
+              <td colspan="3" id="rep-sv-pains">-</td>
+            </tr>
+            <tr>
+              <th>이번 멘토링 목표</th>
+              <td id="rep-sv-goals">-</td>
+              <th>기대 최종 결과물</th>
+              <td id="rep-sv-deliverable">-</td>
+            </tr>
+            <tr>
+              <th style="color: var(--accent-color);">코치 맞춤형<br>지원 전략 수립</th>
+              <td colspan="3" style="background-color: #faf5ff; font-weight: 600; line-height: 1.5; white-space: pre-wrap; color: var(--accent-color);" id="rep-survey-strategy">-</td>
             </tr>
           </table>
 
@@ -755,7 +899,7 @@
             <input type="text" id="c-emp" placeholder="예: 2명" required>
           </div>
           <div class="form-group">
-            <label for="c-est-date">창업일</label>
+            <label for="c-est-date">설립(개업) 연월일</label>
             <input type="date" id="c-est-date" required>
           </div>
           <div class="form-group">
@@ -763,14 +907,15 @@
             <input type="text" id="c-address" placeholder="예: 대전광역시 대덕구..." required>
           </div>
           <div class="form-group">
-            <label for="c-age">대표자 나이</label>
-            <input type="number" id="c-age" placeholder="예: 35" required min="10" max="100">
+            <label for="c-contact">대표자 연락처</label>
+            <input type="text" id="c-contact" placeholder="예: 010-1234-5678" required>
           </div>
           <div class="form-group">
-            <label for="c-gender">대표자 성별</label>
-            <select id="c-gender" required>
-              <option value="남성">남성</option>
-              <option value="여성">여성</option>
+            <label for="c-corp-type">창업 형태</label>
+            <select id="c-corp-type" required>
+              <option value="예비창업자">예비창업자</option>
+              <option value="개인사업자">개인사업자</option>
+              <option value="법인사업자">법인사업자</option>
             </select>
           </div>
           <div class="form-group">
