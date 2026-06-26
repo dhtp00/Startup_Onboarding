@@ -25,15 +25,19 @@
       
       <form id="login-form">
         <div class="form-group" style="margin-bottom: 16px;">
-          <label for="login-email">아이디 (이메일 또는 대표자명)</label>
-          <input type="text" id="login-email" placeholder="osy0922@hnu.kr 또는 대표자명" required>
+          <label for="login-email">아이디 (대표자명 또는 코치 이메일)</label>
+          <input type="text" id="login-email" placeholder="대표자명 또는 이메일 입력" required>
         </div>
         <div class="form-group" style="margin-bottom: 20px;">
           <label for="login-password">비밀번호</label>
           <input type="password" id="login-password" placeholder="••••••••" required>
         </div>
         
-        <button type="submit" class="send-btn" style="width: 100%; padding: 12px; font-size: 0.95rem; margin-bottom: 16px;">
+        <div id="login-loading-status" style="font-size: 0.82rem; color: var(--accent-color); text-align: center; margin-bottom: 12px; font-weight: 500; display: none;">
+          ⏳ 실시간 클라우드 데이터를 동기화하는 중...
+        </div>
+
+        <button type="submit" class="send-btn" id="btn-login-submit" style="width: 100%; padding: 12px; font-size: 0.95rem; margin-bottom: 16px;">
           안전하게 로그인
         </button>
       </form>

@@ -349,6 +349,59 @@ const btnTriggerFile = document.getElementById("btn-trigger-file");
 const attachmentPreviewArea = document.getElementById("attachment-preview-area");
 
 // --- LOCAL STORAGE SYNC & GOOGLE SHEET BACKUP ---
+let isSyncingCloud = false;
+
+async function loadCloudData() {
+  if (!GOOGLE_SCRIPT_URL) return;
+  
+  isSyncingCloud = true;
+  const loadingStatus = document.getElementById("login-loading-status");
+  const loginSubmitBtn = document.getElementById("btn-login-submit");
+  
+  if (loadingStatus) loadingStatus.style.display = "block";
+  if (loginSubmitBtn) loginSubmitBtn.disabled = true;
+  
+  try {
+    const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=loadData`, {
+      method: "GET",
+      mode: "cors"
+    });
+    
+    if (!response.ok) {
+      throw new Error("HTTP error " + response.status);
+    }
+    
+    const resData = await response.json();
+    if (resData && resData.status === "success" && resData.data) {
+      const data = resData.data;
+      if (data.USERS) {
+        USERS = data.USERS;
+        localStorage.setItem("USERS", JSON.stringify(USERS));
+      }
+      if (data.COMPANIES) {
+        companies = data.COMPANIES;
+        localStorage.setItem("COMPANIES", JSON.stringify(companies));
+      }
+      if (data.MILESTONES) {
+        milestones = data.MILESTONES;
+        localStorage.setItem("MILESTONES", JSON.stringify(milestones));
+      }
+      console.log("☁️ 구글 스프레드시트 클라우드 데이터 동기화 완료.");
+    }
+  } catch (err) {
+    console.error("❌ 클라우드 데이터 로딩 실패, 로컬 저장소 데이터를 유지합니다.", err);
+  } finally {
+    isSyncingCloud = false;
+    if (loadingStatus) loadingStatus.style.display = "none";
+    if (loginSubmitBtn) loginSubmitBtn.disabled = false;
+  }
+}
+
+// 최초 구동 시 클라우드 동기화 개시
+window.addEventListener("DOMContentLoaded", () => {
+  loadCloudData();
+});
+
 function saveToLocalStorage() {
   localStorage.setItem("COMPANIES", JSON.stringify(companies));
   localStorage.setItem("USERS", JSON.stringify(USERS));
@@ -364,6 +417,7 @@ function saveToLocalStorage() {
         action: "syncData",
         userEmail: currentUser ? currentUser.name : "System",
         companies: companies,
+        USERS: USERS, // USERS 정보도 함께 스프레드시트에 저장
         milestones: milestones
       })
     }).catch(err => console.log("Google sync delay: ", err));
