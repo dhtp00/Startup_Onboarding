@@ -218,6 +218,22 @@ let defaultCompanies = [
 
 let companies = JSON.parse(localStorage.getItem("COMPANIES")) || defaultCompanies;
 
+// --- CONFIG DATA WITH LOCAL STORAGE & CLOUD DB ---
+let coachName = localStorage.getItem("COACH_NAME") || "정세정 주임연구원";
+
+let defaultEduNames = {
+  hr: "기본 노무 실무",
+  accounting: "스타트업 회계/세무 기초",
+  law: "창업 법률 및 계약서 검토"
+};
+let eduNames = JSON.parse(localStorage.getItem("EDU_NAMES")) || defaultEduNames;
+
+let defaultNotices = [
+  { type: "[공지]", date: "2026-06-18", title: "노무·세무 실무 드림비즈 필수 교육 동영상 강의 시청 기간 안내" },
+  { type: "[안내]", date: "2026-06-10", title: "6월 오프라인 대면 네트워킹 데이 일정 및 수요 분야별 멘토링 신청 방법 안내" }
+];
+let notices = JSON.parse(localStorage.getItem("NOTICES")) || defaultNotices;
+
 // MILESTONES
 let defaultMilestones = [
   "<strong>1단계:</strong> 기업 사전 실태 및 교육 수요조사 완료 (26.6)",
@@ -262,12 +278,14 @@ const menuChat = document.getElementById("menu-chat");
 const menuEdu = document.getElementById("menu-edu");
 const menuSurvey = document.getElementById("menu-survey");
 const menuReport = document.getElementById("menu-report");
+const menuSetting = document.getElementById("menu-setting"); // 설정 추가
 
 const sectionDash = document.getElementById("section-dash");
 const sectionChat = document.getElementById("section-chat");
 const sectionEdu = document.getElementById("section-edu");
 const sectionSurvey = document.getElementById("section-survey");
 const sectionReport = document.getElementById("section-report");
+const sectionSetting = document.getElementById("section-setting"); // 설정 추가
 
 const mainHeaderTitle = document.getElementById("main-header-title");
 
@@ -386,7 +404,25 @@ async function loadCloudData() {
         milestones = data.MILESTONES;
         localStorage.setItem("MILESTONES", JSON.stringify(milestones));
       }
+      if (data.coachName) {
+        coachName = data.coachName;
+        localStorage.setItem("COACH_NAME", coachName);
+      }
+      if (data.eduNames) {
+        eduNames = data.eduNames;
+        localStorage.setItem("EDU_NAMES", JSON.stringify(eduNames));
+      }
+      if (data.notices) {
+        notices = data.notices;
+        localStorage.setItem("NOTICES", JSON.stringify(notices));
+      }
       console.log("☁️ 구글 스프레드시트 클라우드 데이터 동기화 완료.");
+      
+      // 불러온 데이터를 UI에 동적 바인딩하기 위해 필요한 렌더링 호출
+      if (currentUser) {
+        renderDashboard();
+        renderMilestones();
+      }
     }
   } catch (err) {
     console.error("❌ 클라우드 데이터 로딩 실패, 로컬 저장소 데이터를 유지합니다.", err);
@@ -406,6 +442,9 @@ function saveToLocalStorage() {
   localStorage.setItem("COMPANIES", JSON.stringify(companies));
   localStorage.setItem("USERS", JSON.stringify(USERS));
   localStorage.setItem("MILESTONES", JSON.stringify(milestones));
+  localStorage.setItem("COACH_NAME", coachName);
+  localStorage.setItem("EDU_NAMES", JSON.stringify(eduNames));
+  localStorage.setItem("NOTICES", JSON.stringify(notices));
   
   // 만약 구글 API 주소가 세팅되어 있다면 자동으로 백그라운드 클라우드 동기화 수행
   if (GOOGLE_SCRIPT_URL) {
@@ -417,8 +456,11 @@ function saveToLocalStorage() {
         action: "syncData",
         userEmail: currentUser ? currentUser.name : "System",
         companies: companies,
-        USERS: USERS, // USERS 정보도 함께 스프레드시트에 저장
-        milestones: milestones
+        USERS: USERS,
+        milestones: milestones,
+        coachName: coachName,
+        eduNames: eduNames,
+        notices: notices
       })
     }).catch(err => console.log("Google sync delay: ", err));
   }
@@ -515,6 +557,7 @@ function enterPlatform() {
     userRoleBadge.className = "tag tag-early";
     btnAddCompany.style.display = "inline-block";
     btnEditMilestone.style.display = "inline-block";
+    if (menuSetting) menuSetting.style.display = "block";
     document.querySelectorAll(".coach-only-cell").forEach(c => c.style.display = "table-cell");
     selectedCompanyId = companies[0] ? companies[0].id : 1;
   } else {
@@ -522,11 +565,13 @@ function enterPlatform() {
     userRoleBadge.className = "tag tag-pre";
     btnAddCompany.style.display = "none";
     btnEditMilestone.style.display = "none";
+    if (menuSetting) menuSetting.style.display = "none";
     document.querySelectorAll(".coach-only-cell").forEach(c => c.style.display = "none");
     selectedCompanyId = currentUser.companyId;
   }
   
   switchSection(sectionDash, menuDash);
+  applyDynamicConfigs();
   renderDashboard();
   renderMilestones();
 }
@@ -538,7 +583,68 @@ btnLogout.addEventListener("click", () => {
   mainContent.style.display = "none";
   loginForm.reset();
 });
+function renderNoticeBoard() {
+  const container = document.getElementById("notice-board-container");
+  if (!container) return;
+  container.innerHTML = "";
+  
+  notices.forEach(notice => {
+    const div = document.createElement("div");
+    div.style.borderBottom = "1px solid var(--border-color)";
+    div.style.paddingBottom = "8px";
+    
+    const isNotice = notice.type.includes("공지");
+    const color = isNotice ? "var(--accent-color)" : "var(--text-secondary)";
+    
+    div.innerHTML = `
+      <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 4px;">
+        <strong style="color: ${color};">${notice.type}</strong>
+        <span style="color: var(--text-secondary);">${notice.date}</span>
+      </div>
+      <p style="font-size: 0.8rem; color: var(--text-primary);">${notice.title}</p>
+    `;
+    container.appendChild(div);
+  });
+}
 
+function applyDynamicConfigs() {
+  // 대시보드 코치명 카드 변경
+  const coachCard = document.querySelector(".summary-grid .card:first-child .card-value");
+  if (coachCard) coachCard.innerText = coachName;
+
+  // 교육 이수 탭의 3대 교육과목 테이블 헤더 명칭 동적화
+  const eduHrTh = document.querySelector("#section-edu table th:nth-child(2)");
+  const eduAccTh = document.querySelector("#section-edu table th:nth-child(3)");
+  const eduLawTh = document.querySelector("#section-edu table th:nth-child(4)");
+  if (eduHrTh) eduHrTh.innerText = eduNames.hr;
+  if (eduAccTh) eduAccTh.innerText = eduNames.accounting;
+  if (eduLawTh) eduLawTh.innerText = eduNames.law;
+
+  // 모니터링 보고서 내의 교육 과목명 헤더 동적화
+  const repEdu1 = document.getElementById("rep-hdr-edu1");
+  const repEdu2 = document.getElementById("rep-hdr-edu2");
+  const repEdu3 = document.getElementById("rep-hdr-edu3");
+  if (repEdu1) repEdu1.innerText = eduNames.hr;
+  if (repEdu2) repEdu2.innerText = eduNames.accounting;
+  if (repEdu3) repEdu3.innerText = eduNames.law;
+
+  // 상세조회 모달 내부의 교육 과목명 동적화
+  const dEduHrLabel = document.querySelector("#detail-modal div:nth-child(3) div div:nth-child(1) div:first-child");
+  const dEduAccLabel = document.querySelector("#detail-modal div:nth-child(3) div div:nth-child(2) div:first-child");
+  const dEduLawLabel = document.querySelector("#detail-modal div:nth-child(3) div div:nth-child(3) div:first-child");
+  if (dEduHrLabel) dEduHrLabel.innerText = eduNames.hr;
+  if (dEduAccLabel) dEduAccLabel.innerText = eduNames.accounting;
+  if (dEduLawLabel) dEduLawLabel.innerText = eduNames.law;
+
+  // 모니터링 보고서 하단의 코치 작성자 이름 변경
+  const repSubtitle = document.querySelector("#printable-report-area .report-header p");
+  if (repSubtitle) {
+    repSubtitle.innerHTML = `발행일자: <span id="report-print-date">-</span> | 작성자: 한남대 창업지원단 전담코치 ${coachName}`;
+  }
+
+  // 공지사항 렌더링
+  renderNoticeBoard();
+}
 function renderMilestones() {
   milestoneListContainer.innerHTML = "";
   milestones.forEach((step, idx) => {
@@ -715,7 +821,7 @@ function renderChatSection() {
   // Load chat box
   const activeCompany = filtered.find(c => c.id === selectedCompanyId);
   if (activeCompany) {
-    document.querySelector("#current-chat-title span").innerText = `💬 ${activeCompany.name} 소통 및 멘토링 채널 (한남대 창업지원단 전담코치: 정세정 주임연구원)`;
+    document.querySelector("#current-chat-title span").innerText = `💬 ${activeCompany.name} 소통 및 멘토링 채널 (한남대 창업지원단 전담코치: ${coachName})`;
     
     if (currentUser.role === "coach") {
       btnArchiveChat.style.display = "inline-block";
@@ -744,7 +850,7 @@ function renderChatSection() {
       }
 
       msgDiv.innerHTML = `
-        <span class="message-sender">${isSentByCoach ? '정세정 주임연구원' : '창업 대표자'}</span>
+        <span class="message-sender">${isSentByCoach ? coachName : '창업 대표자'}</span>
         ${textContentHTML}
       `;
       chatMessagesContainer.appendChild(msgDiv);
@@ -1263,8 +1369,12 @@ eduForm.addEventListener("submit", (e) => {
 
 // --- SECTION SWITCHING & SIDEBAR MENU EVENT LISTENERS ---
 function switchSection(targetSection, activeMenu) {
-  [sectionDash, sectionChat, sectionEdu, sectionSurvey, sectionReport].forEach(sec => sec.classList.remove("active"));
-  [menuDash, menuChat, menuEdu, menuSurvey, menuReport].forEach(menu => menu.classList.remove("active"));
+  [sectionDash, sectionChat, sectionEdu, sectionSurvey, sectionReport, sectionSetting].forEach(sec => {
+    if (sec) sec.classList.remove("active");
+  });
+  [menuDash, menuChat, menuEdu, menuSurvey, menuReport, menuSetting].forEach(menu => {
+    if (menu) menu.classList.remove("active");
+  });
   
   targetSection.classList.add("active");
   activeMenu.classList.add("active");
@@ -1284,6 +1394,9 @@ function switchSection(targetSection, activeMenu) {
   } else if (targetSection === sectionReport) {
     mainHeaderTitle.innerText = "모니터링 보고서";
     renderReportSection();
+  } else if (targetSection === sectionSetting) {
+    mainHeaderTitle.innerText = "플랫폼 환경설정 (관리자)";
+    renderSettingSection();
   }
 }
 
@@ -1297,16 +1410,51 @@ function renderSurveySection() {
   if (currentUser.role === "coach") {
     targetCompany = companies.find(c => c.id === selectedCompanyId) || companies[0];
     strategyContainer.style.display = "flex";
-    strategyTextarea.removeAttribute("readonly");
-    submitBtn.innerText = "💾 코치 맞춤형 전략 저장";
   } else {
     targetCompany = companies.find(c => c.id === currentUser.companyId);
     strategyContainer.style.display = "flex";
-    strategyTextarea.setAttribute("readonly", "true");
-    submitBtn.innerText = "📝 사전 조사 답변 제출";
   }
 
   if (!targetCompany) return;
+
+  const allInputs = document.querySelectorAll("#survey-form-el input, #survey-form-el select, #survey-form-el textarea");
+  
+  if (currentUser.role === "coach") {
+    // 코치는 스타트업 입력 정보를 수정할 수 없고 오직 육성 전략 수립 란만 수정할 수 있음
+    allInputs.forEach(input => {
+      if (input.id === "sv-strategy") {
+        input.removeAttribute("readonly");
+        input.disabled = false;
+      } else {
+        input.disabled = true;
+      }
+    });
+    submitBtn.style.display = "inline-block";
+    submitBtn.disabled = false;
+    submitBtn.innerText = "💾 코치 맞춤형 전략 저장";
+    document.getElementById("survey-startup-info").innerHTML = `<strong>ℹ️ 안내(코치용):</strong> 해당 기업의 사전 실태조사 진단 결과를 분석하고 하단에 코치 맞춤형 지원 전략을 작성/수정해 주세요.`;
+  } else {
+    // 스타트업인 경우
+    if (targetCompany.surveyData) {
+      // 이미 제출 완료했으면 모든 필드 비활성화 및 버튼 숨김
+      allInputs.forEach(input => input.disabled = true);
+      submitBtn.style.display = "none";
+      document.getElementById("survey-startup-info").innerHTML = `<strong>✔️ 안내:</strong> 사전 조사가 성공적으로 제출되었습니다. 제출 완료된 서식은 수정이 불가능합니다.`;
+    } else {
+      // 아직 미제출 상태면 작성 가능
+      allInputs.forEach(input => {
+        if (input.id === "sv-strategy") {
+          input.disabled = true; // 코치 기재란은 작성 불가
+        } else {
+          input.disabled = false;
+        }
+      });
+      submitBtn.style.display = "inline-block";
+      submitBtn.disabled = false;
+      submitBtn.innerText = "📝 사전 조사 답변 제출";
+      document.getElementById("survey-startup-info").innerHTML = `<strong>ℹ️ 안내:</strong> 본 설문조사는 기업의 현재 역량을 정확하게 진단하고 맞춤형 성장 전략을 수립하기 위한 서식입니다.`;
+    }
+  }
 
   // Pre-populate if survey data exists
   if (targetCompany.surveyData) {
@@ -1552,7 +1700,7 @@ function renderReportSection() {
   document.getElementById("rep-edu-hr").innerText = activeCompany.education.hr;
   document.getElementById("rep-edu-acc").innerText = activeCompany.education.accounting;
   document.getElementById("rep-edu-law").innerText = activeCompany.education.law;
-  document.getElementById("rep-edu-desc").innerText = `교육 비고 및 지도내용: ${activeCompany.education.content}`;
+  document.getElementById("rep-edu-desc").innerText = activeCompany.education.content || "등록된 맞춤형 추천 강좌 및 학습 로그가 없습니다.";
 
   // Monthly Budget Checks
   const months = ["m5", "m6", "m7", "m8", "m9", "m10", "m11", "m12"];
@@ -1564,20 +1712,6 @@ function renderReportSection() {
     td.innerText = isChecked ? "🟢" : "⚪";
     budgetRow.appendChild(td);
   });
-  const evalTd = document.createElement("td");
-  evalTd.style.fontWeight = "700";
-  const bStatus = activeCompany.budget.status;
-  if (bStatus === "safe") {
-    evalTd.innerText = "정상 집행";
-    evalTd.style.color = "var(--success)";
-  } else if (bStatus === "warn") {
-    evalTd.innerText = "집행 지연";
-    evalTd.style.color = "var(--warning)";
-  } else {
-    evalTd.innerText = "미집행 경고";
-    evalTd.style.color = "var(--danger)";
-  }
-  budgetRow.appendChild(evalTd);
 
   // Survey data
   if (activeCompany.surveyData) {
@@ -1672,5 +1806,106 @@ menuReport.addEventListener("click", (e) => {
   switchSection(sectionReport, menuReport);
 });
 
+if (menuSetting) {
+  menuSetting.addEventListener("click", (e) => {
+    e.preventDefault();
+    switchSection(sectionSetting, menuSetting);
+  });
+}
+
+// RENDER SETTING SECTION
+function renderSettingSection() {
+  document.getElementById("cfg-coach-name").value = coachName;
+  document.getElementById("cfg-edu-hr").value = eduNames.hr;
+  document.getElementById("cfg-edu-acc").value = eduNames.accounting;
+  document.getElementById("cfg-edu-law").value = eduNames.law;
+  
+  const strip = html => html ? html.replace(/<[^>]*>/g, "").replace(/^\d+단계:\s*/, "") : "";
+  document.getElementById("cfg-ms-step1").value = strip(milestones[0]);
+  document.getElementById("cfg-ms-step2").value = strip(milestones[1]);
+  document.getElementById("cfg-ms-step3").value = strip(milestones[2]);
+  document.getElementById("cfg-ms-step4").value = strip(milestones[3]);
+  
+  renderConfigNoticeList();
+}
+
+function renderConfigNoticeList() {
+  const list = document.getElementById("cfg-notice-list");
+  if (!list) return;
+  list.innerHTML = "";
+  
+  notices.forEach((notice, idx) => {
+    const li = document.createElement("li");
+    li.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-color);";
+    li.innerHTML = `
+      <div>
+        <span style="font-weight: 700; color: ${notice.type.includes("공지") ? "var(--accent-color)" : "var(--text-secondary)"}; margin-right: 6px;">${notice.type}</span>
+        <span style="color: var(--text-primary); font-weight: 500;">${notice.title}</span>
+        <span style="color: var(--text-secondary); font-size: 0.75rem; margin-left: 8px;">(${notice.date})</span>
+      </div>
+      <button type="button" class="action-btn" onclick="deleteNotice(${idx})" style="padding: 2px 6px; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: var(--danger); font-size: 0.72rem;">삭제</button>
+    `;
+    list.appendChild(li);
+  });
+}
+
+window.deleteNotice = function(idx) {
+  notices.splice(idx, 1);
+  renderConfigNoticeList();
+};
+
+const btnAddNotice = document.getElementById("btn-add-notice");
+if (btnAddNotice) {
+  btnAddNotice.addEventListener("click", () => {
+    const type = document.getElementById("cfg-notice-type").value;
+    const titleInput = document.getElementById("cfg-notice-title");
+    const title = titleInput.value.trim();
+    
+    if (!title) {
+      alert("공지사항 제목을 입력해 주세요.");
+      return;
+    }
+    
+    const today = new Date().toISOString().split("T")[0];
+    notices.unshift({
+      type: type,
+      title: title,
+      date: today
+    });
+    
+    titleInput.value = "";
+    renderConfigNoticeList();
+  });
+}
+
+const settingFormEl = document.getElementById("setting-form-el");
+if (settingFormEl) {
+  settingFormEl.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (currentUser.role !== "coach") return;
+    
+    // 값 반영
+    coachName = document.getElementById("cfg-coach-name").value.trim();
+    eduNames.hr = document.getElementById("cfg-edu-hr").value.trim();
+    eduNames.accounting = document.getElementById("cfg-edu-acc").value.trim();
+    eduNames.law = document.getElementById("cfg-edu-law").value.trim();
+    
+    milestones = [
+      `<strong>1단계:</strong> ${document.getElementById("cfg-ms-step1").value.trim()}`,
+      `<strong>2단계:</strong> ${document.getElementById("cfg-ms-step2").value.trim()}`,
+      `<strong>3단계:</strong> ${document.getElementById("cfg-ms-step3").value.trim()}`,
+      `<strong>4단계:</strong> ${document.getElementById("cfg-ms-step4").value.trim()}`
+    ];
+    
+    // 저장 및 실시간 연동
+    saveToLocalStorage();
+    applyDynamicConfigs();
+    
+    alert("🎉 플랫폼 환경 설정이 구글 클라우드 데이터베이스에 실시간 저장 및 백업되었습니다!");
+    switchSection(sectionDash, menuDash);
+  });
+}
+
 // Initial Setup
 renderMilestones();
+applyDynamicConfigs();

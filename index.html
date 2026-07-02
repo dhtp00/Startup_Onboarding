@@ -103,6 +103,7 @@
       <li><a href="#" class="menu-item" id="menu-edu">📚 필수 교육 현황</a></li>
       <li><a href="#" class="menu-item" id="menu-survey">✍️ 기업 사전 조사</a></li>
       <li><a href="#" class="menu-item" id="menu-report">📋 모니터링 보고서</a></li>
+      <li><a href="#" class="menu-item" id="menu-setting" style="display: none;">⚙️ 플랫폼 설정 관리</a></li>
     </ul>
 
     <!-- Logout button inside sidebar -->
@@ -205,7 +206,7 @@
           <!-- Notice Board Card -->
           <div class="card" style="background-color: #ffffff;">
             <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 16px;">📢 창업중심대학 통합 공지사항</h3>
-            <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; flex-direction: column; gap: 12px;" id="notice-board-container">
               <div style="border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
                 <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 4px;">
                   <strong style="color: var(--accent-color);">[공지]</strong>
@@ -549,13 +550,14 @@
           </table>
 
           <!-- Section 3: 필수 교육 이수 상황 -->
-          <div class="report-section-header">3. 창업 기본 3대 분야 필수 교육 이수 현황</div>
+          <div class="report-section-header">3. 창업 기본 3대 분야 필수 교육 이수 현황 및 맞춤형 추천 교육 로그</div>
           <table class="report-table" style="text-align: center;">
             <thead>
               <tr>
-                <th style="width: 33%;">기본 노무 실무</th>
-                <th style="width: 33%;">회계 / 세무 기초</th>
-                <th style="width: 34%;">창업 법률 및 계약</th>
+                <th style="width: 22%;" id="rep-hdr-edu1">기본 노무 실무</th>
+                <th style="width: 22%;" id="rep-hdr-edu2">회계 / 세무 기초</th>
+                <th style="width: 22%;" id="rep-hdr-edu3">창업 법률 및 계약</th>
+                <th style="width: 34%;">맞춤형 추천 교육 및 학습 현황</th>
               </tr>
             </thead>
             <tbody>
@@ -563,9 +565,7 @@
                 <td id="rep-edu-hr">-</td>
                 <td id="rep-edu-acc">-</td>
                 <td id="rep-edu-law">-</td>
-              </tr>
-              <tr>
-                <td colspan="3" style="text-align: left; font-size: 0.8rem; color: #4a5568;" id="rep-edu-desc">-</td>
+                <td id="rep-edu-desc" style="font-size: 0.82rem; font-weight: normal; text-align: left; line-height: 1.4; color: #4a5568;">-</td>
               </tr>
             </tbody>
           </table>
@@ -583,7 +583,6 @@
                 <th>10월</th>
                 <th>11월</th>
                 <th>12월</th>
-                <th>종합 평가</th>
               </tr>
             </thead>
             <tbody>
@@ -596,7 +595,6 @@
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="font-weight: 700;" id="rep-budget-eval">-</td>
               </tr>
             </tbody>
           </table>
@@ -702,6 +700,82 @@
             <p>위와 같이 2026년 창업중심대학 스타트업 온보딩 모니터링 결과를 보고합니다.</p>
             <p style="margin-top: 20px; font-weight: 700; font-size: 0.9rem; color: #2d3748;">한남대학교 창업지원단</p>
           </div>
+        </div>
+      </section>
+
+      <!-- SECTION 6: 플랫폼 설정 관리 (코치 전용) -->
+      <section id="section-setting" class="view-section">
+        <div class="section-title">
+          <span>⚙️ 한남대학교 창업지원단 플랫폼 환경설정 (코치 전용)</span>
+        </div>
+        
+        <div class="survey-card" style="margin-top: 16px;">
+          <form id="setting-form-el">
+            <!-- 코치 실명 설정 -->
+            <div class="survey-section-title">1. 전담 코치(운영인력) 정보 설정</div>
+            <div class="form-group" style="margin-bottom: 20px;">
+              <label for="cfg-coach-name">전담 코치 실명 (대시보드 및 보고서에 일괄 반영)</label>
+              <input type="text" id="cfg-coach-name" placeholder="예: 정세정 주임연구원" required style="width: 100%; max-width: 400px;">
+            </div>
+            
+            <!-- 필수 교육 과목명 설정 -->
+            <div class="survey-section-title">2. 창업 필수 교육 3대 분야 과목 명칭 설정</div>
+            <div class="survey-grid-2" style="gap: 16px; margin-bottom: 20px;">
+              <div class="form-group">
+                <label for="cfg-edu-hr">분야 1. 노무 실무 과목명</label>
+                <input type="text" id="cfg-edu-hr" required placeholder="예: 기본 노무 실무">
+              </div>
+              <div class="form-group">
+                <label for="cfg-edu-acc">분야 2. 회계/세무 과목명</label>
+                <input type="text" id="cfg-edu-acc" required placeholder="예: 스타트업 회계/세무 기초">
+              </div>
+              <div class="form-group" style="grid-column: span 2;">
+                <label for="cfg-edu-law">분야 3. 법률/특허 과목명</label>
+                <input type="text" id="cfg-edu-law" required placeholder="예: 창업 법률 및 계약서 검토" style="width: 100%; max-width: 400px;">
+              </div>
+            </div>
+            
+            <!-- 통합 공지사항 설정 -->
+            <div class="survey-section-title">3. 통합 공지사항 관리</div>
+            <div style="background: rgba(0,0,0,0.01); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+              <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                <select id="cfg-notice-type" style="width: 120px;">
+                  <option value="[공지]">[공지]</option>
+                  <option value="[안내]">[안내]</option>
+                </select>
+                <input type="text" id="cfg-notice-title" placeholder="새 공지사항 제목 입력..." style="flex-grow: 1;">
+                <button type="button" class="action-btn" id="btn-add-notice" style="background-color: var(--accent-color); border:none; color:#fff; cursor:pointer;">추가</button>
+              </div>
+              <ul id="cfg-notice-list" style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; max-height: 180px; overflow-y: auto; padding-left: 0; margin: 0;">
+                <!-- dynamic notices -->
+              </ul>
+            </div>
+
+            <!-- 주요 이정표 설정 -->
+            <div class="survey-section-title">4. 프로그램 주요 이정표 (Milestone) 설정</div>
+            <div style="background: rgba(0,0,0,0.01); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin-bottom: 24px; display: flex; flex-direction: column; gap: 12px;">
+              <div class="form-group">
+                <label for="cfg-ms-step1">1단계 문구</label>
+                <input type="text" id="cfg-ms-step1" required>
+              </div>
+              <div class="form-group">
+                <label for="cfg-ms-step2">2단계 문구</label>
+                <input type="text" id="cfg-ms-step2" required>
+              </div>
+              <div class="form-group">
+                <label for="cfg-ms-step3">3단계 문구</label>
+                <input type="text" id="cfg-ms-step3" required>
+              </div>
+              <div class="form-group">
+                <label for="cfg-ms-step4">4단계 문구</label>
+                <input type="text" id="cfg-ms-step4" required>
+              </div>
+            </div>
+            
+            <div style="display: flex; justify-content: flex-end;">
+              <button type="submit" class="send-btn" style="padding: 12px 24px; font-weight: 600; cursor:pointer;">💾 변경 설정 구글 클라우드 동기화 저장</button>
+            </div>
+          </form>
         </div>
       </section>
     </div>
