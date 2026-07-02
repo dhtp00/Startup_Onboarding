@@ -1456,6 +1456,10 @@ function renderSurveySection() {
     }
   }
 
+  // 기업명 및 대표자 실명 자동 연동
+  document.getElementById("sv-company-name").value = targetCompany.name || "";
+  document.getElementById("sv-representative").value = targetCompany.representative || "";
+
   // Pre-populate if survey data exists
   if (targetCompany.surveyData) {
     document.getElementById("sv-contact").value = targetCompany.surveyData.contact || targetCompany.contact || "";
