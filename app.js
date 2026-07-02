@@ -1462,16 +1462,16 @@ function renderSurveySection() {
     document.getElementById("sv-corp-type").value = targetCompany.surveyData.corpType || targetCompany.corpType || "예비창업자";
     document.getElementById("sv-est-date").value = targetCompany.surveyData.estDate || targetCompany.establishmentDate || "";
     document.getElementById("sv-address").value = targetCompany.surveyData.address || targetCompany.address || "";
-    document.getElementById("sv-sales").value = targetCompany.surveyData.sales || targetCompany.metrics.sales || "";
-    document.getElementById("sv-employees").value = targetCompany.surveyData.employees || targetCompany.metrics.employees || "";
+    document.getElementById("sv-sales").value = targetCompany.surveyData.sales || "매출 미발생 (R&D, 기술 개발 및 제품 기획 단계)";
+    document.getElementById("sv-employees").value = targetCompany.surveyData.employees || "0명 (단독 창업)";
 
     document.getElementById("sv-item-intro").value = targetCompany.surveyData.itemIntro || "";
     document.getElementById("sv-item-problem").value = targetCompany.surveyData.itemProblem || "";
     document.getElementById("sv-item-target").value = targetCompany.surveyData.itemTarget || "";
     document.getElementById("sv-item-model").value = targetCompany.surveyData.itemModel || "";
 
-    document.getElementById("sv-stage-product").value = targetCompany.surveyData.stageProduct || "아이디어 기획 단계";
-    document.getElementById("sv-stage-has-sales").value = targetCompany.surveyData.stageHasSales || "매출 미발생";
+    document.getElementById("sv-stage-product").value = targetCompany.surveyData.stageProduct || "아이디어 및 원천 기술 기획 단계";
+    document.getElementById("sv-stage-has-sales").value = targetCompany.surveyData.stageHasSales || "매출 미발생 (기술 개발 / R&D 진행 중)";
     document.getElementById("sv-stage-summary").value = targetCompany.surveyData.stageSummary || "";
 
     document.getElementById("sv-market-target").value = targetCompany.surveyData.marketTarget || "";
@@ -1482,8 +1482,13 @@ function renderSurveySection() {
     document.getElementById("sv-team-core").value = targetCompany.surveyData.teamCore || "";
     document.getElementById("sv-team-needs").value = targetCompany.surveyData.teamNeeds || "";
 
-    document.getElementById("sv-finance-source").value = targetCompany.surveyData.financeSource || "";
-    document.getElementById("sv-finance-fixedcost").value = targetCompany.surveyData.financeFixedcost || "고정비 완벽 파악 중";
+    // 복수 선택 체크박스 바인딩
+    const sourceStr = targetCompany.surveyData.financeSource || "";
+    document.querySelectorAll("input[name='sv-finance-source-chk']").forEach(chk => {
+      chk.checked = sourceStr.includes(chk.value);
+    });
+
+    document.getElementById("sv-finance-fixedcost").value = targetCompany.surveyData.financeFixedcost || "매월 연구원 급여, 임차료, 시제품 제작비 등 고정비 내역을 정기적으로 파악 중";
     document.getElementById("sv-finance-runway").value = targetCompany.surveyData.financeRunway || "3개월 ~ 6개월";
 
     document.getElementById("sv-need-pain").value = targetCompany.surveyData.needPain || "";
@@ -1496,16 +1501,16 @@ function renderSurveySection() {
     document.getElementById("sv-corp-type").value = targetCompany.corpType || "예비창업자";
     document.getElementById("sv-est-date").value = targetCompany.establishmentDate || "";
     document.getElementById("sv-address").value = targetCompany.address || "";
-    document.getElementById("sv-sales").value = targetCompany.metrics.sales || "";
-    document.getElementById("sv-employees").value = targetCompany.metrics.employees || "";
+    document.getElementById("sv-sales").value = "매출 미발생 (R&D, 기술 개발 및 제품 기획 단계)";
+    document.getElementById("sv-employees").value = "0명 (단독 창업)";
 
     document.getElementById("sv-item-intro").value = "";
     document.getElementById("sv-item-problem").value = "";
     document.getElementById("sv-item-target").value = "";
     document.getElementById("sv-item-model").value = "";
 
-    document.getElementById("sv-stage-product").value = "아이디어 기획 단계";
-    document.getElementById("sv-stage-has-sales").value = "매출 미발생";
+    document.getElementById("sv-stage-product").value = "아이디어 및 원천 기술 기획 단계";
+    document.getElementById("sv-stage-has-sales").value = "매출 미발생 (기술 개발 / R&D 진행 중)";
     document.getElementById("sv-stage-summary").value = "";
 
     document.getElementById("sv-market-target").value = "";
@@ -1516,8 +1521,12 @@ function renderSurveySection() {
     document.getElementById("sv-team-core").value = "";
     document.getElementById("sv-team-needs").value = "";
 
-    document.getElementById("sv-finance-source").value = "";
-    document.getElementById("sv-finance-fixedcost").value = "고정비 완벽 파악 중";
+    // 복수 선택 체크박스 초기화
+    document.querySelectorAll("input[name='sv-finance-source-chk']").forEach(chk => {
+      chk.checked = false;
+    });
+
+    document.getElementById("sv-finance-fixedcost").value = "매월 연구원 급여, 임차료, 시제품 제작비 등 고정비 내역을 정기적으로 파악 중";
     document.getElementById("sv-finance-runway").value = "3개월 ~ 6개월";
 
     document.getElementById("sv-need-pain").value = "";
@@ -1564,7 +1573,13 @@ document.getElementById("survey-form-el").addEventListener("submit", (e) => {
   const teamCore = document.getElementById("sv-team-core").value;
   const teamNeeds = document.getElementById("sv-team-needs").value;
 
-  const financeSource = document.getElementById("sv-finance-source").value;
+  // 체크박스 복수 선택 값을 쉼표로 병합
+  const checkedSources = [];
+  document.querySelectorAll("input[name='sv-finance-source-chk']:checked").forEach(chk => {
+    checkedSources.push(chk.value);
+  });
+  const financeSource = checkedSources.join(", ") || "없음";
+
   const financeFixedcost = document.getElementById("sv-finance-fixedcost").value;
   const financeRunway = document.getElementById("sv-finance-runway").value;
 
