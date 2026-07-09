@@ -366,6 +366,8 @@ tr:hover td {
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
+  height: 100%;
+  overflow: hidden;
 }
 
 .panel-header {
@@ -420,6 +422,8 @@ tr:hover td {
   display: flex;
   flex-direction: column;
   background-color: #f1f5f9;
+  height: 100%;
+  overflow: hidden;
 }
 
 .chat-messages {
