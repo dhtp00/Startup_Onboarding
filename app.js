@@ -5,25 +5,25 @@ if (localStorage.getItem("COMPANIES") && (!localStorage.getItem("USERS")?.includ
 
 // --- DEMO USER ACCOUNT DATA (Simulation of Supabase Auth) ---
 let USERS = JSON.parse(localStorage.getItem("USERS")) || {
-  "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "osy0922" },
-  "20424601@onboard.com": { role: "startup", name: "박지훈 대표", companyId: 1, password: "20424601", isFirstLogin: true },
-  "20425162@onboard.com": { role: "startup", name: "신상호 대표", companyId: 2, password: "20425162", isFirstLogin: true },
-  "20418716@onboard.com": { role: "startup", name: "오영웅 대표", companyId: 3, password: "20418716", isFirstLogin: true },
-  "20420729@onboard.com": { role: "startup", name: "염준 대표", companyId: 4, password: "20420729", isFirstLogin: true },
-  "20429473@onboard.com": { role: "startup", name: "이준석 대표", companyId: 5, password: "20429473", isFirstLogin: true },
-  "20420909@onboard.com": { role: "startup", name: "최성환 대표", companyId: 6, password: "20420909", isFirstLogin: true },
-  "20417065@onboard.com": { role: "startup", name: "이서진 대표", companyId: 7, password: "20417065", isFirstLogin: true },
-  "20415562@onboard.com": { role: "startup", name: "이수빈 대표", companyId: 8, password: "20415562", isFirstLogin: true },
-  "20411989@onboard.com": { role: "startup", name: "정수민 대표", companyId: 9, password: "20411989", isFirstLogin: true },
-  "20417505@onboard.com": { role: "startup", name: "지세빈 대표", companyId: 10, password: "20417505", isFirstLogin: true },
-  "20426983@onboard.com": { role: "startup", name: "김영준 대표", companyId: 11, password: "20426983", isFirstLogin: true },
-  "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 12, password: "20433275", isFirstLogin: true },
-  "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 13, password: "20430190", isFirstLogin: true },
-  "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 14, password: "20419158", isFirstLogin: true },
-  "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 15, password: "20427627", isFirstLogin: true },
-  "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "20422754", isFirstLogin: true },
-  "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "20431435", isFirstLogin: true },
-  "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "0426298510", isFirstLogin: true }
+  "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "" },
+  "20424601@onboard.com": { role: "startup", name: "박지훈 대표", companyId: 1, password: "", isFirstLogin: true },
+  "20425162@onboard.com": { role: "startup", name: "신상호 대표", companyId: 2, password: "", isFirstLogin: true },
+  "20418716@onboard.com": { role: "startup", name: "오영웅 대표", companyId: 3, password: "", isFirstLogin: true },
+  "20420729@onboard.com": { role: "startup", name: "염준 대표", companyId: 4, password: "", isFirstLogin: true },
+  "20429473@onboard.com": { role: "startup", name: "이준석 대표", companyId: 5, password: "", isFirstLogin: true },
+  "20420909@onboard.com": { role: "startup", name: "최성환 대표", companyId: 6, password: "", isFirstLogin: true },
+  "20417065@onboard.com": { role: "startup", name: "이서진 대표", companyId: 7, password: "", isFirstLogin: true },
+  "20415562@onboard.com": { role: "startup", name: "이수빈 대표", companyId: 8, password: "", isFirstLogin: true },
+  "20411989@onboard.com": { role: "startup", name: "정수민 대표", companyId: 9, password: "", isFirstLogin: true },
+  "20417505@onboard.com": { role: "startup", name: "지세빈 대표", companyId: 10, password: "", isFirstLogin: true },
+  "20426983@onboard.com": { role: "startup", name: "김영준 대표", companyId: 11, password: "", isFirstLogin: true },
+  "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 12, password: "", isFirstLogin: true },
+  "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 13, password: "", isFirstLogin: true },
+  "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 14, password: "", isFirstLogin: true },
+  "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 15, password: "", isFirstLogin: true },
+  "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "", isFirstLogin: true },
+  "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "", isFirstLogin: true },
+  "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "", isFirstLogin: true }
 };
 
 let currentUser = null; // Session storage
@@ -458,25 +458,25 @@ if (hasOldDemoData) {
   console.log("⚙️ 구식 데이터 감지: 기존 대화 내역 및 데이터를 보존하며 18개사 구조로 지능형 머지(Merge)를 실행합니다.");
   companies = mergeOldDataToDefault(companies, defaultCompanies);
   USERS = {
-    "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "osy0922" },
-    "20424601@onboard.com": { role: "startup", name: "박지훈 대표", companyId: 1, password: "20424601", isFirstLogin: true },
-    "20425162@onboard.com": { role: "startup", name: "신상호 대표", companyId: 2, password: "20425162", isFirstLogin: true },
-    "20418716@onboard.com": { role: "startup", name: "오영웅 대표", companyId: 3, password: "20418716", isFirstLogin: true },
-    "20420729@onboard.com": { role: "startup", name: "염준 대표", companyId: 4, password: "20420729", isFirstLogin: true },
-    "20429473@onboard.com": { role: "startup", name: "이준석 대표", companyId: 5, password: "20429473", isFirstLogin: true },
-    "20420909@onboard.com": { role: "startup", name: "최성환 대표", companyId: 6, password: "20420909", isFirstLogin: true },
-    "20417065@onboard.com": { role: "startup", name: "이서진 대표", companyId: 7, password: "20417065", isFirstLogin: true },
-    "20415562@onboard.com": { role: "startup", name: "이수빈 대표", companyId: 8, password: "20415562", isFirstLogin: true },
-    "20411989@onboard.com": { role: "startup", name: "정수민 대표", companyId: 9, password: "20411989", isFirstLogin: true },
-    "20417505@onboard.com": { role: "startup", name: "지세빈 대표", companyId: 10, password: "20417505", isFirstLogin: true },
-    "20426983@onboard.com": { role: "startup", name: "김영준 대표", companyId: 11, password: "20426983", isFirstLogin: true },
-    "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 12, password: "20433275", isFirstLogin: true },
-    "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 13, password: "20430190", isFirstLogin: true },
-    "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 14, password: "20419158", isFirstLogin: true },
-    "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 15, password: "20427627", isFirstLogin: true },
-    "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "20422754", isFirstLogin: true },
-    "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "20431435", isFirstLogin: true },
-    "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "0426298510", isFirstLogin: true }
+    "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "" },
+    "20424601@onboard.com": { role: "startup", name: "박지훈 대표", companyId: 1, password: "", isFirstLogin: true },
+    "20425162@onboard.com": { role: "startup", name: "신상호 대표", companyId: 2, password: "", isFirstLogin: true },
+    "20418716@onboard.com": { role: "startup", name: "오영웅 대표", companyId: 3, password: "", isFirstLogin: true },
+    "20420729@onboard.com": { role: "startup", name: "염준 대표", companyId: 4, password: "", isFirstLogin: true },
+    "20429473@onboard.com": { role: "startup", name: "이준석 대표", companyId: 5, password: "", isFirstLogin: true },
+    "20420909@onboard.com": { role: "startup", name: "최성환 대표", companyId: 6, password: "", isFirstLogin: true },
+    "20417065@onboard.com": { role: "startup", name: "이서진 대표", companyId: 7, password: "", isFirstLogin: true },
+    "20415562@onboard.com": { role: "startup", name: "이수빈 대표", companyId: 8, password: "", isFirstLogin: true },
+    "20411989@onboard.com": { role: "startup", name: "정수민 대표", companyId: 9, password: "", isFirstLogin: true },
+    "20417505@onboard.com": { role: "startup", name: "지세빈 대표", companyId: 10, password: "", isFirstLogin: true },
+    "20426983@onboard.com": { role: "startup", name: "김영준 대표", companyId: 11, password: "", isFirstLogin: true },
+    "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 12, password: "", isFirstLogin: true },
+    "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 13, password: "", isFirstLogin: true },
+    "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 14, password: "", isFirstLogin: true },
+    "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 15, password: "", isFirstLogin: true },
+    "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "", isFirstLogin: true },
+    "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "", isFirstLogin: true },
+    "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "", isFirstLogin: true }
   };
   localStorage.setItem("COMPANIES", JSON.stringify(companies));
   localStorage.setItem("USERS", JSON.stringify(USERS));
@@ -656,7 +656,15 @@ async function loadCloudData() {
   if (loginSubmitBtn) loginSubmitBtn.disabled = true;
   
   try {
-    const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=loadData`, {
+    if (!currentUser) {
+      isSyncingCloud = false;
+      if (loadingStatus) loadingStatus.style.display = "none";
+      if (loginSubmitBtn) loginSubmitBtn.disabled = false;
+      return;
+    }
+    const email = currentUser.email || Object.keys(USERS).find(k => USERS[k].name === currentUser.name && USERS[k].companyId === currentUser.companyId);
+    const password = currentUser.password;
+    const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=loadData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`, {
       method: "GET",
       mode: "cors"
     });
@@ -676,25 +684,25 @@ async function loadCloudData() {
         console.log("⚙️ 클라우드 데이터가 구식입니다. 기존 데이터(대화/로그)를 새 18개사 명단으로 병합(Merge)하여 클라우드를 업데이트합니다.");
         companies = mergeOldDataToDefault(data.COMPANIES, defaultCompanies);
         USERS = {
-          "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "osy0922" },
-          "20424601@onboard.com": { role: "startup", name: "박지훈 대표", companyId: 1, password: "20424601", isFirstLogin: true },
-          "20425162@onboard.com": { role: "startup", name: "신상호 대표", companyId: 2, password: "20425162", isFirstLogin: true },
-          "20418716@onboard.com": { role: "startup", name: "오영웅 대표", companyId: 3, password: "20418716", isFirstLogin: true },
-          "20420729@onboard.com": { role: "startup", name: "염준 대표", companyId: 4, password: "20420729", isFirstLogin: true },
-          "20429473@onboard.com": { role: "startup", name: "이준석 대표", companyId: 5, password: "20429473", isFirstLogin: true },
-          "20420909@onboard.com": { role: "startup", name: "최성환 대표", companyId: 6, password: "20420909", isFirstLogin: true },
-          "20417065@onboard.com": { role: "startup", name: "이서진 대표", companyId: 7, password: "20417065", isFirstLogin: true },
-          "20415562@onboard.com": { role: "startup", name: "이수빈 대표", companyId: 8, password: "20415562", isFirstLogin: true },
-          "20411989@onboard.com": { role: "startup", name: "정수민 대표", companyId: 9, password: "20411989", isFirstLogin: true },
-          "20417505@onboard.com": { role: "startup", name: "지세빈 대표", companyId: 10, password: "20417505", isFirstLogin: true },
-          "20426983@onboard.com": { role: "startup", name: "김영준 대표", companyId: 11, password: "20426983", isFirstLogin: true },
-          "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 12, password: "20433275", isFirstLogin: true },
-          "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 13, password: "20430190", isFirstLogin: true },
-          "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 14, password: "20419158", isFirstLogin: true },
-          "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 15, password: "20427627", isFirstLogin: true },
-          "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "20422754", isFirstLogin: true },
-          "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "20431435", isFirstLogin: true },
-          "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "0426298510", isFirstLogin: true }
+          "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "" },
+          "20424601@onboard.com": { role: "startup", name: "박지훈 대표", companyId: 1, password: "", isFirstLogin: true },
+          "20425162@onboard.com": { role: "startup", name: "신상호 대표", companyId: 2, password: "", isFirstLogin: true },
+          "20418716@onboard.com": { role: "startup", name: "오영웅 대표", companyId: 3, password: "", isFirstLogin: true },
+          "20420729@onboard.com": { role: "startup", name: "염준 대표", companyId: 4, password: "", isFirstLogin: true },
+          "20429473@onboard.com": { role: "startup", name: "이준석 대표", companyId: 5, password: "", isFirstLogin: true },
+          "20420909@onboard.com": { role: "startup", name: "최성환 대표", companyId: 6, password: "", isFirstLogin: true },
+          "20417065@onboard.com": { role: "startup", name: "이서진 대표", companyId: 7, password: "", isFirstLogin: true },
+          "20415562@onboard.com": { role: "startup", name: "이수빈 대표", companyId: 8, password: "", isFirstLogin: true },
+          "20411989@onboard.com": { role: "startup", name: "정수민 대표", companyId: 9, password: "", isFirstLogin: true },
+          "20417505@onboard.com": { role: "startup", name: "지세빈 대표", companyId: 10, password: "", isFirstLogin: true },
+          "20426983@onboard.com": { role: "startup", name: "김영준 대표", companyId: 11, password: "", isFirstLogin: true },
+          "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 12, password: "", isFirstLogin: true },
+          "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 13, password: "", isFirstLogin: true },
+          "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 14, password: "", isFirstLogin: true },
+          "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 15, password: "", isFirstLogin: true },
+          "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "", isFirstLogin: true },
+          "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "", isFirstLogin: true },
+          "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "", isFirstLogin: true }
         };
         localStorage.setItem("COMPANIES", JSON.stringify(companies));
         localStorage.setItem("USERS", JSON.stringify(USERS));
@@ -772,14 +780,16 @@ function saveToLocalStorage() {
   localStorage.setItem("NOTICES", JSON.stringify(notices));
   
   // 만약 구글 API 주소가 세팅되어 있다면 자동으로 백그라운드 클라우드 동기화 수행
-  if (GOOGLE_SCRIPT_URL) {
+  // 만약 구글 API 주소가 세팅되어 있고 로그인 상태라면 클라우드 동기화 수행
+  if (GOOGLE_SCRIPT_URL && currentUser) {
     fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
+      mode: "cors",
+      headers: { "Content-Type": "text/plain" },
       body: JSON.stringify({
         action: "syncData",
-        userEmail: currentUser ? currentUser.name : "System",
+        email: currentUser.email || Object.keys(USERS).find(k => USERS[k].name === currentUser.name && USERS[k].companyId === currentUser.companyId),
+        password: currentUser.password,
         companies: companies,
         USERS: USERS,
         milestones: milestones,
@@ -787,7 +797,16 @@ function saveToLocalStorage() {
         eduNames: eduNames,
         notices: notices
       })
-    }).catch(err => console.log("Google sync delay: ", err));
+    })
+    .then(r => r.json())
+    .then(res => {
+      if (res && res.status === "error") {
+        console.warn("⚠️ 동기화 실패: ", res.message);
+      } else {
+        console.log("✔ 클라우드 동기화 성공");
+      }
+    })
+    .catch(err => console.log("Google sync delay: ", err));
   }
 }
 
@@ -804,34 +823,86 @@ linkGoLogin.addEventListener("click", (e) => {
   cardLogin.style.display = "block";
 });
 
-loginForm.addEventListener("submit", (e) => {
+loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const emailInput = loginEmail.value.trim();
   const password = loginPassword.value.trim();
   
-  // Robust matching that accounts for name collisions (e.g. coach 오세연 vs startup representative 오세연)
+  // 1. 입력값을 이메일 포맷으로 찾기
+  let targetEmail = "";
   const matchedUserKey = Object.keys(USERS).find(key => {
     const u = USERS[key];
-    const isIdMatch = (key.toLowerCase() === emailInput.toLowerCase()) ||
-                      (key.split("@")[0].toLowerCase() === emailInput.toLowerCase()) ||
-                      (u.name.split(" ")[0] === emailInput) ||
-                      (u.name.replace(/\s+/g, "") === emailInput.replace(/\s+/g, ""));
-    return isIdMatch && u.password === password;
+    return (key.toLowerCase() === emailInput.toLowerCase()) ||
+           (key.split("@")[0].toLowerCase() === emailInput.toLowerCase()) ||
+           (u.name.split(" ")[0] === emailInput) ||
+           (u.name.replace(/\s+/g, "") === emailInput.replace(/\s+/g, ""));
   });
-
+  
   if (matchedUserKey) {
-    currentUser = USERS[matchedUserKey];
+    targetEmail = matchedUserKey;
+  } else {
+    // USERS 매핑 테이블에 없는 경우 이메일 직접 입력으로 간주
+    targetEmail = emailInput;
+  }
+  
+  // 2. 구글 클라우드에 로그인 요청 & 데이터 로드 실행
+  const loadingStatus = document.getElementById("login-loading-status");
+  const loginSubmitBtn = document.getElementById("btn-login-submit");
+  if (loadingStatus) loadingStatus.style.display = "block";
+  if (loginSubmitBtn) loginSubmitBtn.disabled = true;
+  
+  try {
+    const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=loadData&email=${encodeURIComponent(targetEmail)}&password=${encodeURIComponent(password)}`, {
+      method: "GET",
+      mode: "cors"
+    });
     
-    // Check if it's first login
-    if (currentUser.isFirstLogin) {
-      cardLogin.style.display = "none";
-      document.getElementById("card-change-password").style.display = "block";
-      return;
+    if (!response.ok) {
+      throw new Error("서버 응답 오류 (HTTP " + response.status + ")");
     }
     
-    enterPlatform();
-  } else {
-    alert("❌ 아이디(대표자명) 또는 비밀번호가 올바르지 않습니다.\n\n로그인 문제가 지속될 경우 오세연 연구원(042-629-8510)으로 연락 바랍니다.");
+    const resData = await response.json();
+    if (resData && resData.status === "success" && resData.data) {
+      const data = resData.data;
+      
+      // 3. 로그인 성공 시 반환받은 필터링된 데이터셋 로컬에 적재
+      companies = data.COMPANIES || [];
+      milestones = data.milestones || [];
+      coachName = data.coachName || "오세연 코치";
+      eduNames = data.eduNames || eduNames;
+      notices = data.notices || notices;
+      
+      // (중요) 서버에서 반환해준 내 프로필 정보로 로컬 USERS 정보 동기화 및 임시 비밀번호 세팅
+      // (비밀번호 변경 요청을 위해 currentUser.password는 메모리에 임시 보관해야 함)
+      const returnedUser = data.USERS[targetEmail];
+      if (returnedUser) {
+        currentUser = { ...returnedUser, password: password, email: targetEmail };
+        USERS[targetEmail] = { ...returnedUser, password: password };
+      } else {
+        currentUser = { role: targetEmail.includes("osy0922") ? "coach" : "startup", name: "사용자", password: password, email: targetEmail };
+      }
+      
+      localStorage.setItem("COMPANIES", JSON.stringify(companies));
+      
+      // 첫 로그인 패스워드 변경 확인
+      if (currentUser.isFirstLogin) {
+        if (loadingStatus) loadingStatus.style.display = "none";
+        if (loginSubmitBtn) loginSubmitBtn.disabled = false;
+        cardLogin.style.display = "none";
+        document.getElementById("card-change-password").style.display = "block";
+        return;
+      }
+      
+      enterPlatform();
+    } else {
+      throw new Error(resData ? resData.message : "인증 실패");
+    }
+  } catch (err) {
+    console.error(err);
+    alert(`❌ 로그인 실패\n\n이유: ${err.message}\n\n로그인 문제가 지속될 경우 오세연 연구원(042-629-8510)으로 연락 바랍니다.`);
+  } finally {
+    if (loadingStatus) loadingStatus.style.display = "none";
+    if (loginSubmitBtn) loginSubmitBtn.disabled = false;
   }
 });
 
@@ -847,12 +918,12 @@ if (changePasswordForm) {
       return;
     }
     
-    const currentUserKey = Object.keys(USERS).find(key => USERS[key].name === currentUser.name && USERS[key].companyId === currentUser.companyId);
-    if (currentUserKey) {
+    const currentUserKey = currentUser.email || Object.keys(USERS).find(key => USERS[key].name === currentUser.name && USERS[key].companyId === currentUser.companyId);
+    if (currentUserKey && USERS[currentUserKey]) {
       USERS[currentUserKey].password = newPassword;
       delete USERS[currentUserKey].isFirstLogin;
       
-      currentUser = USERS[currentUserKey];
+      currentUser = { ...USERS[currentUserKey], password: newPassword, email: currentUserKey };
       saveToLocalStorage();
       
       alert("🎉 비밀번호가 안전하게 변경되었습니다!");
@@ -897,7 +968,7 @@ signupForm.addEventListener("submit", (e) => {
     password: password
   };
 
-  currentUser = USERS[accountEmail];
+  currentUser = { ...USERS[accountEmail], password: password, email: accountEmail };
   saveToLocalStorage();
   
   alert(`🎉 회원가입이 완료되었습니다!\n이제 대표자명 '${representativeName}'으로 로그인 하실 수 있습니다.`);
@@ -944,6 +1015,8 @@ function enterPlatform() {
 
 btnLogout.addEventListener("click", () => {
   currentUser = null;
+  localStorage.removeItem("COMPANIES");
+  localStorage.removeItem("USERS");
   loginOverlayScreen.style.display = "flex";
   mainSidebar.style.display = "none";
   mainContent.style.display = "none";
