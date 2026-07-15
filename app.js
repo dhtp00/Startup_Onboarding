@@ -1,7 +1,6 @@
 // --- AUTO STORAGE MIGRATION FOR NEW DATASET ---
 if (localStorage.getItem("COMPANIES") && (!localStorage.getItem("USERS")?.includes("20422754@onboard.com") || !localStorage.getItem("USERS")?.includes("0426298510@onboard.com") || localStorage.getItem("COMPANIES")?.includes("사티부스"))) {
-  localStorage.removeItem("COMPANIES");
-  localStorage.removeItem("USERS");
+  localStorage.removeItem("USERS"); // 강제 로그아웃만 유도하여 companies 선언부에서 머지가 이뤄지도록 함
 }
 
 // --- DEMO USER ACCOUNT DATA (Simulation of Supabase Auth) ---
@@ -411,15 +410,53 @@ let defaultCompanies = [
   }
 ];
 
+// --- HELPER FUNCTION TO MERGE OLD DATA INTO NEW SPEC ---
+function mergeOldDataToDefault(oldCompanies, defaultCompanies) {
+  if (!oldCompanies || !Array.isArray(oldCompanies)) return defaultCompanies;
+  const migrated = JSON.parse(JSON.stringify(defaultCompanies));
+  migrated.forEach(newC => {
+    const oldC = oldCompanies.find(old => 
+      old.name === newC.name || 
+      old.representative === newC.representative ||
+      (old.repDesc && newC.repDesc && old.repDesc.includes(newC.representative))
+    );
+    if (oldC) {
+      newC.chatMessages = oldC.chatMessages || [];
+      newC.coachingLogs = oldC.coachingLogs || [];
+      newC.coachingCount = oldC.coachingCount || 0;
+      newC.surveyData = oldC.surveyData || null;
+      if (oldC.budget && oldC.budget.checks && newC.budget && newC.budget.checks) {
+        Object.keys(newC.budget.checks).forEach(k => {
+          if (oldC.budget.checks[k] !== undefined) newC.budget.checks[k] = oldC.budget.checks[k];
+        });
+      }
+      if (oldC.education && newC.education) {
+        newC.education.hr = oldC.education.hr || newC.education.hr;
+        newC.education.accounting = oldC.education.accounting || newC.education.accounting;
+        newC.education.law = oldC.education.law || newC.education.law;
+        newC.education.content = oldC.education.content || newC.education.content;
+      }
+      if (oldC.metrics && newC.metrics) {
+        newC.metrics.sales = oldC.metrics.sales || newC.metrics.sales;
+        newC.metrics.employees = oldC.metrics.employees || newC.metrics.employees;
+        newC.metrics.reStartup = oldC.metrics.reStartup || newC.metrics.reStartup;
+      }
+      newC.address = oldC.address || newC.address;
+      newC.contact = oldC.contact || newC.contact;
+      newC.oneStopLink = oldC.oneStopLink || newC.oneStopLink;
+      newC.finalEvaluation = oldC.finalEvaluation || newC.finalEvaluation || "";
+    }
+  });
+  return migrated;
+}
+
 let companies = JSON.parse(localStorage.getItem("COMPANIES")) || defaultCompanies;
 
 // --- FORCE DATA RESET IF OLD DEMO DATA DETECTED ---
 const hasOldDemoData = companies.some(c => c.name.includes("에이아이링크") || c.name.includes("사티부스") || c.name.includes("그린에스텍")) || companies.length < 18;
 if (hasOldDemoData) {
-  console.log("🧹 구식 데모 데이터 감지: 신규 18개 기업 데이터로 강제 초기화를 수행합니다.");
-  localStorage.removeItem("COMPANIES");
-  localStorage.removeItem("USERS");
-  companies = defaultCompanies;
+  console.log("⚙️ 구식 데이터 감지: 기존 대화 내역 및 데이터를 보존하며 18개사 구조로 지능형 머지(Merge)를 실행합니다.");
+  companies = mergeOldDataToDefault(companies, defaultCompanies);
   USERS = {
     "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "osy0922" },
     "20424601@onboard.com": { role: "startup", name: "박지훈 대표", companyId: 1, password: "20424601", isFirstLogin: true },
@@ -636,10 +673,8 @@ async function loadCloudData() {
       const isCloudOld = data.COMPANIES && (data.COMPANIES.some(c => c.name.includes("에이아이링크") || c.name.includes("사티부스") || c.name.includes("그린에스텍")) || data.COMPANIES.length < 18);
       
       if (isCloudEmpty || isCloudOld) {
-        console.log("🔄 클라우드 데이터가 비어있거나 구식입니다. 신규 18개사 데이터로 클라우드 덮어쓰기를 수행합니다.");
-        localStorage.removeItem("COMPANIES");
-        localStorage.removeItem("USERS");
-        companies = defaultCompanies;
+        console.log("⚙️ 클라우드 데이터가 구식입니다. 기존 데이터(대화/로그)를 새 18개사 명단으로 병합(Merge)하여 클라우드를 업데이트합니다.");
+        companies = mergeOldDataToDefault(data.COMPANIES, defaultCompanies);
         USERS = {
           "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "osy0922" },
           "20424601@onboard.com": { role: "startup", name: "박지훈 대표", companyId: 1, password: "20424601", isFirstLogin: true },
@@ -661,7 +696,9 @@ async function loadCloudData() {
           "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "20431435", isFirstLogin: true },
           "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "0426298510", isFirstLogin: true }
         };
-        saveToLocalStorage(); // Trigger syncData post to overwrite!
+        localStorage.setItem("COMPANIES", JSON.stringify(companies));
+        localStorage.setItem("USERS", JSON.stringify(USERS));
+        saveToLocalStorage(); // Trigger syncData post to overwrite cloud!
       } else {
         if (data.USERS) {
           USERS = data.USERS;
