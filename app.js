@@ -1,5 +1,5 @@
 // --- AUTO STORAGE MIGRATION FOR NEW DATASET ---
-if (localStorage.getItem("COMPANIES") && (!localStorage.getItem("USERS")?.includes("20424601@onboard.com") || !localStorage.getItem("USERS")?.includes("0426298510@onboard.com"))) {
+if (localStorage.getItem("COMPANIES") && (!localStorage.getItem("USERS")?.includes("20422754@onboard.com") || !localStorage.getItem("USERS")?.includes("0426298510@onboard.com") || localStorage.getItem("COMPANIES")?.includes("사티부스"))) {
   localStorage.removeItem("COMPANIES");
   localStorage.removeItem("USERS");
 }
@@ -18,14 +18,13 @@ let USERS = JSON.parse(localStorage.getItem("USERS")) || {
   "20411989@onboard.com": { role: "startup", name: "정수민 대표", companyId: 9, password: "20411989", isFirstLogin: true },
   "20417505@onboard.com": { role: "startup", name: "지세빈 대표", companyId: 10, password: "20417505", isFirstLogin: true },
   "20426983@onboard.com": { role: "startup", name: "김영준 대표", companyId: 11, password: "20426983", isFirstLogin: true },
-  "20430097@onboard.com": { role: "startup", name: "김건하 대표", companyId: 12, password: "20430097", isFirstLogin: true },
-  "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 13, password: "20433275", isFirstLogin: true },
-  "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 14, password: "20430190", isFirstLogin: true },
-  "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 15, password: "20419158", isFirstLogin: true },
-  "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 16, password: "20427627", isFirstLogin: true },
-  "20425790@onboard.com": { role: "startup", name: "최병진 대표", companyId: 17, password: "20425790", isFirstLogin: true },
-  "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 18, password: "20431435", isFirstLogin: true },
-  "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 19, password: "0426298510", isFirstLogin: true }
+  "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 12, password: "20433275", isFirstLogin: true },
+  "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 13, password: "20430190", isFirstLogin: true },
+  "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 14, password: "20419158", isFirstLogin: true },
+  "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 15, password: "20427627", isFirstLogin: true },
+  "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "20422754", isFirstLogin: true },
+  "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "20431435", isFirstLogin: true },
+  "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "0426298510", isFirstLogin: true }
 };
 
 let currentUser = null; // Session storage
@@ -76,7 +75,7 @@ let defaultCompanies = [
   },
   {
     id: 3,
-    name: "오영웅 (예비창업)",
+    name: "에듀포인터",
     type: "예비 창업기업 (사업자 미등록)",
     representative: "오영웅",
     repDesc: "오영웅 대표 (과제번호: 20418716)",
@@ -181,7 +180,7 @@ let defaultCompanies = [
   },
   {
     id: 8,
-    name: "주식회사 테리웰",
+    name: "테리웰",
     type: "예비 창업기업 (사업자 미등록)",
     representative: "이수빈",
     repDesc: "이수빈 대표 (과제번호: 20415562)",
@@ -265,28 +264,7 @@ let defaultCompanies = [
   },
   {
     id: 12,
-    name: "주식회사 사티부스",
-    type: "초기 창업기업 (사업자 등록 후 1~3년 이하)",
-    representative: "김건하",
-    repDesc: "김건하 대표 (과제번호: 20430097)",
-    invitationKey: "HN-SATI-2026",
-    establishmentDate: "2025-05-22",
-    address: "",
-    contact: "",
-    corpType: "법인사업자",
-    oneStopLink: "대기",
-    surveyData: null,
-    metrics: { sales: "0원 (대기)", employees: "대기", reStartup: "아니오" },
-    budget: { status: "safe", checks: { m7: false, m8: false, m9: false, m10: false, m11: false, m12: false }, total: "50,000", execution: "0" },
-    education: { hr: "대기", accounting: "대기", law: "대기", content: "노무, 세무 기본 과정 교육 대기 상태" },
-    monitoringDoc: "미작성",
-    coachingCount: 0,
-    coachingLogs: [],
-    chatMessages: []
-  },
-  {
-    id: 13,
-    name: "이광록 (예비창업)",
+    name: "매크로테라퓨틱스",
     type: "예비 창업기업 (사업자 미등록)",
     representative: "이광록",
     repDesc: "이광록 대표 (과제번호: 20433275)",
@@ -306,7 +284,7 @@ let defaultCompanies = [
     chatMessages: []
   },
   {
-    id: 14,
+    id: 13,
     name: "주식회사 소리",
     type: "초기 창업기업 (사업자 등록 후 1~3년 이하)",
     representative: "권태균",
@@ -327,7 +305,7 @@ let defaultCompanies = [
     chatMessages: []
   },
   {
-    id: 15,
+    id: 14,
     name: "주식회사 액트",
     type: "초기 창업기업 (사업자 등록 후 1~3년 이하)",
     representative: "신민준",
@@ -348,7 +326,7 @@ let defaultCompanies = [
     chatMessages: []
   },
   {
-    id: 16,
+    id: 15,
     name: "뉴로모먼트 주식회사",
     type: "초기 창업기업 (사업자 등록 후 1~3년 이하)",
     representative: "이남주",
@@ -369,13 +347,13 @@ let defaultCompanies = [
     chatMessages: []
   },
   {
-    id: 17,
-    name: "(주)그린에스텍",
+    id: 16,
+    name: "Dr.X",
     type: "초기 창업기업 (사업자 등록 후 1~3년 이하)",
-    representative: "최병진",
-    repDesc: "최병진 대표 (과제번호: 20425790)",
-    invitationKey: "HN-GREEN-2026",
-    establishmentDate: "2025-12-15",
+    representative: "GUPTA AMAR PRASAD",
+    repDesc: "Gupta 대표 (과제번호: 20422754)",
+    invitationKey: "HN-DRX-2026",
+    establishmentDate: "2025-09-12",
     address: "",
     contact: "",
     corpType: "법인사업자",
@@ -390,7 +368,7 @@ let defaultCompanies = [
     chatMessages: []
   },
   {
-    id: 18,
+    id: 17,
     name: "주식회사 에이치엔로보틱스",
     type: "초기 창업기업 (사업자 등록 후 1~4년 이하)",
     representative: "이준원",
@@ -411,7 +389,7 @@ let defaultCompanies = [
     chatMessages: []
   },
   {
-    id: 19,
+    id: 18,
     name: "오세연",
     type: "초기 창업기업 (사업자 등록 후 1~4년 이하)",
     representative: "오세연",
@@ -436,7 +414,7 @@ let defaultCompanies = [
 let companies = JSON.parse(localStorage.getItem("COMPANIES")) || defaultCompanies;
 
 // --- FORCE DATA RESET IF OLD DEMO DATA DETECTED ---
-const hasOldDemoData = companies.some(c => c.name.includes("에이아이링크") || c.name.includes("그린에너지") || c.name.includes("드림 소프트")) || companies.length < 19;
+const hasOldDemoData = companies.some(c => c.name.includes("에이아이링크") || c.name.includes("사티부스") || c.name.includes("그린에스텍")) || companies.length < 18;
 if (hasOldDemoData) {
   console.log("🧹 구식 데모 데이터 감지: 신규 18개 기업 데이터로 강제 초기화를 수행합니다.");
   localStorage.removeItem("COMPANIES");
@@ -455,14 +433,13 @@ if (hasOldDemoData) {
     "20411989@onboard.com": { role: "startup", name: "정수민 대표", companyId: 9, password: "20411989", isFirstLogin: true },
     "20417505@onboard.com": { role: "startup", name: "지세빈 대표", companyId: 10, password: "20417505", isFirstLogin: true },
     "20426983@onboard.com": { role: "startup", name: "김영준 대표", companyId: 11, password: "20426983", isFirstLogin: true },
-    "20430097@onboard.com": { role: "startup", name: "김건하 대표", companyId: 12, password: "20430097", isFirstLogin: true },
-    "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 13, password: "20433275", isFirstLogin: true },
-    "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 14, password: "20430190", isFirstLogin: true },
-    "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 15, password: "20419158", isFirstLogin: true },
-    "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 16, password: "20427627", isFirstLogin: true },
-    "20425790@onboard.com": { role: "startup", name: "최병진 대표", companyId: 17, password: "20425790", isFirstLogin: true },
-    "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 18, password: "20431435", isFirstLogin: true },
-    "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 19, password: "0426298510", isFirstLogin: true }
+    "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 12, password: "20433275", isFirstLogin: true },
+    "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 13, password: "20430190", isFirstLogin: true },
+    "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 14, password: "20419158", isFirstLogin: true },
+    "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 15, password: "20427627", isFirstLogin: true },
+    "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "20422754", isFirstLogin: true },
+    "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "20431435", isFirstLogin: true },
+    "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "0426298510", isFirstLogin: true }
   };
   localStorage.setItem("COMPANIES", JSON.stringify(companies));
   localStorage.setItem("USERS", JSON.stringify(USERS));
@@ -656,10 +633,10 @@ async function loadCloudData() {
       const data = resData.data;
       
       const isCloudEmpty = !data.COMPANIES || data.COMPANIES.length === 0;
-      const isCloudOld = data.COMPANIES && (data.COMPANIES.some(c => c.name.includes("에이아이링크") || c.name.includes("그린에너지") || c.name.includes("드림 소프트")) || data.COMPANIES.length < 19);
+      const isCloudOld = data.COMPANIES && (data.COMPANIES.some(c => c.name.includes("에이아이링크") || c.name.includes("사티부스") || c.name.includes("그린에스텍")) || data.COMPANIES.length < 18);
       
       if (isCloudEmpty || isCloudOld) {
-        console.log("🔄 클라우드 데이터가 비어있거나 구식입니다. 신규 19개사 데이터로 클라우드 덮어쓰기를 수행합니다.");
+        console.log("🔄 클라우드 데이터가 비어있거나 구식입니다. 신규 18개사 데이터로 클라우드 덮어쓰기를 수행합니다.");
         localStorage.removeItem("COMPANIES");
         localStorage.removeItem("USERS");
         companies = defaultCompanies;
@@ -676,14 +653,13 @@ async function loadCloudData() {
           "20411989@onboard.com": { role: "startup", name: "정수민 대표", companyId: 9, password: "20411989", isFirstLogin: true },
           "20417505@onboard.com": { role: "startup", name: "지세빈 대표", companyId: 10, password: "20417505", isFirstLogin: true },
           "20426983@onboard.com": { role: "startup", name: "김영준 대표", companyId: 11, password: "20426983", isFirstLogin: true },
-          "20430097@onboard.com": { role: "startup", name: "김건하 대표", companyId: 12, password: "20430097", isFirstLogin: true },
-          "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 13, password: "20433275", isFirstLogin: true },
-          "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 14, password: "20430190", isFirstLogin: true },
-          "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 15, password: "20419158", isFirstLogin: true },
-          "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 16, password: "20427627", isFirstLogin: true },
-          "20425790@onboard.com": { role: "startup", name: "최병진 대표", companyId: 17, password: "20425790", isFirstLogin: true },
-          "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 18, password: "20431435", isFirstLogin: true },
-          "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 19, password: "0426298510", isFirstLogin: true }
+          "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 12, password: "20433275", isFirstLogin: true },
+          "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 13, password: "20430190", isFirstLogin: true },
+          "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 14, password: "20419158", isFirstLogin: true },
+          "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 15, password: "20427627", isFirstLogin: true },
+          "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "20422754", isFirstLogin: true },
+          "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "20431435", isFirstLogin: true },
+          "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "0426298510", isFirstLogin: true }
         };
         saveToLocalStorage(); // Trigger syncData post to overwrite!
       } else {
@@ -1105,7 +1081,10 @@ function renderDashboard() {
           <button class="action-btn" onclick="openCoachingModal(${company.id})">
             ${currentUser.role === "coach" ? "✍️ 코칭등록" : "🔍 내역보기"}
           </button>
-          ${currentUser.role === "coach" ? `<button class="action-btn" onclick="openEditCompanyModal(${company.id})" style="border-color: var(--accent-color); color: var(--accent-color);">⚙️ 수정</button>` : ""}
+          ${currentUser.role === "coach" ? `
+            <button class="action-btn" onclick="openEditCompanyModal(${company.id})" style="border-color: var(--accent-color); color: var(--accent-color);">⚙️ 수정</button>
+            <button class="action-btn" onclick="deleteCompany(${company.id})" style="border-color: var(--danger); color: var(--danger);">🗑️ 삭제</button>
+          ` : ""}
         </div>
       </td>
     `;
@@ -1131,6 +1110,34 @@ function renderDashboard() {
     educationTableBody.appendChild(tr);
   });
 }
+
+// --- DELETE COMPANY (COACH ONLY) ---
+window.deleteCompany = function(id) {
+  if (currentUser.role !== "coach") {
+    alert("기업 정보 삭제는 한남대 창업지원단 코치 계정만 가능합니다.");
+    return;
+  }
+  const target = companies.find(c => c.id === id);
+  if (!target) return;
+  
+  if (confirm(`⚠️ 정말로 '${target.name}' 기업을 삭제하시겠습니까?\n이 기업의 모든 데이터(채팅, 코칭록 등)가 영구 삭제됩니다.`)) {
+    // 1. 기업 데이터 삭제
+    companies = companies.filter(c => c.id !== id);
+    
+    // 2. 매칭되는 사용자 계정도 USERS에서 삭제
+    const matchedUserKey = Object.keys(USERS).find(key => USERS[key].companyId === id);
+    if (matchedUserKey) {
+      delete USERS[matchedUserKey];
+    }
+    
+    // 3. 로컬 및 구글 클라우드 저장
+    saveToLocalStorage();
+    
+    // 4. 화면 갱신
+    renderDashboard();
+    alert(`정상적으로 삭제되었습니다.`);
+  }
+};
 
 // --- INTERACTIVE MONTH CHECK TOGGLE (COACH ONLY) ---
 window.toggleMonthCheck = function(companyId, monthKey) {
