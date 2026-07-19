@@ -1486,6 +1486,23 @@ btnSendMessage.addEventListener("click", () => {
     clearAttachment();
     saveToLocalStorage();
     renderChatSection();
+
+    // 스타트업 대표자가 코치에게 톡을 보냈을 때 실시간 이메일 알림 전송 API 호출
+    if (currentUser.role === "startup" && GOOGLE_SCRIPT_URL) {
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "sendChatMessageAlert",
+          companyName: activeCompany.name,
+          representative: activeCompany.representative,
+          text: msgObj.text,
+          time: msgObj.time,
+          hasFile: !!msgObj.file
+        })
+      }).catch(err => console.error("Chat alert error: ", err));
+    }
   }
 });
 
