@@ -2777,6 +2777,47 @@ if (settingFormEl) {
   });
 }
 
+// 이메일 알림 연동 테스트 버튼 리스너
+const btnTestEmail = document.getElementById("btn-test-email");
+if (btnTestEmail) {
+  btnTestEmail.addEventListener("click", () => {
+    if (!GOOGLE_SCRIPT_URL) {
+      alert("❌ GOOGLE_SCRIPT_URL 설정이 되어 있지 않습니다.");
+      return;
+    }
+    
+    btnTestEmail.disabled = true;
+    btnTestEmail.innerText = "⏳ 테스트 메일 발송 중...";
+    
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "sendChatMessageAlert",
+        companyName: "한남대 창업지원단 테스트 기업",
+        representative: "코치 테스터",
+        text: "온보딩 플랫폼 환경설정에서 보내진 이메일 발송 연동 테스트 메시지입니다! 정상 작동 중입니다.",
+        time: new Date().toLocaleTimeString("ko-KR", { hour: '2-digit', minute: '2-digit' }),
+        hasFile: false,
+        senderRole: "coach" // 코치로 설정하여 테스트용임을 가리킴
+      })
+    })
+    .then(() => {
+      alert("✉️ 테스트 알림이 발송되었습니다! osy0922@hnu.kr 메일함(또는 스팸메일함)을 확인해 주세요.");
+    })
+    .catch(err => {
+      console.error(err);
+      alert("❌ 테스트 발송 실패: 인터넷 연결 또는 구글 스크립트 웹앱 주소를 확인해 주세요.");
+    })
+    .finally(() => {
+      btnTestEmail.disabled = false;
+      btnTestEmail.innerHTML = '<i data-lucide="send" style="width: 14px; height: 14px;"></i>테스트 이메일 즉시 발송';
+      refreshIcons();
+    });
+  });
+}
+
 // Initial Setup
 renderMilestones();
 applyDynamicConfigs();
