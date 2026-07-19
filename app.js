@@ -484,6 +484,10 @@ if (hasOldDemoData) {
 
 // --- CONFIG DATA WITH LOCAL STORAGE & CLOUD DB ---
 let coachName = localStorage.getItem("COACH_NAME") || "오세연 코치";
+if (!coachName || coachName.includes("\uFFFD") || coachName.includes("?") || coachName.trim() === "" || coachName.includes("ġ") || coachName.includes("g")) {
+  coachName = "오세연 코치";
+  localStorage.setItem("COACH_NAME", "오세연 코치");
+}
 
 let defaultEduNames = {
   hr: "기본 노무 실무",
@@ -510,6 +514,12 @@ let milestones = JSON.parse(localStorage.getItem("MILESTONES")) || defaultMilest
 let selectedCompanyId = 1;
 let currentAttachedFile = null;
 let selectedReportType = "1st"; // "1st" (Mid-term) | "final" (Final)
+
+function refreshIcons() {
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+}
 
 // --- GOOGLE SCRIPT URL FOR FREE API CONNECTION ---
 // 여기에 깃허브 배포 가이드라인에 따라 복사한 구글 웹앱 URL을 입력하시면 실서비스 연동이 완료됩니다!
@@ -628,6 +638,7 @@ const companyEditId = document.getElementById("company-edit-id");
 const btnCloseCompany = document.getElementById("btn-close-company");
 const btnCancelCompany = document.getElementById("btn-cancel-company");
 const btnGenKey = document.getElementById("btn-gen-key");
+const btnDeleteCompanyModal = document.getElementById("btn-delete-company-modal");
 
 // Education Edit Modal
 const eduModal = document.getElementById("edu-modal");
@@ -832,10 +843,17 @@ loginForm.addEventListener("submit", async (e) => {
   let targetEmail = "";
   const matchedUserKey = Object.keys(USERS).find(key => {
     const u = USERS[key];
-    return (key.toLowerCase() === emailInput.toLowerCase()) ||
-           (key.split("@")[0].toLowerCase() === emailInput.toLowerCase()) ||
-           (u.name.split(" ")[0] === emailInput) ||
-           (u.name.replace(/\s+/g, "") === emailInput.replace(/\s+/g, ""));
+    if (u.role === "coach") {
+      // 코치 계정은 이름 매칭 대상에서 제외 (이메일로만 로그인 허용)
+      return (key.toLowerCase() === emailInput.toLowerCase()) ||
+             (key.split("@")[0].toLowerCase() === emailInput.toLowerCase());
+    } else {
+      // 스타트업 계정은 대표자 실명 또는 이메일 매칭 허용
+      return (key.toLowerCase() === emailInput.toLowerCase()) ||
+             (key.split("@")[0].toLowerCase() === emailInput.toLowerCase()) ||
+             (u.name.split(" ")[0] === emailInput) ||
+             (u.name.replace(/\s+/g, "") === emailInput.replace(/\s+/g, ""));
+    }
   });
   
   if (matchedUserKey) {
@@ -1083,19 +1101,21 @@ function applyDynamicConfigs() {
 
   // 공지사항 렌더링
   renderNoticeBoard();
+  refreshIcons();
 }
 function renderMilestones() {
   milestoneListContainer.innerHTML = "";
   milestones.forEach((step, idx) => {
     const li = document.createElement("li");
-    let symbol = "✔";
+    let iconName = "check-circle-2";
     let color = "var(--success)";
-    if (idx === 2) { symbol = "⏳"; color = "var(--warning)"; }
-    if (idx === 3) { symbol = "○"; color = "var(--text-secondary)"; }
+    if (idx === 2) { iconName = "clock"; color = "var(--warning)"; }
+    if (idx === 3) { iconName = "circle"; color = "var(--text-secondary)"; }
     li.style.cssText = "display: flex; align-items: center; gap: 10px;";
-    li.innerHTML = `<span style="color: ${color}; font-weight: bold;">${symbol}</span> ${step}`;
+    li.innerHTML = `<i data-lucide="${iconName}" style="width: 16px; height: 16px; color: ${color}; flex-shrink: 0;"></i> ${step}`;
     milestoneListContainer.appendChild(li);
   });
+  refreshIcons();
 }
 
 function getFilteredCompanies() {
@@ -1131,17 +1151,36 @@ function renderDashboard() {
   document.getElementById("stat-doc-count").innerText = `${checkRate}%`;
 
   // Update training stats on Education sub-panel
-  const totalEdu = companies.length;
-  if (totalEdu > 0) {
-    const hrCount = companies.filter(c => c.education.hr === "이수").length;
-    const accCount = companies.filter(c => c.education.accounting === "이수").length;
-    const lawCount = companies.filter(c => c.education.law === "이수").length;
-    document.getElementById("edu-stat-hr").innerText = `${Math.round(hrCount / totalEdu * 100)}%`;
-    document.getElementById("edu-stat-hr").nextElementSibling.innerText = `${totalEdu}개사 중 ${hrCount}개사 이수`;
-    document.getElementById("edu-stat-acc").innerText = `${Math.round(accCount / totalEdu * 100)}%`;
-    document.getElementById("edu-stat-acc").nextElementSibling.innerText = `${totalEdu}개사 중 ${accCount}개사 이수`;
-    document.getElementById("edu-stat-law").innerText = `${Math.round(lawCount / totalEdu * 100)}%`;
-    document.getElementById("edu-stat-law").nextElementSibling.innerText = `${totalEdu}개사 중 ${lawCount}개사 이수`;
+  // Update training stats on Education sub-panel
+  if (currentUser.role === "coach") {
+    const totalEdu = companies.length;
+    if (totalEdu > 0) {
+      const hrCount = companies.filter(c => c.education.hr === "이수").length;
+      const accCount = companies.filter(c => c.education.accounting === "이수").length;
+      const lawCount = companies.filter(c => c.education.law === "이수").length;
+      document.getElementById("edu-stat-hr").innerText = `${Math.round(hrCount / totalEdu * 100)}%`;
+      document.getElementById("edu-stat-hr").nextElementSibling.innerText = `${totalEdu}개사 중 ${hrCount}개사 이수`;
+      document.getElementById("edu-stat-acc").innerText = `${Math.round(accCount / totalEdu * 100)}%`;
+      document.getElementById("edu-stat-acc").nextElementSibling.innerText = `${totalEdu}개사 중 ${accCount}개사 이수`;
+      document.getElementById("edu-stat-law").innerText = `${Math.round(lawCount / totalEdu * 100)}%`;
+      document.getElementById("edu-stat-law").nextElementSibling.innerText = `${totalEdu}개사 중 ${lawCount}개사 이수`;
+    }
+  } else {
+    const myCompany = companies.find(c => c.id === currentUser.companyId);
+    if (myCompany) {
+      const hrFin = myCompany.education.hr === "이수";
+      const accFin = myCompany.education.accounting === "이수";
+      const lawFin = myCompany.education.law === "이수";
+      
+      document.getElementById("edu-stat-hr").innerText = hrFin ? "100%" : "0%";
+      document.getElementById("edu-stat-hr").nextElementSibling.innerText = hrFin ? "이수 완료" : "교육 대기 (미이수)";
+      
+      document.getElementById("edu-stat-acc").innerText = accFin ? "100%" : "0%";
+      document.getElementById("edu-stat-acc").nextElementSibling.innerText = accFin ? "이수 완료" : "교육 대기 (미이수)";
+      
+      document.getElementById("edu-stat-law").innerText = lawFin ? "100%" : "0%";
+      document.getElementById("edu-stat-law").nextElementSibling.innerText = lawFin ? "이수 완료" : "교육 대기 (미이수)";
+    }
   }
 
   // Render Table
@@ -1153,13 +1192,13 @@ function renderDashboard() {
     // Unified education check indicator
     const isEducationFinished = company.education.hr === "이수" && company.education.accounting === "이수" && company.education.law === "이수";
     const eduBadgeHTML = isEducationFinished 
-      ? `<span class="tag tag-early" style="background-color:rgba(16,185,129,0.1); color:var(--success);">이수 완료 🟢</span>` 
-      : `<span class="tag tag-pre" style="background-color:rgba(245,158,11,0.1); color:var(--warning);">과정 진행중 ⏳</span>`;
+      ? `<span class="tag tag-success"><i data-lucide="check-circle" style="width: 14px; height: 14px;"></i>이수 완료</span>` 
+      : `<span class="tag tag-pre"><i data-lucide="clock" style="width: 14px; height: 14px;"></i>과정 진행중</span>`;
 
     // Monthly checklist circle badges (Coded iteratively)
     let checksHTML = `<div style="display:flex; gap: 4px; align-items:center;">`;
-    const months = ["m5", "m6", "m7", "m8", "m9", "m10", "m11", "m12"];
-    const monthLabels = ["5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+    const months = ["m7", "m8", "m9", "m10", "m11", "m12"];
+    const monthLabels = ["7월", "8월", "9월", "10월", "11월", "12월"];
 
     months.forEach((m, idx) => {
       const isChecked = company.budget.checks[m];
@@ -1186,14 +1225,13 @@ function renderDashboard() {
       <td>${eduBadgeHTML}</td>
       <td style="text-align: center; font-weight: 600;">${company.coachingCount}회</td>
       <td>
-        <div style="display:flex; gap: 4px;">
-          <button class="action-btn" onclick="openDetailModal(${company.id})" style="background-color: var(--bg-primary);">🔍 상세조회</button>
-          <button class="action-btn" onclick="openCoachingModal(${company.id})">
-            ${currentUser.role === "coach" ? "✍️ 코칭등록" : "🔍 내역보기"}
+        <div style="display:flex; gap: 4px; align-items: center;">
+          <button class="action-btn table-action-btn" onclick="openDetailModal(${company.id})" style="background-color: var(--bg-primary); display: flex; align-items: center; gap: 4px;"><i data-lucide="search" style="width: 12px; height: 12px;"></i>상세조회</button>
+          <button class="action-btn table-action-btn" onclick="openCoachingModal(${company.id})" style="display: flex; align-items: center; gap: 4px;">
+            ${currentUser.role === "coach" ? '<i data-lucide="edit-3" style="width: 12px; height: 12px;"></i>코칭등록' : '<i data-lucide="eye" style="width: 12px; height: 12px;"></i>내역보기'}
           </button>
           ${currentUser.role === "coach" ? `
-            <button class="action-btn" onclick="openEditCompanyModal(${company.id})" style="border-color: var(--accent-color); color: var(--accent-color);">⚙️ 수정</button>
-            <button class="action-btn" onclick="deleteCompany(${company.id})" style="border-color: var(--danger); color: var(--danger);">🗑️ 삭제</button>
+            <button class="action-btn table-action-btn" onclick="openEditCompanyModal(${company.id})" style="border-color: var(--accent-color); color: var(--accent-color); display: flex; align-items: center; gap: 4px;"><i data-lucide="settings" style="width: 12px; height: 12px;"></i>수정</button>
           ` : ""}
         </div>
       </td>
@@ -1213,12 +1251,13 @@ function renderDashboard() {
       <td style="font-size: 0.85rem; color: var(--text-secondary);">${c.education.content}</td>
       ${currentUser.role === "coach" ? `
         <td class="coach-only-cell">
-          <button class="action-btn" onclick="openEditEduModal(${c.id})" style="font-size: 0.75rem;">⚙️ 변경</button>
+          <button class="action-btn" onclick="openEditEduModal(${c.id})" style="font-size: 0.75rem; display: flex; align-items: center; gap: 4px;"><i data-lucide="settings" style="width: 12px; height: 12px;"></i>변경</button>
         </td>
       ` : ""}
     `;
     educationTableBody.appendChild(tr);
   });
+  refreshIcons();
 }
 
 // --- DELETE COMPANY (COACH ONLY) ---
@@ -1291,7 +1330,7 @@ function renderChatSection() {
   // Load chat box
   const activeCompany = filtered.find(c => c.id === selectedCompanyId);
   if (activeCompany) {
-    document.querySelector("#current-chat-title span").innerText = `💬 ${activeCompany.name} 소통 및 멘토링 채널 (한남대 창업지원단 전담코치: ${coachName})`;
+    document.querySelector("#current-chat-title span").innerText = `${activeCompany.name} 소통 및 멘토링 채널 (전담코치: ${coachName})`;
     
     if (currentUser.role === "coach") {
       btnArchiveChat.style.display = "inline-block";
@@ -1315,20 +1354,22 @@ function renderChatSection() {
         textContentHTML = `
           <div class="message-bubble" style="display:flex; flex-direction:column; gap:4px;">
             <div>${msg.text}</div>
-            <a href="${msg.file.data}" ${downloadAttr} ${targetAttr} class="chat-file-link">
-              <span>📄 ${msg.file.name} ${isUrl ? '(구글 드라이브)' : '(다운로드)'}</span>
+            <a href="${msg.file.data}" ${downloadAttr} ${targetAttr} class="chat-file-link" style="display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="file" style="width: 14px; height: 14px;"></i>
+              <span>${msg.file.name} ${isUrl ? '(구글 드라이브)' : '(다운로드)'}</span>
             </a>
           </div>
         `;
       }
 
       msgDiv.innerHTML = `
-        <span class="message-sender">${isSentByCoach ? coachName : '창업 대표자'}</span>
+        <span class="message-sender">${isSentByCoach ? coachName : `${activeCompany.name} ${activeCompany.representative} 대표`}</span>
         ${textContentHTML}
       `;
       chatMessagesContainer.appendChild(msgDiv);
     });
     chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+    refreshIcons();
   } else {
     document.querySelector("#current-chat-title span").innerText = "선택된 대화 채널이 없거나 권한이 없습니다.";
     chatMessagesContainer.innerHTML = "";
@@ -1370,11 +1411,13 @@ chatFileInput.addEventListener("change", (e) => {
             data: res.fileUrl // 구글 드라이브 파일 링크 저장
           };
           attachmentPreviewArea.innerHTML = `
-            <span class="attachment-pill" style="color:var(--success);">
-              ✔ Google Drive 연동 완료: ${file.name}
+            <span class="attachment-pill" style="color:var(--success); display: flex; align-items: center; gap: 4px;">
+              <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i>
+              Google Drive 연동 완료: ${file.name}
               <button type="button" class="attachment-remove" onclick="clearAttachment()">&times;</button>
             </span>
           `;
+          refreshIcons();
         } else {
           throw new Error(res ? res.message : "응답 에러");
         }
@@ -1384,11 +1427,13 @@ chatFileInput.addEventListener("change", (e) => {
         // Fallback to local storage base64
         currentAttachedFile = { name: file.name, type: file.type, data: rawData };
         attachmentPreviewArea.innerHTML = `
-          <span class="attachment-pill">
-            📎 로컬 저장 완료: ${file.name}
+          <span class="attachment-pill" style="display: flex; align-items: center; gap: 4px;">
+            <i data-lucide="paperclip" style="width: 14px; height: 14px;"></i>
+            로컬 저장 완료: ${file.name}
             <button type="button" class="attachment-remove" onclick="clearAttachment()">&times;</button>
           </span>
         `;
+        refreshIcons();
       });
 
     } else {
@@ -1399,11 +1444,13 @@ chatFileInput.addEventListener("change", (e) => {
         data: rawData
       };
       attachmentPreviewArea.innerHTML = `
-        <span class="attachment-pill">
-          📎 ${file.name}
+        <span class="attachment-pill" style="display: flex; align-items: center; gap: 4px;">
+          <i data-lucide="paperclip" style="width: 14px; height: 14px;"></i>
+          ${file.name}
           <button type="button" class="attachment-remove" onclick="clearAttachment()">&times;</button>
         </span>
       `;
+      refreshIcons();
     }
   };
   reader.readAsDataURL(file);
@@ -1518,21 +1565,29 @@ window.openDetailModal = function(id) {
     activeCompany.coachingLogs.forEach(log => {
       const isArchive = log.content.includes("[상시채널 질의연동]");
       const div = document.createElement("div");
-      div.style.cssText = `background: #ffffff; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.8rem; border-left: 4px solid ${isArchive ? '#10b981' : 'var(--accent-color)'};`;
+      div.style.cssText = `background: #ffffff; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.8rem; box-shadow: 0 1px 3px rgba(0,0,0,0.02);`;
       
+      const logBadge = isArchive 
+        ? `<span class="tag tag-success" style="font-size: 0.7rem; padding: 2px 6px; margin-right: 6px;"><i data-lucide="message-square" style="width: 10px; height: 10px;"></i>소통로그 연동</span>`
+        : `<span class="tag tag-early" style="font-size: 0.7rem; padding: 2px 6px; margin-right: 6px;"><i data-lucide="edit-3" style="width: 10px; height: 10px;"></i>코칭등록</span>`;
+
       div.innerHTML = `
-        <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-weight:600;">
-          <span style="color: ${isArchive ? '#10b981' : 'var(--text-primary)'}">[${log.type} - ${log.field}] ${isArchive ? '🟢 소통로그 연동' : '🔵 코칭등록'}</span>
+        <div style="display:flex; justify-content:space-between; align-items: center; margin-bottom:6px; font-weight:600;">
+          <div style="display: flex; align-items: center;">
+            ${logBadge}
+            <span style="color: var(--text-primary); font-size: 0.8rem; font-weight: 700;">${log.type} - ${log.field}</span>
+          </div>
           <span style="color: var(--text-secondary); font-size:0.75rem;">${log.date}</span>
         </div>
-        <div style="color: var(--text-primary); line-height: 1.4;">${log.content}</div>
+        <div style="color: var(--text-primary); line-height: 1.4; padding-left: 4px;">${log.content}</div>
       `;
       dCombinedHistory.appendChild(div);
     });
   }
 
   detailModal.style.display = "flex";
-};
+  refreshIcons();
+}
 
 const closeDetailModal = () => detailModal.style.display = "none";
 btnCloseDetail.addEventListener("click", closeDetailModal);
@@ -1557,13 +1612,13 @@ window.openCoachingModal = function(id) {
   } else {
     activeCompany.coachingLogs.forEach(log => {
       const div = document.createElement("div");
-      div.style.cssText = "background: rgba(0,0,0,0.02); padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; border-left: 3px solid var(--accent-color);";
+      div.style.cssText = "background: #f8fafc; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.8rem; box-shadow: 0 1px 2px rgba(0,0,0,0.01);";
       div.innerHTML = `
         <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-weight:600;">
-          <span>[${log.type} - ${log.field}] 코칭</span>
+          <span style="display: flex; align-items: center; gap: 4px;"><i data-lucide="calendar" style="width: 12px; height: 12px; color: var(--accent-color);"></i>[${log.type} - ${log.field}] 코칭</span>
           <span style="color: var(--text-secondary); font-size:0.75rem;">${log.date}</span>
         </div>
-        <div>${log.content}</div>
+        <div style="padding-top: 4px; color: var(--text-primary); line-height: 1.4;">${log.content}</div>
       `;
       modalHistoryList.appendChild(div);
     });
@@ -1577,7 +1632,8 @@ window.openCoachingModal = function(id) {
   }
 
   coachModal.style.display = "flex";
-};
+  refreshIcons();
+}
 
 function closeModal() {
   coachModal.style.display = "none";
@@ -1652,6 +1708,7 @@ btnAddCompany.addEventListener("click", () => {
   document.getElementById("c-key").value = `HN-NEW-${randNum}`;
   document.getElementById("c-password").value = "1234";
 
+  if (btnDeleteCompanyModal) btnDeleteCompanyModal.style.display = "none";
   companyModal.style.display = "flex";
 });
 
@@ -1661,6 +1718,7 @@ window.openEditCompanyModal = function(id) {
 
   companyModalTitle.innerText = `⚙️ ${target.name} 정보 수정`;
   companyEditId.value = target.id;
+  if (btnDeleteCompanyModal) btnDeleteCompanyModal.style.display = "inline-flex";
 
   document.getElementById("c-name").value = target.name;
   document.getElementById("c-type").value = target.type;
@@ -1681,8 +1739,6 @@ window.openEditCompanyModal = function(id) {
   document.getElementById("c-onestop").value = target.oneStopLink || "";
 
   // Sync checkboxes for monthly checks
-  document.getElementById("chk-m5").checked = target.budget.checks.m5;
-  document.getElementById("chk-m6").checked = target.budget.checks.m6;
   document.getElementById("chk-m7").checked = target.budget.checks.m7;
   document.getElementById("chk-m8").checked = target.budget.checks.m8;
   document.getElementById("chk-m9").checked = target.budget.checks.m9;
@@ -1698,6 +1754,17 @@ window.openEditCompanyModal = function(id) {
 const closeCompanyModal = () => companyModal.style.display = "none";
 btnCloseCompany.addEventListener("click", closeCompanyModal);
 btnCancelCompany.addEventListener("click", closeCompanyModal);
+
+if (btnDeleteCompanyModal) {
+  btnDeleteCompanyModal.addEventListener("click", () => {
+    const idVal = companyEditId.value;
+    if (idVal) {
+      const companyId = parseInt(idVal);
+      closeCompanyModal();
+      deleteCompany(companyId);
+    }
+  });
+}
 
 btnGenKey.addEventListener("click", () => {
   const randNum = Math.floor(1000 + Math.random() * 9000);
@@ -1727,8 +1794,6 @@ companyForm.addEventListener("submit", (e) => {
   const bStatus = document.getElementById("c-budget-status").value;
 
   const checks = {
-    m5: document.getElementById("chk-m5").checked,
-    m6: document.getElementById("chk-m6").checked,
     m7: document.getElementById("chk-m7").checked,
     m8: document.getElementById("chk-m8").checked,
     m9: document.getElementById("chk-m9").checked,
@@ -2038,6 +2103,7 @@ function renderSurveySection() {
     });
     strategyTextarea.value = "";
   }
+  refreshIcons();
 }
 
 // Submit Survey Form Listener
@@ -2327,7 +2393,9 @@ function renderReportSection() {
   reportMonths.forEach(m => {
     const isChecked = activeCompany.budget.checks[m];
     const td = document.createElement("td");
-    td.innerText = isChecked ? "🟢" : "⚪";
+    td.innerHTML = isChecked 
+      ? `<span style="color: var(--success); font-weight: 700;">완료</span>` 
+      : `<span style="color: var(--text-secondary); opacity: 0.5;">-</span>`;
     budgetRow.appendChild(td);
   });
 
@@ -2415,6 +2483,7 @@ function renderReportSection() {
     if (repFinalEvalSection) repFinalEvalSection.style.display = "none";
     if (reportCoachEvalInputContainer) reportCoachEvalInputContainer.style.display = "none";
   }
+  refreshIcons();
 }
 
 // Dropdown Change listener in Report view
@@ -2503,6 +2572,7 @@ function renderStrategyReportSection() {
     });
     document.getElementById("st-rep-survey-strategy").innerText = "사전조사 결과가 없어 맞춤형 지원 전략이 수립되지 않았습니다.";
   }
+  refreshIcons();
 }
 
 // Dropdown Change listener in Survey view

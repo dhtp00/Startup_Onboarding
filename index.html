@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -17,8 +19,8 @@
     
     <!-- 1. LOGIN CARD -->
     <div class="login-card" id="card-login">
-      <div style="text-align: center; margin-bottom: 24px;">
-        <span style="font-size: 2.5rem;">🏫</span>
+      <div style="text-align: center; margin-bottom: 24px; display: flex; flex-direction: column; align-items: center;">
+        <i data-lucide="school" style="width: 48px; height: 48px; color: var(--accent-color); margin-bottom: 8px;"></i>
         <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin-top: 10px;">한남대학교 창업지원단</h2>
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">2026년 창업중심대학 스타트업 코치 온보딩</p>
       </div>
@@ -34,7 +36,7 @@
         </div>
         
         <div id="login-loading-status" style="font-size: 0.82rem; color: var(--accent-color); text-align: center; margin-bottom: 12px; font-weight: 500; display: none;">
-          ⏳ 실시간 클라우드 데이터를 동기화하는 중...
+          실시간 클라우드 데이터를 동기화하는 중...
         </div>
 
         <button type="submit" class="send-btn" id="btn-login-submit" style="width: 100%; padding: 12px; font-size: 0.95rem; margin-bottom: 16px;">
@@ -43,14 +45,14 @@
       </form>
 
       <div style="text-align: center;">
-        <a href="#" id="link-go-signup" style="font-size: 0.8rem; color: var(--accent-color); text-decoration: none; font-weight: 600;">🏢 가입 키(Key)로 스타트업 계정 만들기</a>
+        <a href="#" id="link-go-signup" style="font-size: 0.8rem; color: var(--accent-color); text-decoration: none; font-weight: 600;">가입 키(Key)로 스타트업 계정 만들기</a>
       </div>
     </div>
 
     <!-- 2. SIGNUP CARD -->
     <div class="login-card" id="card-signup" style="display: none;">
-      <div style="text-align: center; margin-bottom: 24px;">
-        <span style="font-size: 2.5rem;">🔑</span>
+      <div style="text-align: center; margin-bottom: 24px; display: flex; flex-direction: column; align-items: center;">
+        <i data-lucide="key-round" style="width: 48px; height: 48px; color: var(--accent-color); margin-bottom: 8px;"></i>
         <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin-top: 10px;">스타트업 간편 회원가입</h2>
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">한남대학교 창업지원단 제공 가입 키가 필요합니다</p>
       </div>
@@ -75,14 +77,14 @@
       </form>
 
       <div style="text-align: center;">
-        <a href="#" id="link-go-login" style="font-size: 0.8rem; color: var(--text-secondary); text-decoration: none; font-weight: 500;">👈 이미 계정이 있으신가요? 로그인 화면으로</a>
+        <a href="#" id="link-go-login" style="font-size: 0.8rem; color: var(--text-secondary); text-decoration: none; font-weight: 500;">이미 계정이 있으신가요? 로그인 화면으로</a>
       </div>
     </div>
 
     <!-- 3. PASSWORD CHANGE CARD (MANDATORY FOR FIRST LOGIN) -->
     <div class="login-card" id="card-change-password" style="display: none;">
-      <div style="text-align: center; margin-bottom: 24px;">
-        <span style="font-size: 2.5rem;">🔒</span>
+      <div style="text-align: center; margin-bottom: 24px; display: flex; flex-direction: column; align-items: center;">
+        <i data-lucide="lock" style="width: 48px; height: 48px; color: var(--accent-color); margin-bottom: 8px;"></i>
         <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin-top: 10px;">최초 로그인 비밀번호 변경</h2>
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">안전한 서비스 이용을 위해 비밀번호를 변경해 주세요.</p>
       </div>
@@ -108,7 +110,7 @@
   <!-- Sidebar Navigation (Hidden before login) -->
   <aside id="main-sidebar" style="display: none;">
     <div class="logo">
-      <div class="logo-icon">🏫</div>
+      <div class="logo-icon"><i data-lucide="school" style="width: 18px; height: 18px;"></i></div>
       <div style="display: flex; flex-direction: column;">
         <span style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">한남대학교</span>
         <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">창업지원단</span>
@@ -122,27 +124,26 @@
     </div>
 
     <ul class="menu-list">
-      <li><a href="#" class="menu-item active" id="menu-dash">📊 종합 대시보드</a></li>
-      <li><a href="#" class="menu-item" id="menu-chat">💬 상시 소통 채널</a></li>
-      <li><a href="#" class="menu-item" id="menu-edu">📚 필수 교육 현황</a></li>
-      <li><a href="#" class="menu-item" id="menu-survey">✍️ 기업 사전 조사</a></li>
-      <li><a href="#" class="menu-item" id="menu-report">📋 모니터링 보고서</a></li>
-      <li><a href="#" class="menu-item" id="menu-strategy-report" style="display: none;">📋 맞춤지원전략 보고서</a></li>
-      <li><a href="#" class="menu-item" id="menu-setting" style="display: none;">⚙️ 플랫폼 설정 관리</a></li>
+      <li><a href="#" class="menu-item active" id="menu-dash"><i data-lucide="layout-dashboard" class="sidebar-icon"></i>종합 대시보드</a></li>
+      <li><a href="#" class="menu-item" id="menu-chat"><i data-lucide="message-square" class="sidebar-icon"></i>상시 소통 채널</a></li>
+      <li><a href="#" class="menu-item" id="menu-edu"><i data-lucide="book-open" class="sidebar-icon"></i>필수 교육 현황</a></li>
+      <li><a href="#" class="menu-item" id="menu-survey"><i data-lucide="clipboard-list" class="sidebar-icon"></i>기업 사전 조사</a></li>
+      <li><a href="#" class="menu-item" id="menu-report"><i data-lucide="file-text" class="sidebar-icon"></i>모니터링 보고서</a></li>
+      <li><a href="#" class="menu-item" id="menu-strategy-report" style="display: none;"><i data-lucide="file-spreadsheet" class="sidebar-icon"></i>맞춤지원전략 보고서</a></li>
+      <li><a href="#" class="menu-item" id="menu-setting" style="display: none;"><i data-lucide="settings" class="sidebar-icon"></i>플랫폼 설정 관리</a></li>
     </ul>
 
     <!-- Logout button inside sidebar -->
     <div style="margin-top: 16px;">
-      <button class="action-btn" id="btn-logout" style="width: 100%; background-color: rgba(239, 68, 68, 0.1); color: var(--danger); border-color: rgba(239, 68, 68, 0.2);">
-        🔓 로그아웃
+      <button class="action-btn" id="btn-logout" style="width: 100%; background-color: rgba(239, 68, 68, 0.1); color: var(--danger); border-color: rgba(239, 68, 68, 0.2); display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>로그아웃
       </button>
     </div>
     
     <!-- Quick Links Sidebar Footer -->
     <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border-color);">
-      <p style="font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px;">🔗 상시 소통 채널 바로가기</p>
-      <a href="https://notion.so" target="_blank" style="display: block; font-size: 0.75rem; color: var(--text-secondary); text-decoration: none; margin-bottom: 6px;">· Notion 공유 아카이브</a>
-      <a href="https://open.kakao.com" target="_blank" style="display: block; font-size: 0.75rem; color: var(--text-secondary); text-decoration: none;">· 코치-기업 카카오톡 오픈채팅</a>
+      <p style="font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; display: flex; align-items: center; gap: 4px;"><i data-lucide="external-link" style="width: 14px; height: 14px;"></i>상시 소통 채널 바로가기</p>
+      <a href="https://open.kakao.com/o/sHvVaQEi" target="_blank" style="display: block; font-size: 0.75rem; color: var(--text-secondary); text-decoration: none;">· 코치-기업 카카오톡 오픈채팅</a>
     </div>
   </aside>
 
@@ -191,8 +192,8 @@
         <!-- Startup Companies List Table (Simplified) -->
         <div>
           <div class="section-title">
-            <span>지원기업 사업비 집행 및 모니터링 현황 (단순화 버전)</span>
-            <button class="action-btn" id="btn-add-company" style="background-color: var(--accent-color); border: none; display: none;">+ 신규 기업 등록</button>
+            <span>지원기업 사업비 집행 및 모니터링 현황</span>
+            <button class="action-btn" id="btn-add-company" style="background-color: var(--accent-color); border: none; display: none; color: #fff; align-items: center; gap: 4px;"><i data-lucide="plus" style="width: 14px; height: 14px;"></i>신규 기업 등록</button>
           </div>
           <div class="table-container">
             <table>
@@ -202,7 +203,7 @@
                   <th>구분</th>
                   <th>대표자 정보</th>
                   <th>핵심 지표(매출/고용)</th>
-                  <th>월별 사업비 집행 점검 (5~12월)</th>
+                  <th>월별 사업비 집행 점검 (7~12월)</th>
                   <th>필수 교육 이수</th>
                   <th>누적 코칭</th>
                   <th>관리</th>
@@ -220,8 +221,8 @@
           <!-- Milestones Card -->
           <div class="card" style="background-color: #ffffff;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-              <h3 style="font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">🎯 2026년 프로그램 주요 이정표 (Milestone)</h3>
-              <button class="action-btn" id="btn-edit-milestone" style="font-size:0.75rem; padding: 4px 8px; display:none;">✏️ 이정표 수정</button>
+              <h3 style="font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 8px;"><i data-lucide="flag" style="width: 18px; height: 18px; color: var(--accent-color);"></i>2026년 프로그램 주요 이정표 (Milestone)</h3>
+              <button class="action-btn" id="btn-edit-milestone" style="font-size:0.75rem; padding: 4px 8px; display:none; align-items: center; gap: 4px;"><i data-lucide="edit" style="width: 12px; height: 12px;"></i>이정표 수정</button>
             </div>
             <ul id="milestone-list" style="list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 0.85rem;">
               <!-- Dynamic Milestones -->
@@ -230,7 +231,7 @@
 
           <!-- Notice Board Card -->
           <div class="card" style="background-color: #ffffff;">
-            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 16px;">📢 창업중심대학 통합 공지사항</h3>
+            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;"><i data-lucide="megaphone" style="width: 18px; height: 18px; color: var(--accent-color);"></i>창업중심대학 통합 공지사항</h3>
             <div style="display: flex; flex-direction: column; gap: 12px;" id="notice-board-container">
               <div style="border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
                 <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 4px;">
@@ -244,7 +245,7 @@
                   <strong style="color: var(--text-secondary);">[안내]</strong>
                   <span style="color: var(--text-secondary);">2026-06-10</span>
                 </div>
-                <p style="font-size: 0.8rem; color: var(--text-primary);">6월 오프라인 대면 네트워킹 데이 일정 및 수요 분야별 멘토링 신청 방법 안내</p>
+                <p style="font-size: 0.8rem; color: var(--text-primary);">6월 오프라인 대면 네트워킹 데일 일정 및 수요 분야별 멘토링 신청 방법 안내</p>
               </div>
             </div>
           </div>
@@ -270,8 +271,8 @@
             <div class="panel-header" id="current-chat-title" style="border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
               <span>채널을 선택하세요</span>
               <!-- Log Archive Button -->
-              <button class="action-btn" id="btn-archive-chat" style="font-size: 0.75rem; background-color: var(--accent-color); color: #fff; border:none; display:none;">
-                📂 질의응답을 코칭로그로 등록
+              <button class="action-btn" id="btn-archive-chat" style="font-size: 0.75rem; background-color: var(--accent-color); color: #fff; border:none; display:none; align-items: center; gap: 4px;">
+                <i data-lucide="folder-archive" style="width: 14px; height: 14px;"></i>질의응답을 코칭로그로 등록
               </button>
             </div>
             <div class="chat-messages" id="chat-messages-container">
@@ -281,10 +282,10 @@
             <div class="chat-input-area" style="flex-direction: column; gap: 8px;">
               <div id="attachment-preview-area" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
               <div style="display: flex; width: 100%; gap: 12px;">
-                <button class="action-btn" id="btn-trigger-file" style="padding: 0 16px;">📎 파일</button>
+                <button class="action-btn" id="btn-trigger-file" style="padding: 0 16px; display: flex; align-items: center; gap: 4px;"><i data-lucide="paperclip" style="width: 14px; height: 14px;"></i>파일</button>
                 <input type="file" id="chat-file-input" style="display: none;" accept="image/*,application/pdf">
                 <input type="text" class="chat-input" id="chat-text-input" placeholder="질문이나 코칭 피드백 내용을 입력하세요...">
-                <button class="send-btn" id="btn-send-message">전송</button>
+                <button class="send-btn" id="btn-send-message" style="display: flex; align-items: center; gap: 4px;"><i data-lucide="send" style="width: 14px; height: 14px;"></i>전송</button>
               </div>
             </div>
           </div>
@@ -338,7 +339,7 @@
       <!-- SECTION 4: 기업 사전 조사 -->
       <section id="section-survey" class="view-section">
         <div class="section-title">
-          <span>📝 창업기업 기초 사전 조사 및 멘토링 요구사항 진단</span>
+          <span style="display: flex; align-items: center; gap: 8px;"><i data-lucide="clipboard-signature" style="width: 20px; height: 20px; color: var(--accent-color);"></i>창업기업 기초 사전 조사 및 멘토링 요구사항 진단</span>
         </div>
         <!-- 코치 전용 기업 선택 드롭다운 -->
         <div id="survey-company-select-container" style="display: none; background: var(--bg-secondary); padding: 16px 24px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 20px; align-items: center; gap: 12px;">
@@ -349,8 +350,9 @@
         </div>
 
         <div class="survey-card">
-          <div id="survey-startup-info" style="margin-bottom: 20px; padding: 12px; background: rgba(79, 70, 229, 0.05); border-radius: 8px; border: 1px solid rgba(79, 70, 229, 0.1);">
-            <strong>ℹ️ 안내:</strong> 본 설문조사는 기업의 현재 역량을 정확하게 진단하고 맞춤형 성장 전략을 수립하기 위한 서식입니다.
+          <div id="survey-startup-info" style="margin-bottom: 20px; padding: 12px; background: rgba(79, 70, 229, 0.05); border-radius: 8px; border: 1px solid rgba(79, 70, 229, 0.1); display: flex; align-items: center; gap: 6px;">
+            <i data-lucide="info" style="width: 16px; height: 16px; color: var(--accent-color); flex-shrink: 0;"></i>
+            <span><strong>안내:</strong> 본 설문조사는 기업의 현재 역량을 정확하게 진단하고 맞춤형 성장 전략을 수립하기 위한 서식입니다.</span>
           </div>
           
           <form id="survey-form-el">
@@ -530,8 +532,8 @@
             </div>
 
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
-              <button type="button" class="action-btn" id="btn-save-draft" style="padding: 12px 24px; background-color: var(--text-secondary); color: #fff; border: 1px solid var(--border-color); border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem;">💾 임시 저장</button>
-              <button type="submit" class="send-btn" id="btn-submit-survey" style="padding: 12px 24px;">📝 사전 조사 답변 제출</button>
+              <button type="button" class="action-btn" id="btn-save-draft" style="padding: 12px 24px; background-color: var(--text-secondary); color: #fff; border: 1px solid var(--border-color); border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;"><i data-lucide="save" style="width: 16px; height: 16px;"></i>임시 저장</button>
+              <button type="submit" class="send-btn" id="btn-submit-survey" style="padding: 12px 24px; display: flex; align-items: center; gap: 6px;"><i data-lucide="check" style="width: 16px; height: 16px;"></i>사전 조사 답변 제출</button>
             </div>
           </form>
         </div>
@@ -540,7 +542,7 @@
       <!-- SECTION 5: 모니터링 보고서 -->
       <section id="section-report" class="view-section">
         <div class="section-title">
-          <span>📋 창업기업별 모니터링 종합 보고서 출력</span>
+          <span style="display: flex; align-items: center; gap: 8px;"><i data-lucide="file-check" style="width: 20px; height: 20px; color: var(--accent-color);"></i>창업기업별 모니터링 종합 보고서 출력</span>
         </div>
         
         <div class="report-controls" style="flex-direction: column; align-items: stretch; gap: 16px;">
@@ -551,8 +553,8 @@
                 <!-- Javascript will load company list -->
               </select>
             </div>
-            <button class="action-btn" id="btn-print-report" style="background-color: var(--accent-color); color: #fff; border: none; padding: 10px 20px; font-weight: 600; border-radius: 8px; cursor: pointer;">
-              🖨️ 보고서 인쇄 (A4 출력)
+            <button class="action-btn" id="btn-print-report" style="background-color: var(--accent-color); color: #fff; border: none; padding: 10px 20px; font-weight: 600; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="printer" style="width: 16px; height: 16px;"></i>보고서 인쇄 (A4 출력)
             </button>
           </div>
           
@@ -836,7 +838,7 @@
       <!-- SECTION 6: 사전기업 조사 및 맞춤형 지원 전략 수립 결과보고서 (코치전용) -->
       <section id="section-strategy-report" class="view-section">
         <div class="section-title">
-          <span>📋 사전기업 조사 및 맞춤형 지원전략 수립 결과보고서 출력 (코치용)</span>
+          <span style="display: flex; align-items: center; gap: 8px;"><i data-lucide="file-spreadsheet" style="width: 20px; height: 20px; color: var(--accent-color);"></i>사전기업 조사 및 맞춤형 지원전략 수립 결과보고서 출력 (코치용)</span>
         </div>
         
         <div class="report-controls" style="flex-direction: column; align-items: stretch; gap: 16px;">
@@ -847,8 +849,8 @@
                 <!-- Loaded dynamically -->
               </select>
             </div>
-            <button class="action-btn" id="btn-print-strategy-report" style="background-color: var(--accent-color); color: #fff; border: none; padding: 10px 20px; font-weight: 600; border-radius: 8px; cursor: pointer;">
-              🖨️ 보고서 인쇄 (A4 출력)
+            <button class="action-btn" id="btn-print-strategy-report" style="background-color: var(--accent-color); color: #fff; border: none; padding: 10px 20px; font-weight: 600; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="printer" style="width: 16px; height: 16px;"></i>보고서 인쇄 (A4 출력)
             </button>
           </div>
         </div>
@@ -953,7 +955,7 @@
             </tr>
             <tr>
               <td colspan="4" style="padding: 16px; background-color: rgba(79, 70, 229, 0.02); line-height: 1.6;">
-                <div style="font-weight: 700; margin-bottom: 8px; color: var(--accent-color); font-size: 0.95rem;">💡 한남대 창업지원단 전담코치 맞춤형 지원 전략 수립 의견</div>
+                <div style="font-weight: 700; margin-bottom: 8px; color: var(--accent-color); font-size: 0.95rem; display: flex; align-items: center; gap: 6px;"><i data-lucide="lightbulb" style="width: 16px; height: 16px;"></i>한남대 창업지원단 전담코치 맞춤형 지원 전략 수립 의견</div>
                 <div id="st-rep-survey-strategy" style="white-space: pre-wrap; font-size: 0.85rem; color: var(--text-primary); min-height: 80px;">-</div>
               </td>
             </tr>
@@ -1019,7 +1021,7 @@
       <div style="display: flex; flex-direction: column; gap: 20px;">
         <!-- 기업개요 카드 -->
         <div style="background: rgba(0,0,0,0.02); padding: 16px; border-radius: 8px; border: 1px solid var(--border-color);">
-          <h4 style="font-size: 0.9rem; margin-bottom: 8px; color: var(--accent-color);">🏢 기업 개요 및 프로필</h4>
+          <h4 style="font-size: 0.9rem; margin-bottom: 8px; color: var(--accent-color); display: flex; align-items: center; gap: 6px;"><i data-lucide="building" style="width: 16px; height: 16px;"></i>기업 개요 및 프로필</h4>
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.82rem;">
             <div><strong>기업명:</strong> <span id="detail-name">-</span></div>
             <div><strong>구분:</strong> <span id="detail-type">-</span></div>
@@ -1030,13 +1032,13 @@
             <div><strong>창업일:</strong> <span id="detail-est-date">-</span></div>
             <div><strong>소재지:</strong> <span id="detail-address">-</span></div>
             <div style="grid-column: span 2;"><strong>원스톱 지원 연계:</strong> <span id="detail-onestop" style="color: var(--accent-color); font-weight: 600;">-</span></div>
-            <div style="grid-column: span 2; color: var(--warning); font-weight: bold; margin-top: 4px;"><strong>🔑 가입 연동 코드(Key):</strong> <span id="detail-invitation-key" style="letter-spacing:1px;">-</span></div>
+            <div style="grid-column: span 2; color: var(--warning); font-weight: bold; margin-top: 4px; display: flex; align-items: center; gap: 4px;"><strong><i data-lucide="key" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i>가입 연동 코드(Key):</strong> <span id="detail-invitation-key" style="letter-spacing:1px;">-</span></div>
           </div>
         </div>
 
         <!-- 사업비 집행 상황 -->
         <div style="background: rgba(0,0,0,0.02); padding: 16px; border-radius: 8px; border: 1px solid var(--border-color);">
-          <h4 style="font-size: 0.9rem; margin-bottom: 8px; color: var(--accent-color);">💰 사업비(정부지원금) 집행 모니터링</h4>
+          <h4 style="font-size: 0.9rem; margin-bottom: 8px; color: var(--accent-color); display: flex; align-items: center; gap: 6px;"><i data-lucide="wallet" style="width: 16px; height: 16px;"></i>사업비(정부지원금) 집행 모니터링</h4>
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.82rem;">
             <div><strong>모니터링 평가:</strong> <span id="detail-budget-status">-</span></div>
             <div style="grid-column: span 2;"><strong>점검 완료 월:</strong> <span id="detail-budget-checks">-</span></div>
@@ -1045,7 +1047,7 @@
 
         <!-- 필수 교육 수강 상황 -->
         <div style="background: rgba(0,0,0,0.02); padding: 16px; border-radius: 8px; border: 1px solid var(--border-color);">
-          <h4 style="font-size: 0.9rem; margin-bottom: 8px; color: var(--accent-color);">🎓 필수 교육 이수 상황 및 자기주도 학습</h4>
+          <h4 style="font-size: 0.9rem; margin-bottom: 8px; color: var(--accent-color); display: flex; align-items: center; gap: 6px;"><i data-lucide="graduation-cap" style="width: 16px; height: 16px;"></i>필수 교육 이수 상황 및 자기주도 학습</h4>
           <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; font-size: 0.82rem; text-align: center;">
             <div style="background: #fff; padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
               <div>노무 실무</div>
@@ -1064,7 +1066,7 @@
 
         <!-- 코칭 일지 및 소통 로그 기록 리스트 -->
         <div>
-          <h4 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--text-primary); border-bottom: 1px solid var(--border-color); padding-bottom: 4px;">📜 통합 코칭 로그 히스토리 (질의응답 연동 포함)</h4>
+          <h4 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--text-primary); border-bottom: 1px solid var(--border-color); padding-bottom: 4px; display: flex; align-items: center; gap: 6px;"><i data-lucide="scroll" style="width: 16px; height: 16px; color: var(--accent-color);"></i>통합 코칭 로그 히스토리 (질의응답 연동 포함)</h4>
           <div id="detail-combined-history" style="display:flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto;">
             <!-- Render logs dynamic -->
           </div>
@@ -1081,7 +1083,7 @@
   <div class="modal-overlay" id="milestone-modal">
     <div class="modal">
       <div class="modal-header">
-        <h3>2026년 이정표(Milestone) 편집</h3>
+        <h3 style="display: flex; align-items: center; gap: 6px;"><i data-lucide="milestone" style="width: 18px; height: 18px; color: var(--accent-color);"></i>2026년 이정표(Milestone) 편집</h3>
         <button class="close-btn" id="btn-close-milestone">&times;</button>
       </div>
       <form id="milestone-form">
@@ -1103,7 +1105,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="action-btn" id="btn-cancel-milestone">취소</button>
-          <button type="submit" class="action-btn" style="background-color: var(--accent-color); border: none;">변경 사항 저장</button>
+          <button type="submit" class="action-btn" style="background-color: var(--accent-color); border: none; color: #fff;">변경 사항 저장</button>
         </div>
       </form>
     </div>
@@ -1113,7 +1115,7 @@
   <div class="modal-overlay" id="company-modal">
     <div class="modal" style="width: 550px; max-height: 90vh; overflow-y: auto;">
       <div class="modal-header">
-        <h3 id="company-modal-title">신규 기업 등록</h3>
+        <h3 id="company-modal-title" style="display: flex; align-items: center; gap: 6px;"><i data-lucide="user-plus" style="width: 18px; height: 18px; color: var(--accent-color);"></i>신규 기업 등록</h3>
         <button class="close-btn" id="btn-close-company">&times;</button>
       </div>
       <form id="company-form">
@@ -1192,10 +1194,8 @@
         </div>
 
         <div style="border-top: 1px solid var(--border-color); padding-top: 12px;">
-          <label style="font-weight:600; font-size:0.8rem; color:var(--text-secondary); margin-bottom:8px; display:block;">🗓️ 월별 사업비 집행 점검 (체크 시 완료)</label>
+          <label style="font-weight:600; font-size:0.8rem; color:var(--text-secondary); margin-bottom:8px; display:flex; align-items:center; gap:6px;"><i data-lucide="calendar" style="width: 14px; height: 14px; color: var(--accent-color);"></i>월별 사업비 집행 점검 (체크 시 완료)</label>
           <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
-            <label style="font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="chk-m5"> 5월</label>
-            <label style="font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="chk-m6"> 6월</label>
             <label style="font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="chk-m7"> 7월</label>
             <label style="font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="chk-m8"> 8월</label>
             <label style="font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="chk-m9"> 9월</label>
@@ -1216,9 +1216,14 @@
           </div>
         </div>
 
-        <div class="modal-footer" style="border-top: 1px solid var(--border-color); padding-top: 16px;">
-          <button type="button" class="action-btn" id="btn-cancel-company">취소</button>
-          <button type="submit" class="action-btn" style="background-color: var(--accent-color); border: none;">등록/저장</button>
+        <div class="modal-footer" style="border-top: 1px solid var(--border-color); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+          <button type="button" class="action-btn" id="btn-delete-company-modal" style="border-color: var(--danger); color: var(--danger); display: none; align-items: center; gap: 4px;">
+            <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>기업 삭제
+          </button>
+          <div style="display: flex; gap: 12px; margin-left: auto;">
+            <button type="button" class="action-btn" id="btn-cancel-company">취소</button>
+            <button type="submit" class="action-btn" style="background-color: var(--accent-color); border: none; color: #fff;">등록/저장</button>
+          </div>
         </div>
       </form>
     </div>
