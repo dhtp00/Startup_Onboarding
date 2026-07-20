@@ -507,6 +507,14 @@ function smartMergeCompaniesData(cloudCompanies, localCompanies) {
 
   const mergedCompanies = cloudCompanies.map(cloudC => {
     cloudC = sanitizeCompany(cloudC);
+
+    // Ensure default company properties (type, representative, repDesc) are never undefined
+    const defaultC = defaultCompanies.find(d => d.id === cloudC.id || d.name === cloudC.name) || {};
+    if (!cloudC.type || cloudC.type === "undefined") cloudC.type = defaultC.type || "초기 창업기업 (사업자 등록 후 1~3년 이하)";
+    if (!cloudC.representative || cloudC.representative === "undefined") cloudC.representative = defaultC.representative || "";
+    if (!cloudC.repDesc || cloudC.repDesc === "undefined") cloudC.repDesc = defaultC.repDesc || `${cloudC.representative} 대표`;
+    if (!cloudC.name || cloudC.name === "undefined") cloudC.name = defaultC.name || "";
+
     const localC = localCompanies.find(l => 
       l.id === cloudC.id || 
       l.name === cloudC.name || 
