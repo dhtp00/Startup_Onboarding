@@ -862,5 +862,256 @@ input:focus, select:focus, textarea:focus {
   flex-shrink: 0;
 }
 
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVE SYSTEM (iOS & Android Optimized)
+   ========================================================================== */
+@media screen and (max-width: 900px) {
+  body {
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  /* Mobile Top Sidebar / Navigation */
+  aside {
+    width: 100% !important;
+    min-width: 100% !important;
+    padding: 10px 14px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  }
+
+  .logo {
+    margin-bottom: 0;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+    gap: 6px;
+  }
+
+  .logo-icon {
+    width: 26px;
+    height: 26px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+  }
+
+  .menu-list {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    margin: 0;
+  }
+
+  .menu-item {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    border-radius: 6px;
+  }
+
+  .sidebar-icon {
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+  }
+
+  .user-profile {
+    display: none !important;
+  }
+
+  /* Main View Area */
+  main {
+    width: 100%;
+    overflow-y: visible;
+    height: auto;
+  }
+
+  header {
+    height: auto;
+    min-height: 54px;
+    padding: 10px 14px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    position: relative;
+  }
+
+  .header-title h1 {
+    font-size: 1.05rem;
+  }
+
+  .header-title p {
+    font-size: 0.75rem;
+  }
+
+  .view-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .toggle-btn {
+    flex: 1;
+    text-align: center;
+    padding: 6px 8px;
+    font-size: 0.78rem;
+  }
+
+  .content-wrapper {
+    padding: 12px;
+    gap: 16px;
+  }
+
+  /* Summary Grid Cards */
+  .summary-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px;
+  }
+
+  .card {
+    padding: 12px;
+    border-radius: 10px;
+  }
+
+  .card-value {
+    font-size: 1.35rem;
+  }
+
+  .card-title {
+    font-size: 0.75rem;
+  }
+
+  /* Responsive Table */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+    width: 100%;
+  }
+
+  table {
+    min-width: 700px; /* Force touch scroll instead of squishing */
+  }
+
+  th, td {
+    padding: 8px 10px;
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+
+  /* Communication Channel Mobile Layout */
+  .channel-container {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    gap: 12px;
+  }
+
+  .company-list-panel {
+    width: 100% !important;
+    max-height: 180px;
+    overflow-y: auto;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .chat-content-panel {
+    width: 100% !important;
+    min-height: 440px;
+  }
+
+  .chat-messages {
+    padding: 10px;
+    min-height: 260px;
+  }
+
+  .chat-input-area {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .chat-input {
+    font-size: 0.82rem;
+    padding: 8px 12px;
+  }
+
+  .send-btn {
+    padding: 0 12px;
+    font-size: 0.82rem;
+  }
+
+  /* Login Overlay & Card Mobile */
+  .login-card {
+    width: 92vw !important;
+    max-width: 400px !important;
+    padding: 24px 18px !important;
+    border-radius: 14px !important;
+  }
+
+  .login-card h2 {
+    font-size: 1.2rem !important;
+  }
+
+  /* Modal Dialog Mobile */
+  .modal {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    max-height: 90vh !important;
+    padding: 18px 14px !important;
+    margin: 8px !important;
+    overflow-y: auto;
+    border-radius: 12px !important;
+  }
+
+  .survey-grid-2, .survey-grid-3 {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Report Section Mobile */
+  .report-paper {
+    padding: 18px 12px !important;
+    max-width: 100% !important;
+    overflow-x: auto;
+  }
+
+  .report-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .report-controls .action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .summary-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .header-title p {
+    display: none; /* Save vertical space on small phones */
+  }
+
+  .tag {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+  }
+}
+
 
 
