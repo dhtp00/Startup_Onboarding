@@ -270,10 +270,16 @@
           <div class="chat-content-panel">
             <div class="panel-header" id="current-chat-title" style="border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
               <span>채널을 선택하세요</span>
-              <!-- Log Archive Button -->
-              <button class="action-btn" id="btn-archive-chat" style="font-size: 0.75rem; background-color: var(--accent-color); color: #fff; border:none; display:none; align-items: center; gap: 4px;">
-                <i data-lucide="folder-archive" style="width: 14px; height: 14px;"></i>질의응답을 코칭로그로 등록
-              </button>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <!-- Log Archive Button -->
+                <button class="action-btn" id="btn-archive-chat" style="font-size: 0.75rem; background-color: var(--accent-color); color: #fff; border:none; display:none; align-items: center; gap: 4px;">
+                  <i data-lucide="folder-archive" style="width: 14px; height: 14px;"></i>질의응답을 코칭로그로 등록
+                </button>
+                <!-- Clear Chat Button (Coach Only) -->
+                <button class="action-btn" id="btn-clear-chat" style="font-size: 0.75rem; background-color: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); display:none; align-items: center; gap: 4px;">
+                  <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>대화 전체 삭제
+                </button>
+              </div>
             </div>
             <div class="chat-messages" id="chat-messages-container">
               <!-- Messages -->

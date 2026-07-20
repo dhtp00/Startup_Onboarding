@@ -1500,14 +1500,17 @@ function renderChatSection() {
   if (activeCompany) {
     document.querySelector("#current-chat-title span").innerText = `${activeCompany.name} 소통 및 멘토링 채널 (전담코치: ${coachName})`;
     
+    const btnClearChatEl = document.getElementById("btn-clear-chat");
     if (currentUser.role === "coach") {
       btnArchiveChat.style.display = "inline-block";
+      if (btnClearChatEl) btnClearChatEl.style.display = "inline-block";
     } else {
       btnArchiveChat.style.display = "none";
+      if (btnClearChatEl) btnClearChatEl.style.display = "none";
     }
 
     chatMessagesContainer.innerHTML = "";
-    activeCompany.chatMessages.forEach(msg => {
+    activeCompany.chatMessages.forEach((msg, idx) => {
       const msgDiv = document.createElement("div");
       const isSentByCoach = msg.sender === "coach";
       
@@ -1530,8 +1533,17 @@ function renderChatSection() {
         `;
       }
 
+      const deleteBtnHTML = currentUser.role === "coach" ? `
+        <button onclick="deleteSingleChatMessage(${activeCompany.id}, ${idx})" title="이 메시지 삭제" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:0.75rem; padding: 2px 6px; opacity: 0.7; display: inline-flex; align-items: center; gap: 2px;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.7">
+          <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i> 삭제
+        </button>
+      ` : "";
+
       msgDiv.innerHTML = `
-        <span class="message-sender">${isSentByCoach ? coachName : `${activeCompany.name} ${activeCompany.representative} 대표`}</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 2px;">
+          <span class="message-sender">${isSentByCoach ? coachName : `${activeCompany.name} ${activeCompany.representative} 대표`}</span>
+          ${deleteBtnHTML}
+        </div>
         ${textContentHTML}
       `;
       chatMessagesContainer.appendChild(msgDiv);
@@ -1542,6 +1554,8 @@ function renderChatSection() {
     document.querySelector("#current-chat-title span").innerText = "선택된 대화 채널이 없거나 권한이 없습니다.";
     chatMessagesContainer.innerHTML = "";
     btnArchiveChat.style.display = "none";
+    const btnClearChatEl = document.getElementById("btn-clear-chat");
+    if (btnClearChatEl) btnClearChatEl.style.display = "none";
   }
 }
 
@@ -1707,6 +1721,36 @@ btnArchiveChat.addEventListener("click", () => {
   alert(`${activeCompany.name}의 질의응답이 성공적으로 코칭 로그로 아카이빙 되었습니다!`);
   renderDashboard();
 });
+
+// --- MESSAGE DELETION FUNCTIONS (COACH ONLY) ---
+window.deleteSingleChatMessage = function(companyId, msgIndex) {
+  if (currentUser.role !== "coach") return;
+  if (!confirm("해당 메시지를 정말로 삭제하시겠습니까?")) return;
+
+  const targetComp = companies.find(c => c.id === companyId);
+  if (targetComp && targetComp.chatMessages && targetComp.chatMessages[msgIndex] !== undefined) {
+    targetComp.chatMessages.splice(msgIndex, 1);
+    saveToLocalStorage();
+    renderChatSection();
+  }
+};
+
+const btnClearChat = document.getElementById("btn-clear-chat");
+if (btnClearChat) {
+  btnClearChat.addEventListener("click", () => {
+    if (currentUser.role !== "coach") return;
+    const activeCompany = companies.find(c => c.id === selectedCompanyId);
+    if (!activeCompany || !activeCompany.chatMessages || activeCompany.chatMessages.length === 0) {
+      alert("삭제할 대화 내역이 존재하지 않습니다.");
+      return;
+    }
+    if (!confirm(`'${activeCompany.name}'과의 모든 대화 메시지를 전체 삭제하시겠습니까?`)) return;
+
+    activeCompany.chatMessages = [];
+    saveToLocalStorage();
+    renderChatSection();
+  });
+}
 
 // DETAIL MODAL
 window.openDetailModal = function(id) {
