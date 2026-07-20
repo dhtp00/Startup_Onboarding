@@ -1179,6 +1179,16 @@ function enterPlatform() {
   }
 }
 
+// --- QUICK GUEST ACCESS (NO LOGIN REQUIRED) ---
+const btnQuickGuest = document.getElementById("btn-quick-guest");
+if (btnQuickGuest) {
+  btnQuickGuest.addEventListener("click", () => {
+    currentUser = USERS["osy0922@hnu.kr"] || { role: "coach", name: "오세연 코치", companyId: null, password: "" };
+    sessionStorage.setItem("loggedUserEmail", "osy0922@hnu.kr");
+    enterPlatform();
+  });
+}
+
 btnLogout.addEventListener("click", () => {
   currentUser = null;
   localStorage.removeItem("COMPANIES");
