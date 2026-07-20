@@ -1,6 +1,7 @@
 // --- AUTO STORAGE MIGRATION FOR NEW DATASET ---
-if (localStorage.getItem("COMPANIES") && (!localStorage.getItem("USERS")?.includes("20422754@onboard.com") || !localStorage.getItem("USERS")?.includes("0426298510@onboard.com") || localStorage.getItem("COMPANIES")?.includes("사티부스"))) {
-  localStorage.removeItem("USERS"); // 강제 로그아웃만 유도하여 companies 선언부에서 머지가 이뤄지도록 함
+if (localStorage.getItem("COMPANIES") && (localStorage.getItem("COMPANIES")?.includes("뉴로모먼트") || localStorage.getItem("COMPANIES")?.includes("사전조사 작성 완료했습니다") || !localStorage.getItem("USERS")?.includes("20422754@onboard.com"))) {
+  localStorage.removeItem("COMPANIES");
+  localStorage.removeItem("USERS");
 }
 
 // --- DEMO USER ACCOUNT DATA (Simulation of Supabase Auth) ---
@@ -20,7 +21,6 @@ let USERS = JSON.parse(localStorage.getItem("USERS")) || {
   "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 12, password: "", isFirstLogin: true },
   "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 13, password: "", isFirstLogin: true },
   "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 14, password: "", isFirstLogin: true },
-  "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 15, password: "", isFirstLogin: true },
   "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "", isFirstLogin: true },
   "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "", isFirstLogin: true },
   "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "", isFirstLogin: true }
@@ -324,27 +324,7 @@ let defaultCompanies = [
     coachingLogs: [],
     chatMessages: []
   },
-  {
-    id: 15,
-    name: "뉴로모먼트 주식회사",
-    type: "초기 창업기업 (사업자 등록 후 1~3년 이하)",
-    representative: "이남주",
-    repDesc: "이남주 대표 (과제번호: 20427627)",
-    invitationKey: "HN-NEURO-2026",
-    establishmentDate: "2025-07-01",
-    address: "",
-    contact: "",
-    corpType: "법인사업자",
-    oneStopLink: "대기",
-    surveyData: null,
-    metrics: { sales: "0원 (대기)", employees: "대기", reStartup: "아니오" },
-    budget: { status: "safe", checks: { m7: false, m8: false, m9: false, m10: false, m11: false, m12: false }, total: "50,000", execution: "0" },
-    education: { hr: "대기", accounting: "대기", law: "대기", content: "노무, 세무 기본 과정 교육 대기 상태" },
-    monitoringDoc: "미작성",
-    coachingCount: 0,
-    coachingLogs: [],
-    chatMessages: []
-  },
+
   {
     id: 16,
     name: "Dr.X",
@@ -494,18 +474,22 @@ function mergeOldDataToDefault(oldCompanies, defaultCompanies) {
 
 // --- HELPER FUNCTION TO SMART MERGE LOCAL & CLOUD DATA ---
 function smartMergeCompaniesData(cloudCompanies, localCompanies) {
-  if (!cloudCompanies || !Array.isArray(cloudCompanies) || cloudCompanies.length === 0) {
-    const safeLocal = (localCompanies || defaultCompanies).map(sanitizeCompany);
+  const isRemovedCompany = c => c && c.name && (c.name.includes("뉴로모먼트") || (c.representative && c.representative.includes("이남주")));
+  const validCloudComps = (cloudCompanies || []).filter(c => !isRemovedCompany(c));
+  const validLocalComps = (localCompanies || []).filter(c => !isRemovedCompany(c));
+
+  if (!validCloudComps || validCloudComps.length === 0) {
+    const safeLocal = (validLocalComps || defaultCompanies).map(sanitizeCompany);
     return { mergedCompanies: safeLocal, hasNewLocalData: false };
   }
-  if (!localCompanies || !Array.isArray(localCompanies) || localCompanies.length === 0) {
-    const safeCloud = cloudCompanies.map(sanitizeCompany);
+  if (!validLocalComps || validLocalComps.length === 0) {
+    const safeCloud = validCloudComps.map(sanitizeCompany);
     return { mergedCompanies: safeCloud, hasNewLocalData: false };
   }
 
   let hasNewLocalData = false;
 
-  const mergedCompanies = cloudCompanies.map(cloudC => {
+  const mergedCompanies = validCloudComps.map(cloudC => {
     cloudC = sanitizeCompany(cloudC);
 
     // Ensure default company properties (type, representative, repDesc) are never undefined
@@ -515,7 +499,7 @@ function smartMergeCompaniesData(cloudCompanies, localCompanies) {
     if (!cloudC.repDesc || cloudC.repDesc === "undefined") cloudC.repDesc = defaultC.repDesc || `${cloudC.representative} 대표`;
     if (!cloudC.name || cloudC.name === "undefined") cloudC.name = defaultC.name || "";
 
-    const localC = localCompanies.find(l => 
+    const localC = validLocalComps.find(l => 
       l.id === cloudC.id || 
       l.name === cloudC.name || 
       (l.representative && cloudC.representative && l.representative === cloudC.representative)
@@ -539,9 +523,10 @@ function smartMergeCompaniesData(cloudCompanies, localCompanies) {
       });
     }
 
-    // 2. Chat Messages merging
-    const cloudMsgs = mergedC.chatMessages || [];
-    const localMsgs = localC.chatMessages || [];
+    // 2. Chat Messages merging (filter dummy test messages)
+    const isDummyMsg = m => m.text && (m.text.includes("사전조사 작성 완료했습니다") || m.text.includes("테스트 톡 내용"));
+    const cloudMsgs = (mergedC.chatMessages || []).filter(m => !isDummyMsg(m));
+    const localMsgs = (localC.chatMessages || []).filter(m => !isDummyMsg(m));
     const msgKey = m => `${m.sender}_${m.time || ''}_${m.text || ''}`;
     const cloudKeys = new Set(cloudMsgs.map(msgKey));
     
@@ -820,10 +805,10 @@ async function loadCloudData() {
       const data = resData.data;
       
       const isCloudEmpty = !data.COMPANIES || data.COMPANIES.length === 0;
-      const isCloudOld = data.COMPANIES && (data.COMPANIES.some(c => c.name.includes("에이아이링크") || c.name.includes("사티부스") || c.name.includes("그린에스텍")) || data.COMPANIES.length < 18);
+      const isCloudOld = data.COMPANIES && (data.COMPANIES.some(c => c.name.includes("에이아이링크") || c.name.includes("사티부스") || c.name.includes("그린에스텍") || c.name.includes("뉴로모먼트")) || data.COMPANIES.length < 17);
       
       if (isCloudEmpty || isCloudOld) {
-        console.log("⚙️ 클라우드 데이터가 구식입니다. 기존 데이터(대화/로그)를 새 18개사 명단으로 병합(Merge)하여 클라우드를 업데이트합니다.");
+        console.log("⚙️ 클라우드 데이터가 구식입니다. 기존 데이터(대화/로그)를 새 17개사 명단으로 병합(Merge)하여 클라우드를 업데이트합니다.");
         companies = mergeOldDataToDefault(data.COMPANIES, defaultCompanies);
         USERS = {
           "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "" },
@@ -841,7 +826,6 @@ async function loadCloudData() {
           "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 12, password: "", isFirstLogin: true },
           "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 13, password: "", isFirstLogin: true },
           "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 14, password: "", isFirstLogin: true },
-          "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 15, password: "", isFirstLogin: true },
           "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "", isFirstLogin: true },
           "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "", isFirstLogin: true },
           "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "", isFirstLogin: true }
