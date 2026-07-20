@@ -1021,13 +1021,18 @@ loginForm.addEventListener("submit", async (e) => {
       // (비밀번호 변경 요청을 위해 currentUser.password는 메모리에 임시 보관해야 함)
       const returnedUser = data.USERS[targetEmail];
       if (returnedUser) {
-        currentUser = { ...returnedUser, password: password, email: targetEmail };
-        USERS[targetEmail] = { ...returnedUser, password: password };
+        // 이미 비밀번호가 설정되었거나 isFirstLogin이 false인 경우 초기 비밀번호 변경 창 생략
+        const hasCustomPassword = (returnedUser.password && returnedUser.password !== "") || (password && password !== "");
+        const isFirst = (returnedUser.isFirstLogin === true) && !hasCustomPassword;
+
+        currentUser = { ...returnedUser, password: password, email: targetEmail, isFirstLogin: isFirst };
+        USERS[targetEmail] = { ...returnedUser, password: password, isFirstLogin: isFirst };
       } else {
-        currentUser = { role: targetEmail.includes("osy0922") ? "coach" : "startup", name: "사용자", password: password, email: targetEmail };
+        currentUser = { role: targetEmail.includes("osy0922") ? "coach" : "startup", name: "사용자", password: password, email: targetEmail, isFirstLogin: false };
       }
       
       localStorage.setItem("COMPANIES", JSON.stringify(companies));
+      localStorage.setItem("USERS", JSON.stringify(USERS));
       
       // 첫 로그인 패스워드 변경 확인
       if (currentUser.isFirstLogin) {
@@ -1070,9 +1075,11 @@ if (changePasswordForm) {
     const currentUserKey = currentUser.email || Object.keys(USERS).find(key => USERS[key].name === currentUser.name && USERS[key].companyId === currentUser.companyId);
     if (currentUserKey && USERS[currentUserKey]) {
       USERS[currentUserKey].password = newPassword;
+      USERS[currentUserKey].isFirstLogin = false;
       delete USERS[currentUserKey].isFirstLogin;
       
-      currentUser = { ...USERS[currentUserKey], password: newPassword, email: currentUserKey };
+      currentUser = { ...USERS[currentUserKey], password: newPassword, email: currentUserKey, isFirstLogin: false };
+      localStorage.setItem("USERS", JSON.stringify(USERS));
       saveToLocalStorage();
       
       alert("🎉 비밀번호가 안전하게 변경되었습니다!");

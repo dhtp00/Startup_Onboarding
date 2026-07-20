@@ -109,15 +109,23 @@
 
   <!-- Sidebar Navigation (Hidden before login) -->
   <aside id="main-sidebar" style="display: none;">
-    <div class="logo">
-      <div class="logo-icon"><i data-lucide="school" style="width: 18px; height: 18px;"></i></div>
-      <div style="display: flex; flex-direction: column;">
-        <span style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">한남대학교</span>
-        <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">창업지원단</span>
+    <div class="aside-top-bar">
+      <div class="logo">
+        <div class="logo-icon"><i data-lucide="school" style="width: 18px; height: 18px;"></i></div>
+        <div style="display: flex; flex-direction: column;">
+          <span style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">한남대학교</span>
+          <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">창업지원단</span>
+        </div>
+      </div>
+      
+      <div class="sidebar-logout-box">
+        <button class="action-btn" id="btn-logout" style="background-color: rgba(239, 68, 68, 0.1); color: var(--danger); border-color: rgba(239, 68, 68, 0.2); display: flex; align-items: center; justify-content: center; gap: 4px;">
+          <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>로그아웃
+        </button>
       </div>
     </div>
     
-    <div style="background-color: rgba(79, 70, 229, 0.05); padding: 12px; border-radius: 8px; margin-bottom: 24px; border: 1px solid rgba(79, 70, 229, 0.1);">
+    <div class="sidebar-program-box" style="background-color: rgba(79, 70, 229, 0.05); padding: 12px; border-radius: 8px; margin-bottom: 24px; border: 1px solid rgba(79, 70, 229, 0.1);">
       <p style="font-size: 0.72rem; color: var(--accent-color); font-weight: 600; text-transform: uppercase; margin-bottom: 2px;">Program</p>
       <p style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">2026년 창업중심대학</p>
       <p style="font-size: 0.72rem; color: var(--text-secondary);">스타트업 코치 온보딩</p>
@@ -132,16 +140,9 @@
       <li><a href="#" class="menu-item" id="menu-strategy-report" style="display: none;"><i data-lucide="file-spreadsheet" class="sidebar-icon"></i>맞춤지원전략 보고서</a></li>
       <li><a href="#" class="menu-item" id="menu-setting" style="display: none;"><i data-lucide="settings" class="sidebar-icon"></i>플랫폼 설정 관리</a></li>
     </ul>
-
-    <!-- Logout button inside sidebar -->
-    <div style="margin-top: 16px;">
-      <button class="action-btn" id="btn-logout" style="width: 100%; background-color: rgba(239, 68, 68, 0.1); color: var(--danger); border-color: rgba(239, 68, 68, 0.2); display: flex; align-items: center; justify-content: center; gap: 6px;">
-        <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>로그아웃
-      </button>
-    </div>
     
     <!-- Quick Links Sidebar Footer -->
-    <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border-color);">
+    <div class="sidebar-quick-links" style="margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border-color);">
       <p style="font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; display: flex; align-items: center; gap: 4px;"><i data-lucide="external-link" style="width: 14px; height: 14px;"></i>상시 소통 채널 바로가기</p>
       <a href="https://open.kakao.com/o/sHvVaQEi" target="_blank" style="display: block; font-size: 0.75rem; color: var(--text-secondary); text-decoration: none;">· 코치-기업 카카오톡 오픈채팅</a>
     </div>
