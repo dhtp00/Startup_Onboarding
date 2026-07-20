@@ -410,9 +410,50 @@ let defaultCompanies = [
   }
 ];
 
+// --- SANITIZE COMPANY OBJECT TO PREVENT UNDEFINED RUNTIME CRASHES ---
+function sanitizeCompany(c) {
+  if (!c) return c;
+  if (!c.chatMessages || !Array.isArray(c.chatMessages)) c.chatMessages = [];
+  if (!c.coachingLogs || !Array.isArray(c.coachingLogs)) c.coachingLogs = [];
+  if (typeof c.coachingCount !== "number") c.coachingCount = c.coachingLogs.length;
+  if (c.surveyData === undefined) c.surveyData = null;
+  
+  if (!c.budget) {
+    c.budget = { status: "safe", checks: { m7: false, m8: false, m9: false, m10: false, m11: false, m12: false }, total: "50,000", execution: "0" };
+  } else {
+    if (!c.budget.status) c.budget.status = "safe";
+    if (!c.budget.checks || typeof c.budget.checks !== "object") {
+      c.budget.checks = { m7: false, m8: false, m9: false, m10: false, m11: false, m12: false };
+    } else {
+      ["m7", "m8", "m9", "m10", "m11", "m12"].forEach(m => {
+        if (c.budget.checks[m] === undefined) c.budget.checks[m] = false;
+      });
+    }
+  }
+
+  if (!c.education) {
+    c.education = { hr: "대기", accounting: "대기", law: "대기", content: "노무, 세무 기본 과정 교육 대기 상태" };
+  } else {
+    if (!c.education.hr) c.education.hr = "대기";
+    if (!c.education.accounting) c.education.accounting = "대기";
+    if (!c.education.law) c.education.law = "대기";
+    if (!c.education.content) c.education.content = "노무, 세무 기본 과정 교육 대기 상태";
+  }
+
+  if (!c.metrics) {
+    c.metrics = { sales: "0원 (대기)", employees: "대기", reStartup: "아니오" };
+  } else {
+    if (!c.metrics.sales) c.metrics.sales = "0원 (대기)";
+    if (!c.metrics.employees) c.metrics.employees = "대기";
+    if (!c.metrics.reStartup) c.metrics.reStartup = "아니오";
+  }
+
+  return c;
+}
+
 // --- HELPER FUNCTION TO MERGE OLD DATA INTO NEW SPEC ---
 function mergeOldDataToDefault(oldCompanies, defaultCompanies) {
-  if (!oldCompanies || !Array.isArray(oldCompanies)) return defaultCompanies;
+  if (!oldCompanies || !Array.isArray(oldCompanies)) return defaultCompanies.map(sanitizeCompany);
   const migrated = JSON.parse(JSON.stringify(defaultCompanies));
   migrated.forEach(newC => {
     const oldC = oldCompanies.find(old => 
@@ -446,6 +487,7 @@ function mergeOldDataToDefault(oldCompanies, defaultCompanies) {
       newC.oneStopLink = oldC.oneStopLink || newC.oneStopLink;
       newC.finalEvaluation = oldC.finalEvaluation || newC.finalEvaluation || "";
     }
+    sanitizeCompany(newC);
   });
   return migrated;
 }
@@ -453,21 +495,25 @@ function mergeOldDataToDefault(oldCompanies, defaultCompanies) {
 // --- HELPER FUNCTION TO SMART MERGE LOCAL & CLOUD DATA ---
 function smartMergeCompaniesData(cloudCompanies, localCompanies) {
   if (!cloudCompanies || !Array.isArray(cloudCompanies) || cloudCompanies.length === 0) {
-    return { mergedCompanies: localCompanies || defaultCompanies, hasNewLocalData: false };
+    const safeLocal = (localCompanies || defaultCompanies).map(sanitizeCompany);
+    return { mergedCompanies: safeLocal, hasNewLocalData: false };
   }
   if (!localCompanies || !Array.isArray(localCompanies) || localCompanies.length === 0) {
-    return { mergedCompanies: cloudCompanies, hasNewLocalData: false };
+    const safeCloud = cloudCompanies.map(sanitizeCompany);
+    return { mergedCompanies: safeCloud, hasNewLocalData: false };
   }
 
   let hasNewLocalData = false;
 
   const mergedCompanies = cloudCompanies.map(cloudC => {
+    cloudC = sanitizeCompany(cloudC);
     const localC = localCompanies.find(l => 
       l.id === cloudC.id || 
       l.name === cloudC.name || 
       (l.representative && cloudC.representative && l.representative === cloudC.representative)
     );
     if (!localC) return cloudC;
+    sanitizeCompany(localC);
 
     const mergedC = { ...cloudC };
 
@@ -520,14 +566,14 @@ function smartMergeCompaniesData(cloudCompanies, localCompanies) {
     if ((!mergedC.address || mergedC.address === "") && localC.address) mergedC.address = localC.address;
     if ((!mergedC.contact || mergedC.contact === "") && localC.contact) mergedC.contact = localC.contact;
 
-    return mergedC;
+    return sanitizeCompany(mergedC);
   });
 
   return { mergedCompanies, hasNewLocalData };
 }
 
 
-let companies = JSON.parse(localStorage.getItem("COMPANIES")) || defaultCompanies;
+let companies = (JSON.parse(localStorage.getItem("COMPANIES")) || defaultCompanies).map(sanitizeCompany);
 
 // --- FORCE DATA RESET IF OLD DEMO DATA DETECTED ---
 const hasOldDemoData = companies.some(c => c.name.includes("에이아이링크") || c.name.includes("사티부스") || c.name.includes("그린에스텍")) || companies.length < 18;
@@ -1006,6 +1052,10 @@ loginForm.addEventListener("submit", async (e) => {
     }
   } catch (err) {
     console.error(err);
+    currentUser = null;
+    if (loginOverlayScreen) loginOverlayScreen.style.display = "flex";
+    if (mainSidebar) mainSidebar.style.display = "none";
+    if (mainContent) mainContent.style.display = "none";
     alert(`❌ 로그인 실패\n\n이유: ${err.message}\n\n로그인 문제가 지속될 경우 오세연 연구원(042-629-8510)으로 연락 바랍니다.`);
   } finally {
     if (loadingStatus) loadingStatus.style.display = "none";
@@ -1088,36 +1138,53 @@ signupForm.addEventListener("submit", (e) => {
 
 // ENTER PLATFORM
 function enterPlatform() {
-  loginOverlayScreen.style.display = "none";
-  mainSidebar.style.display = "flex";
-  mainContent.style.display = "flex";
-  
-  userNameDisplay.innerText = currentUser.name;
-  
-  if (currentUser.role === "coach") {
-    userRoleBadge.innerText = "전담코치";
-    userRoleBadge.className = "tag tag-early";
-    btnAddCompany.style.display = "inline-block";
-    btnEditMilestone.style.display = "inline-block";
-    if (menuStrategyReport) menuStrategyReport.style.display = "block"; // 코치인 경우 노출
-    if (menuSetting) menuSetting.style.display = "block";
-    document.querySelectorAll(".coach-only-cell").forEach(c => c.style.display = "table-cell");
-    selectedCompanyId = companies[0] ? companies[0].id : 1;
-  } else {
-    userRoleBadge.innerText = "스타트업";
-    userRoleBadge.className = "tag tag-pre";
-    btnAddCompany.style.display = "none";
-    btnEditMilestone.style.display = "none";
-    if (menuStrategyReport) menuStrategyReport.style.display = "none"; // 스타트업인 경우 비노출
-    if (menuSetting) menuSetting.style.display = "none";
-    document.querySelectorAll(".coach-only-cell").forEach(c => c.style.display = "none");
-    selectedCompanyId = currentUser.companyId;
+  if (!currentUser) {
+    if (loginOverlayScreen) loginOverlayScreen.style.display = "flex";
+    if (mainSidebar) mainSidebar.style.display = "none";
+    if (mainContent) mainContent.style.display = "none";
+    return;
   }
-  
-  switchSection(sectionDash, menuDash);
-  applyDynamicConfigs();
-  renderDashboard();
-  renderMilestones();
+
+  try {
+    userNameDisplay.innerText = currentUser.name;
+    
+    if (currentUser.role === "coach") {
+      userRoleBadge.innerText = "전담코치";
+      userRoleBadge.className = "tag tag-early";
+      btnAddCompany.style.display = "inline-block";
+      btnEditMilestone.style.display = "inline-block";
+      if (menuStrategyReport) menuStrategyReport.style.display = "block"; // 코치인 경우 노출
+      if (menuSetting) menuSetting.style.display = "block";
+      document.querySelectorAll(".coach-only-cell").forEach(c => c.style.display = "table-cell");
+      selectedCompanyId = companies[0] ? companies[0].id : 1;
+    } else {
+      userRoleBadge.innerText = "스타트업";
+      userRoleBadge.className = "tag tag-pre";
+      btnAddCompany.style.display = "none";
+      btnEditMilestone.style.display = "none";
+      if (menuStrategyReport) menuStrategyReport.style.display = "none"; // 스타트업인 경우 비노출
+      if (menuSetting) menuSetting.style.display = "none";
+      document.querySelectorAll(".coach-only-cell").forEach(c => c.style.display = "none");
+      selectedCompanyId = currentUser.companyId;
+    }
+    
+    switchSection(sectionDash, menuDash);
+    applyDynamicConfigs();
+    renderDashboard();
+    renderMilestones();
+
+    // Hide login screen ONLY when platform setup and rendering succeed completely
+    loginOverlayScreen.style.display = "none";
+    mainSidebar.style.display = "flex";
+    mainContent.style.display = "flex";
+  } catch (err) {
+    console.error("플랫폼 진입 중 오류 발생:", err);
+    currentUser = null;
+    if (loginOverlayScreen) loginOverlayScreen.style.display = "flex";
+    if (mainSidebar) mainSidebar.style.display = "none";
+    if (mainContent) mainContent.style.display = "none";
+    throw err;
+  }
 }
 
 btnLogout.addEventListener("click", () => {
@@ -1231,22 +1298,24 @@ function renderDashboard() {
   let totalChecks = 0;
   let activeChecks = 0;
   filtered.forEach(c => {
-    Object.keys(c.budget.checks).forEach(k => {
-      totalChecks++;
-      if (c.budget.checks[k]) activeChecks++;
-    });
+    sanitizeCompany(c);
+    if (c.budget && c.budget.checks) {
+      Object.keys(c.budget.checks).forEach(k => {
+        totalChecks++;
+        if (c.budget.checks[k]) activeChecks++;
+      });
+    }
   });
   const checkRate = totalChecks > 0 ? Math.round((activeChecks / totalChecks) * 100) : 0;
   document.getElementById("stat-doc-count").innerText = `${checkRate}%`;
 
   // Update training stats on Education sub-panel
-  // Update training stats on Education sub-panel
   if (currentUser.role === "coach") {
     const totalEdu = companies.length;
     if (totalEdu > 0) {
-      const hrCount = companies.filter(c => c.education.hr === "이수").length;
-      const accCount = companies.filter(c => c.education.accounting === "이수").length;
-      const lawCount = companies.filter(c => c.education.law === "이수").length;
+      const hrCount = companies.filter(c => c.education && c.education.hr === "이수").length;
+      const accCount = companies.filter(c => c.education && c.education.accounting === "이수").length;
+      const lawCount = companies.filter(c => c.education && c.education.law === "이수").length;
       document.getElementById("edu-stat-hr").innerText = `${Math.round(hrCount / totalEdu * 100)}%`;
       document.getElementById("edu-stat-hr").nextElementSibling.innerText = `${totalEdu}개사 중 ${hrCount}개사 이수`;
       document.getElementById("edu-stat-acc").innerText = `${Math.round(accCount / totalEdu * 100)}%`;
@@ -1257,9 +1326,10 @@ function renderDashboard() {
   } else {
     const myCompany = companies.find(c => c.id === currentUser.companyId);
     if (myCompany) {
-      const hrFin = myCompany.education.hr === "이수";
-      const accFin = myCompany.education.accounting === "이수";
-      const lawFin = myCompany.education.law === "이수";
+      sanitizeCompany(myCompany);
+      const hrFin = myCompany.education && myCompany.education.hr === "이수";
+      const accFin = myCompany.education && myCompany.education.accounting === "이수";
+      const lawFin = myCompany.education && myCompany.education.law === "이수";
       
       document.getElementById("edu-stat-hr").innerText = hrFin ? "100%" : "0%";
       document.getElementById("edu-stat-hr").nextElementSibling.innerText = hrFin ? "이수 완료" : "교육 대기 (미이수)";
@@ -1275,11 +1345,12 @@ function renderDashboard() {
   // Render Table
   companyTableBody.innerHTML = "";
   filtered.forEach(company => {
-    const isPre = company.type.includes("예비");
+    sanitizeCompany(company);
+    const isPre = company.type ? company.type.includes("예비") : false;
     const tr = document.createElement("tr");
 
     // Unified education check indicator
-    const isEducationFinished = company.education.hr === "이수" && company.education.accounting === "이수" && company.education.law === "이수";
+    const isEducationFinished = company.education && company.education.hr === "이수" && company.education.accounting === "이수" && company.education.law === "이수";
     const eduBadgeHTML = isEducationFinished 
       ? `<span class="tag tag-success"><i data-lucide="check-circle" style="width: 14px; height: 14px;"></i>이수 완료</span>` 
       : `<span class="tag tag-pre"><i data-lucide="clock" style="width: 14px; height: 14px;"></i>과정 진행중</span>`;
@@ -1290,7 +1361,7 @@ function renderDashboard() {
     const monthLabels = ["7월", "8월", "9월", "10월", "11월", "12월"];
 
     months.forEach((m, idx) => {
-      const isChecked = company.budget.checks[m];
+      const isChecked = company.budget && company.budget.checks && company.budget.checks[m];
       const color = isChecked ? "var(--success)" : "rgba(0,0,0,0.15)";
       const bg = isChecked ? "rgba(16,185,129,0.15)" : "transparent";
       const border = isChecked ? "1px solid var(--success)" : "1px solid rgba(0,0,0,0.15)";
