@@ -450,6 +450,83 @@ function mergeOldDataToDefault(oldCompanies, defaultCompanies) {
   return migrated;
 }
 
+// --- HELPER FUNCTION TO SMART MERGE LOCAL & CLOUD DATA ---
+function smartMergeCompaniesData(cloudCompanies, localCompanies) {
+  if (!cloudCompanies || !Array.isArray(cloudCompanies) || cloudCompanies.length === 0) {
+    return { mergedCompanies: localCompanies || defaultCompanies, hasNewLocalData: false };
+  }
+  if (!localCompanies || !Array.isArray(localCompanies) || localCompanies.length === 0) {
+    return { mergedCompanies: cloudCompanies, hasNewLocalData: false };
+  }
+
+  let hasNewLocalData = false;
+
+  const mergedCompanies = cloudCompanies.map(cloudC => {
+    const localC = localCompanies.find(l => 
+      l.id === cloudC.id || 
+      l.name === cloudC.name || 
+      (l.representative && cloudC.representative && l.representative === cloudC.representative)
+    );
+    if (!localC) return cloudC;
+
+    const mergedC = { ...cloudC };
+
+    // 1. Survey Data merging
+    if (!mergedC.surveyData && localC.surveyData) {
+      mergedC.surveyData = localC.surveyData;
+      hasNewLocalData = true;
+    } else if (mergedC.surveyData && localC.surveyData) {
+      mergedC.surveyData = { ...localC.surveyData, ...mergedC.surveyData };
+      Object.keys(localC.surveyData).forEach(k => {
+        if (localC.surveyData[k] && !mergedC.surveyData[k]) {
+          mergedC.surveyData[k] = localC.surveyData[k];
+          hasNewLocalData = true;
+        }
+      });
+    }
+
+    // 2. Chat Messages merging
+    const cloudMsgs = mergedC.chatMessages || [];
+    const localMsgs = localC.chatMessages || [];
+    const msgKey = m => `${m.sender}_${m.time || ''}_${m.text || ''}`;
+    const cloudKeys = new Set(cloudMsgs.map(msgKey));
+    
+    const combinedMsgs = [...cloudMsgs];
+    localMsgs.forEach(msg => {
+      if (!cloudKeys.has(msgKey(msg))) {
+        combinedMsgs.push(msg);
+        hasNewLocalData = true;
+      }
+    });
+    mergedC.chatMessages = combinedMsgs;
+
+    // 3. Coaching Logs merging
+    const cloudLogs = mergedC.coachingLogs || [];
+    const localLogs = localC.coachingLogs || [];
+    const logKey = l => l.id || `${l.date || ''}_${l.content || ''}`;
+    const cloudLogKeys = new Set(cloudLogs.map(logKey));
+    
+    const combinedLogs = [...cloudLogs];
+    localLogs.forEach(log => {
+      if (!cloudLogKeys.has(logKey(log))) {
+        combinedLogs.push(log);
+        hasNewLocalData = true;
+      }
+    });
+    mergedC.coachingLogs = combinedLogs;
+    mergedC.coachingCount = Math.max(mergedC.coachingCount || 0, localC.coachingCount || 0, combinedLogs.length);
+
+    // 4. Address & contact fallback
+    if ((!mergedC.address || mergedC.address === "") && localC.address) mergedC.address = localC.address;
+    if ((!mergedC.contact || mergedC.contact === "") && localC.contact) mergedC.contact = localC.contact;
+
+    return mergedC;
+  });
+
+  return { mergedCompanies, hasNewLocalData };
+}
+
+
 let companies = JSON.parse(localStorage.getItem("COMPANIES")) || defaultCompanies;
 
 // --- FORCE DATA RESET IF OLD DEMO DATA DETECTED ---
@@ -724,8 +801,14 @@ async function loadCloudData() {
           localStorage.setItem("USERS", JSON.stringify(USERS));
         }
         if (data.COMPANIES) {
-          companies = data.COMPANIES;
+          const localComps = JSON.parse(localStorage.getItem("COMPANIES") || "[]");
+          const { mergedCompanies, hasNewLocalData } = smartMergeCompaniesData(data.COMPANIES, localComps);
+          companies = mergedCompanies;
           localStorage.setItem("COMPANIES", JSON.stringify(companies));
+          if (hasNewLocalData) {
+            console.log("☁️ 로컬의 신규 사전조사/톡 데이터를 구글 클라우드로 병합 동기화합니다.");
+            saveToLocalStorage();
+          }
         }
         if (data.MILESTONES) {
           milestones = data.MILESTONES;
@@ -753,6 +836,10 @@ async function loadCloudData() {
         const chatSection = document.getElementById("section-chat");
         if (chatSection && chatSection.classList.contains("active")) {
           renderChatSection();
+        }
+        const surveySection = document.getElementById("section-survey");
+        if (surveySection && surveySection.classList.contains("active")) {
+          renderSurveySection();
         }
         const reportSection = document.getElementById("section-report");
         if (reportSection && reportSection.classList.contains("active")) {
@@ -883,8 +970,10 @@ loginForm.addEventListener("submit", async (e) => {
     if (resData && resData.status === "success" && resData.data) {
       const data = resData.data;
       
-      // 3. 로그인 성공 시 반환받은 필터링된 데이터셋 로컬에 적재
-      companies = data.COMPANIES || [];
+      // 3. 로그인 성공 시 반환받은 필터링된 데이터셋 로컬에 적재 (로컬 데이터 스마트 병합)
+      const localComps = JSON.parse(localStorage.getItem("COMPANIES") || "[]");
+      const { mergedCompanies } = smartMergeCompaniesData(data.COMPANIES || [], localComps);
+      companies = mergedCompanies;
       milestones = data.milestones || [];
       coachName = data.coachName || "오세연 코치";
       eduNames = data.eduNames || eduNames;
