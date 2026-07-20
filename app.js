@@ -510,17 +510,17 @@ function smartMergeCompaniesData(cloudCompanies, localCompanies) {
     const mergedC = { ...cloudC };
 
     // 1. Survey Data merging
-    if (!mergedC.surveyData && localC.surveyData) {
+    if (!cloudC.surveyData && localC.surveyData) {
       mergedC.surveyData = localC.surveyData;
       hasNewLocalData = true;
-    } else if (mergedC.surveyData && localC.surveyData) {
-      mergedC.surveyData = { ...localC.surveyData, ...mergedC.surveyData };
-      Object.keys(localC.surveyData).forEach(k => {
-        if (localC.surveyData[k] && !mergedC.surveyData[k]) {
-          mergedC.surveyData[k] = localC.surveyData[k];
-          hasNewLocalData = true;
-        }
-      });
+    } else if (cloudC.surveyData && localC.surveyData) {
+      // 만약 로컬에 작성 중인 사전조사(또는 임시저장)가 있다면 우선 적용
+      mergedC.surveyData = { ...cloudC.surveyData, ...localC.surveyData };
+      if (localC.surveyData.isDraft && !cloudC.surveyData.isDraft) {
+        mergedC.surveyData = { ...cloudC.surveyData, ...localC.surveyData };
+      }
+    } else if (cloudC.surveyData) {
+      mergedC.surveyData = cloudC.surveyData;
     }
 
     // 2. Chat Messages merging (filter dummy test messages)
@@ -877,7 +877,11 @@ async function loadCloudData() {
         }
         const surveySection = document.getElementById("section-survey");
         if (surveySection && surveySection.classList.contains("active")) {
-          renderSurveySection();
+          // 작성 중인 폼 인풋 요소에 포커스가 없을 때만 렌더링을 갱신하여 타이핑 초기화 방지
+          const isTypingSurvey = document.activeElement && document.activeElement.closest("#survey-form-el");
+          if (!isTypingSurvey) {
+            renderSurveySection();
+          }
         }
         const reportSection = document.getElementById("section-report");
         if (reportSection && reportSection.classList.contains("active")) {
@@ -2287,41 +2291,14 @@ function renderSurveySection() {
     });
     strategyTextarea.value = targetCompany.surveyData.customStrategy || "";
   } else {
-    // Fill basic details from existing profile
-    document.getElementById("sv-contact").value = targetCompany.contact || "";
-    document.getElementById("sv-corp-type").value = targetCompany.corpType || "예비창업자";
-    document.getElementById("sv-est-date").value = targetCompany.establishmentDate || "";
-    document.getElementById("sv-address").value = targetCompany.address || "";
-    document.getElementById("sv-sales").value = "매출 미발생 (R&D, 기술 개발 및 제품 기획 단계)";
-    document.getElementById("sv-employees").value = "0명 (단독 창업)";
-    document.getElementById("sv-restartup").value = (targetCompany.metrics && targetCompany.metrics.reStartup) || "아니오";
-
-    document.getElementById("sv-item-intro").value = "";
-    document.getElementById("sv-item-target").value = "";
-    document.getElementById("sv-item-model").value = "";
-
-    document.getElementById("sv-market-target").value = "";
-
-    document.getElementById("sv-team-comp").value = "";
-    document.getElementById("sv-team-core").value = "";
-    document.getElementById("sv-team-needs").value = "";
-
-    // 복수 선택 체크박스 초기화
-    document.querySelectorAll("input[name='sv-finance-source-chk']").forEach(chk => {
-      chk.checked = false;
-    });
-
-    document.getElementById("sv-finance-fixedcost").value = "매월 연구원 급여, 임차료, 시제품 제작비 등 고정비 내역을 정기적으로 파악 중";
-    document.getElementById("sv-finance-runway").value = "3개월 ~ 6개월";
-
-    document.getElementById("sv-need-pain").value = "";
-    document.getElementById("sv-need-goal").value = "";
-    document.getElementById("sv-need-deliverable").value = "";
-    document.getElementById("sv-edu-content").value = "";
-    document.querySelectorAll("input[name='sv-edu-method-chk']").forEach(chk => {
-      chk.checked = false;
-    });
-    strategyTextarea.value = "";
+    // Fill basic details from existing profile without overwriting user's active typing
+    if (!document.getElementById("sv-contact").value) document.getElementById("sv-contact").value = targetCompany.contact || "";
+    if (!document.getElementById("sv-corp-type").value) document.getElementById("sv-corp-type").value = targetCompany.corpType || "예비창업자";
+    if (!document.getElementById("sv-est-date").value) document.getElementById("sv-est-date").value = targetCompany.establishmentDate || "";
+    if (!document.getElementById("sv-address").value) document.getElementById("sv-address").value = targetCompany.address || "";
+    if (!document.getElementById("sv-sales").value) document.getElementById("sv-sales").value = "매출 미발생 (R&D, 기술 개발 및 제품 기획 단계)";
+    if (!document.getElementById("sv-employees").value) document.getElementById("sv-employees").value = "0명 (단독 창업)";
+    if (!document.getElementById("sv-restartup").value) document.getElementById("sv-restartup").value = (targetCompany.metrics && targetCompany.metrics.reStartup) || "아니오";
   }
   refreshIcons();
 }
