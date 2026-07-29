@@ -1,8 +1,9 @@
 // --- AUTO STORAGE MIGRATION FOR NEW DATASET ---
-if (localStorage.getItem("COMPANIES") && (localStorage.getItem("COMPANIES")?.includes("뉴로모먼트") || localStorage.getItem("COMPANIES")?.includes("사전조사 작성 완료했습니다") || !localStorage.getItem("USERS")?.includes("20422754@onboard.com"))) {
-  localStorage.removeItem("COMPANIES");
-  localStorage.removeItem("USERS");
-}
+// ⚠️ 아래 코드는 의도치 않게 데이터를 삭제하므로 주석 처리합니다.
+// if (localStorage.getItem("COMPANIES") && (localStorage.getItem("COMPANIES")?.includes("뉴로모먼트") || localStorage.getItem("COMPANIES")?.includes("사전조사 작성 완료했습니다") || !localStorage.getItem("USERS")?.includes("20422754@onboard.com"))) {
+//   localStorage.removeItem("COMPANIES");
+//   localStorage.removeItem("USERS");
+// }
 
 // --- DEMO USER ACCOUNT DATA (Simulation of Supabase Auth) ---
 let USERS = JSON.parse(localStorage.getItem("USERS")) || {
@@ -509,18 +510,21 @@ function smartMergeCompaniesData(cloudCompanies, localCompanies) {
 
     const mergedC = { ...cloudC };
 
-    // 1. Survey Data merging
+    // 1. Survey Data merging (timestamp-based merge)
     if (!cloudC.surveyData && localC.surveyData) {
       mergedC.surveyData = localC.surveyData;
       hasNewLocalData = true;
-    } else if (cloudC.surveyData && localC.surveyData) {
-      // 만약 로컬에 작성 중인 사전조사(또는 임시저장)가 있다면 우선 적용
-      mergedC.surveyData = { ...cloudC.surveyData, ...localC.surveyData };
-      if (localC.surveyData.isDraft && !cloudC.surveyData.isDraft) {
-        mergedC.surveyData = { ...cloudC.surveyData, ...localC.surveyData };
-      }
-    } else if (cloudC.surveyData) {
+    } else if (cloudC.surveyData && !localC.surveyData) {
       mergedC.surveyData = cloudC.surveyData;
+    } else if (cloudC.surveyData && localC.surveyData) {
+      const cloudTime = cloudC.surveyData.lastModified || 0;
+      const localTime = localC.surveyData.lastModified || 0;
+      mergedC.surveyData = localTime >= cloudTime 
+        ? { ...cloudC.surveyData, ...localC.surveyData } 
+        : { ...localC.surveyData, ...cloudC.surveyData };
+      if (localTime > cloudTime) {
+        hasNewLocalData = true;
+      }
     }
 
     // 2. Chat Messages merging (filter dummy test messages)
@@ -919,9 +923,13 @@ function saveToLocalStorage() {
   localStorage.setItem("EDU_NAMES", JSON.stringify(eduNames));
   localStorage.setItem("NOTICES", JSON.stringify(notices));
   
-  // 만약 구글 API 주소가 세팅되어 있다면 자동으로 백그라운드 클라우드 동기화 수행
   // 만약 구글 API 주소가 세팅되어 있고 로그인 상태라면 클라우드 동기화 수행
   if (GOOGLE_SCRIPT_URL && currentUser) {
+    if (isSyncingCloud) {
+      console.log("⏳ 클라우드 동기화 진행 중... 동기화 요청을 대기합니다.");
+      return;
+    }
+    isSyncingCloud = true;
     fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
       mode: "cors",
@@ -946,7 +954,10 @@ function saveToLocalStorage() {
         console.log("✔ 클라우드 동기화 성공");
       }
     })
-    .catch(err => console.log("Google sync delay: ", err));
+    .catch(err => console.log("Google sync delay: ", err))
+    .finally(() => {
+      isSyncingCloud = false;
+    });
   }
 }
 
@@ -2365,6 +2376,8 @@ document.getElementById("survey-form-el").addEventListener("submit", (e) => {
   targetCompany.metrics.reStartup = restartup;
   
   targetCompany.surveyData = {
+    lastModified: Date.now(),
+    isDraft: false,
     contact,
     corpType,
     estDate,
@@ -2494,6 +2507,7 @@ if (btnSaveDraftEl) {
 
     // Save as draft
     targetCompany.surveyData = {
+      lastModified: Date.now(),
       isDraft: true,
       contact,
       corpType,
