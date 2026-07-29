@@ -641,6 +641,20 @@ function refreshIcons() {
   }
 }
 
+// --- SUPABASE REALTIME CLOUD DB CONNECTION ---
+const SUPABASE_URL = "https://jvwtavhnmlviyemyoajw.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_VxAlDUFMb55FTCY0CMWYrg_jUG87J5u";
+
+let supabaseClient = null;
+if (window.supabase && window.supabase.createClient) {
+  try {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log("⚡ Supabase 클라우드 클라이언트 연동 성공!");
+  } catch (err) {
+    console.warn("⚠️ Supabase 연동 초기화 경고:", err);
+  }
+}
+
 // --- GOOGLE SCRIPT URL FOR FREE API CONNECTION ---
 // 여기에 깃허브 배포 가이드라인에 따라 복사한 구글 웹앱 URL을 입력하시면 실서비스 연동이 완료됩니다!
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMO0h5m247mBUwTkt_yDWqxOKajOV7xMO5_lCiGUGZ-L1ivQFFxkwuMgqjLKEl_SBD/exec";
@@ -923,6 +937,35 @@ function saveToLocalStorage() {
   localStorage.setItem("EDU_NAMES", JSON.stringify(eduNames));
   localStorage.setItem("NOTICES", JSON.stringify(notices));
   
+  // Supabase 클라우드 동기화 (REST API 직접 통신으로 실시간 메시지/데이터 100% 저장)
+  if (currentUser) {
+    try {
+      const dbPayload = JSON.stringify({
+        id: 1,
+        USERS: USERS,
+        COMPANIES: companies,
+        MILESTONES: milestones,
+        coachName: coachName,
+        eduNames: eduNames,
+        notices: notices,
+        updated_at: new Date().toISOString()
+      });
+      fetch("https://jvwtavhnmlviyemyoajw.supabase.co/rest/v1/app_store", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "sb_publishable_VxAlDUFMb55FTCY0CMWYrg_jUG87J5u",
+          "Authorization": "Bearer sb_publishable_VxAlDUFMb55FTCY0CMWYrg_jUG87J5u",
+          "Prefer": "resolution=merge-duplicates"
+        },
+        body: dbPayload
+      }).then(res => {
+        if (res.ok) console.log("⚡ Supabase 클라우드 실시간 동기화 성공!");
+        else console.warn("Supabase sync HTTP status:", res.status);
+      }).catch(err => console.error("Supabase sync error:", err));
+    } catch(e) {}
+  }
+
   // 만약 구글 API 주소가 세팅되어 있고 로그인 상태라면 클라우드 동기화 수행
   if (GOOGLE_SCRIPT_URL && currentUser) {
     if (isSyncingCloud) {
