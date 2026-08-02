@@ -2370,15 +2370,66 @@ function renderSurveySection() {
   document.getElementById("sv-company-name").value = targetCompany.name || "";
   document.getElementById("sv-representative").value = targetCompany.representative || "";
 
+  // 데이터 규격 자동 정규화 헬퍼 (CSV 포맷과 HTML5 Form 엘리먼트 100% 연동)
+  function normalizeDate(dStr) {
+    if (!dStr) return "";
+    const parts = String(dStr).replace(/[^0-9.]/g, "").split(".").filter(Boolean);
+    if (parts.length === 3) {
+      const y = parts[0].padStart(4, "20");
+      const m = parts[1].padStart(2, "0");
+      const d = parts[2].padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    }
+    return dStr;
+  }
+
+  function normalizeSales(sStr) {
+    if (!sStr) return "매출 미발생 (R&D, 기술 개발 및 제품 기획 단계)";
+    const s = String(sStr);
+    if (s.includes("미발생")) return "매출 미발생 (R&D, 기술 개발 및 제품 기획 단계)";
+    if (s.includes("1천만 원 미만")) return "1천만 원 미만 (PoC 진행 및 초기 시장 반응 탐색)";
+    if (s.includes("1천만 원 이상") && s.includes("3천만 원 미만")) return "1천만 원 이상 ~ 3천만 원 미만 (시제품 출시 및 초기 유상 고객 확보)";
+    if (s.includes("3천만 원 이상") && s.includes("5천만 원 미만")) return "3천만 원 이상 ~ 5천만 원 미만 (초기 매출 검증 완료 및 BM 구체화)";
+    if (s.includes("5천만 원 이상") && s.includes("1억 원 미만")) return "5천만 원 이상 ~ 1억 원 미만 (시장 진입 안착 및 매출 본격화)";
+    if (s.includes("1억 원 이상")) return "1억 원 이상 ~ 3억 원 미만 (스케일업 및 성장 가속화)";
+    return s;
+  }
+
+  function normalizeEmployees(eStr) {
+    if (!eStr) return "0명 (단독 창업)";
+    const e = String(eStr);
+    if (e.includes("0명")) return "0명 (단독 창업)";
+    if (e.includes("1인") || e.includes("2인")) return "1인 ~ 2인";
+    if (e.includes("3인") || e.includes("5인")) return "3인 ~ 5인";
+    if (e.includes("6인") || e.includes("10인")) return "6인 ~ 10인";
+    if (e.includes("10인")) return "10인 이상";
+    return e;
+  }
+
+  function normalizeReStartup(rStr) {
+    if (!rStr) return "아니오 (첫 창업)";
+    const r = String(rStr);
+    if (r.includes("예")) return "예 (재창업 기업)";
+    return "아니오 (첫 창업)";
+  }
+
+  function normalizeCorpType(cStr) {
+    if (!cStr) return "예비창업자";
+    const c = String(cStr);
+    if (c.includes("법인")) return "법인사업자";
+    if (c.includes("개인")) return "개인사업자";
+    return "예비창업자";
+  }
+
   // 3. 설문 데이터 유무에 따른 개별 독립 바인딩
   if (targetCompany.surveyData) {
     document.getElementById("sv-contact").value = targetCompany.surveyData.contact || targetCompany.contact || "";
-    document.getElementById("sv-corp-type").value = targetCompany.surveyData.corpType || targetCompany.corpType || "예비창업자";
-    document.getElementById("sv-est-date").value = targetCompany.surveyData.estDate || targetCompany.establishmentDate || "";
+    document.getElementById("sv-corp-type").value = normalizeCorpType(targetCompany.surveyData.corpType || targetCompany.corpType);
+    document.getElementById("sv-est-date").value = normalizeDate(targetCompany.surveyData.estDate || targetCompany.establishmentDate);
     document.getElementById("sv-address").value = targetCompany.surveyData.address || targetCompany.address || "";
-    document.getElementById("sv-sales").value = targetCompany.surveyData.sales || "매출 미발생 (R&D, 기술 개발 및 제품 기획 단계)";
-    document.getElementById("sv-employees").value = targetCompany.surveyData.employees || "0명 (단독 창업)";
-    document.getElementById("sv-restartup").value = targetCompany.surveyData.reStartup || (targetCompany.metrics && targetCompany.metrics.reStartup) || "아니오";
+    document.getElementById("sv-sales").value = normalizeSales(targetCompany.surveyData.sales);
+    document.getElementById("sv-employees").value = normalizeEmployees(targetCompany.surveyData.employees);
+    document.getElementById("sv-restartup").value = normalizeReStartup(targetCompany.surveyData.reStartup);
 
     document.getElementById("sv-item-intro").value = targetCompany.surveyData.itemIntro || "";
     document.getElementById("sv-item-target").value = targetCompany.surveyData.itemTarget || "";
@@ -2411,12 +2462,12 @@ function renderSurveySection() {
   } else {
     // 사전 조사가 미제출된 기업인 경우 깔끔하게 해당 기업 기본 정보만 바인딩 후 텍스트필드 초기화
     document.getElementById("sv-contact").value = targetCompany.contact || "";
-    document.getElementById("sv-corp-type").value = targetCompany.corpType || "예비창업자";
-    document.getElementById("sv-est-date").value = targetCompany.establishmentDate || "";
+    document.getElementById("sv-corp-type").value = normalizeCorpType(targetCompany.corpType);
+    document.getElementById("sv-est-date").value = normalizeDate(targetCompany.establishmentDate);
     document.getElementById("sv-address").value = targetCompany.address || "";
-    document.getElementById("sv-sales").value = (targetCompany.metrics && targetCompany.metrics.sales) || "매출 미발생 (R&D, 기술 개발 및 제품 기획 단계)";
-    document.getElementById("sv-employees").value = (targetCompany.metrics && targetCompany.metrics.employees) || "0명 (단독 창업)";
-    document.getElementById("sv-restartup").value = (targetCompany.metrics && targetCompany.metrics.reStartup) || "아니오";
+    document.getElementById("sv-sales").value = normalizeSales(targetCompany.metrics && targetCompany.metrics.sales);
+    document.getElementById("sv-employees").value = normalizeEmployees(targetCompany.metrics && targetCompany.metrics.employees);
+    document.getElementById("sv-restartup").value = normalizeReStartup(targetCompany.metrics && targetCompany.metrics.reStartup);
 
     document.getElementById("sv-item-intro").value = "";
     document.getElementById("sv-item-target").value = "";
