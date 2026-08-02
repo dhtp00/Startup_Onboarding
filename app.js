@@ -7,7 +7,7 @@
 
 // --- DEMO USER ACCOUNT DATA (Simulation of Supabase Auth) ---
 let USERS = JSON.parse(localStorage.getItem("USERS")) || {
-  "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "" },
+  "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "", isFirstLogin: true },
   "20424601@onboard.com": { role: "startup", name: "박지훈 대표", companyId: 1, password: "", isFirstLogin: true },
   "20425162@onboard.com": { role: "startup", name: "신상호 대표", companyId: 2, password: "", isFirstLogin: true },
   "20418716@onboard.com": { role: "startup", name: "오영웅 대표", companyId: 3, password: "", isFirstLogin: true },
@@ -24,7 +24,7 @@ let USERS = JSON.parse(localStorage.getItem("USERS")) || {
   "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 14, password: "", isFirstLogin: true },
   "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "", isFirstLogin: true },
   "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "", isFirstLogin: true },
-  "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "", isFirstLogin: true }
+  "0426298510@onboard.com": { role: "startup", name: "워터링크 대표", companyId: 18, password: "", isFirstLogin: true }
 };
 
 let currentUser = null; // Session storage
@@ -578,7 +578,7 @@ if (hasOldDemoData) {
   console.log("⚙️ 구식 데이터 감지: 기존 대화 내역 및 데이터를 보존하며 18개사 구조로 지능형 머지(Merge)를 실행합니다.");
   companies = mergeOldDataToDefault(companies, defaultCompanies);
   USERS = {
-    "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "" },
+    "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "", isFirstLogin: true },
     "20424601@onboard.com": { role: "startup", name: "박지훈 대표", companyId: 1, password: "", isFirstLogin: true },
     "20425162@onboard.com": { role: "startup", name: "신상호 대표", companyId: 2, password: "", isFirstLogin: true },
     "20418716@onboard.com": { role: "startup", name: "오영웅 대표", companyId: 3, password: "", isFirstLogin: true },
@@ -596,7 +596,7 @@ if (hasOldDemoData) {
     "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 15, password: "", isFirstLogin: true },
     "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "", isFirstLogin: true },
     "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "", isFirstLogin: true },
-    "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "", isFirstLogin: true }
+    "0426298510@onboard.com": { role: "startup", name: "워터링크 대표", companyId: 18, password: "", isFirstLogin: true }
   };
   localStorage.setItem("COMPANIES", JSON.stringify(companies));
   localStorage.setItem("USERS", JSON.stringify(USERS));
@@ -1022,14 +1022,15 @@ loginForm.addEventListener("submit", async (e) => {
   const emailInput = loginEmail.value.trim();
   const password = loginPassword.value.trim();
   
-  // 1. 입력값을 이메일 포맷으로 찾기
+  // 1. 입력값을 이메일 포맷으로 찾기 (코치는 이메일/ID로만, 스타트업은 대표자명/이메일로 매칭)
   let targetEmail = "";
   const matchedUserKey = Object.keys(USERS).find(key => {
     const u = USERS[key];
     if (u.role === "coach") {
-      // 코치 계정은 이름 매칭 대상에서 제외 (이메일로만 로그인 허용)
+      // 코치 계정은 '오세연', '오세연 코치', 'osy0922', 'osy0922@hnu.kr' 모두 이메일 포맷 매칭
       return (key.toLowerCase() === emailInput.toLowerCase()) ||
-             (key.split("@")[0].toLowerCase() === emailInput.toLowerCase());
+             (key.split("@")[0].toLowerCase() === emailInput.toLowerCase()) ||
+             (emailInput === "오세연") || (emailInput === "오세연 코치");
     } else {
       // 스타트업 계정은 대표자 실명 또는 이메일 매칭 허용
       return (key.toLowerCase() === emailInput.toLowerCase()) ||
@@ -1042,7 +1043,6 @@ loginForm.addEventListener("submit", async (e) => {
   if (matchedUserKey) {
     targetEmail = matchedUserKey;
   } else {
-    // USERS 매핑 테이블에 없는 경우 이메일 직접 입력으로 간주
     targetEmail = emailInput;
   }
   
@@ -1066,7 +1066,7 @@ loginForm.addEventListener("submit", async (e) => {
     if (resData && resData.status === "success" && resData.data) {
       const data = resData.data;
       
-      // 3. 로그인 성공 시 반환받은 필터링된 데이터셋 로컬에 적재 (로컬 데이터 스마트 병합)
+      // 3. 데이터 로드 및 렌더링 준비
       const localComps = JSON.parse(localStorage.getItem("COMPANIES") || "[]");
       const { mergedCompanies } = smartMergeCompaniesData(data.COMPANIES || [], localComps);
       companies = mergedCompanies;
@@ -1075,24 +1075,31 @@ loginForm.addEventListener("submit", async (e) => {
       eduNames = data.eduNames || eduNames;
       notices = data.notices || notices;
       
-      // (중요) 서버에서 반환해준 내 프로필 정보로 로컬 USERS 정보 동기화 및 임시 비밀번호 세팅
-      // (비밀번호 변경 요청을 위해 currentUser.password는 메모리에 임시 보관해야 함)
-      const returnedUser = data.USERS[targetEmail];
-      if (returnedUser) {
-        // 이미 비밀번호가 설정되었거나 isFirstLogin이 false인 경우 초기 비밀번호 변경 창 생략
-        const hasCustomPassword = (returnedUser.password && returnedUser.password !== "") || (password && password !== "");
-        const isFirst = (returnedUser.isFirstLogin === true) && !hasCustomPassword;
-
-        currentUser = { ...returnedUser, password: password, email: targetEmail, isFirstLogin: isFirst };
-        USERS[targetEmail] = { ...returnedUser, password: password, isFirstLogin: isFirst };
-      } else {
-        currentUser = { role: targetEmail.includes("osy0922") ? "coach" : "startup", name: "사용자", password: password, email: targetEmail, isFirstLogin: false };
+      // 4. 비밀번호 엄격 검증 (계정이 존재할 경우 설정된 패스워드 검사)
+      const cloudUsers = data.USERS || {};
+      const returnedUser = cloudUsers[targetEmail] || USERS[targetEmail];
+      
+      if (!returnedUser) {
+        throw new Error("등록되지 않은 사용자 계정입니다. 아이디(이메일 또는 대표자명)를 다시 확인해 주세요.");
       }
+
+      // 이미 비밀번호가 설정되어 있는 경우(비밀번호가 비어있지 않음) 입력된 패스워드와 일치해야 함
+      if (returnedUser.password && returnedUser.password !== "") {
+        if (returnedUser.password !== password) {
+          throw new Error("비밀번호가 올바르지 않습니다. 정확한 비밀번호를 입력해 주세요.");
+        }
+      }
+
+      const hasCustomPassword = (returnedUser.password && returnedUser.password !== "");
+      const isFirst = (returnedUser.isFirstLogin === true) || !hasCustomPassword;
+
+      currentUser = { ...returnedUser, password: password, email: targetEmail, isFirstLogin: isFirst };
+      USERS[targetEmail] = { ...returnedUser, password: password, isFirstLogin: isFirst };
       
       localStorage.setItem("COMPANIES", JSON.stringify(companies));
       localStorage.setItem("USERS", JSON.stringify(USERS));
       
-      // 첫 로그인 패스워드 변경 확인
+      // 첫 로그인 시 비밀번호 필수 변경창으로 이동
       if (currentUser.isFirstLogin) {
         if (loadingStatus) loadingStatus.style.display = "none";
         if (loginSubmitBtn) loginSubmitBtn.disabled = false;
