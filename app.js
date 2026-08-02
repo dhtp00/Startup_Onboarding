@@ -2362,11 +2362,15 @@ function renderSurveySection() {
     }
   }
 
-  // 기업명 및 대표자 실명 자동 연동
+  // 1. 폼 초기화 (다른 기업 선택 시 이전 기업 입력 데이터 잔상 잔류 버그 완전 해결)
+  const surveyFormEl = document.getElementById("survey-form-el");
+  if (surveyFormEl) surveyFormEl.reset();
+
+  // 2. 기업명 및 대표자 실명 자동 연동
   document.getElementById("sv-company-name").value = targetCompany.name || "";
   document.getElementById("sv-representative").value = targetCompany.representative || "";
 
-  // Pre-populate if survey data exists
+  // 3. 설문 데이터 유무에 따른 개별 독립 바인딩
   if (targetCompany.surveyData) {
     document.getElementById("sv-contact").value = targetCompany.surveyData.contact || targetCompany.contact || "";
     document.getElementById("sv-corp-type").value = targetCompany.surveyData.corpType || targetCompany.corpType || "예비창업자";
@@ -2403,16 +2407,31 @@ function renderSurveySection() {
     document.querySelectorAll("input[name='sv-edu-method-chk']").forEach(chk => {
       chk.checked = eduMethodStr.includes(chk.value);
     });
-    strategyTextarea.value = targetCompany.surveyData.customStrategy || "";
+    if (strategyTextarea) strategyTextarea.value = targetCompany.surveyData.customStrategy || "";
   } else {
-    // Fill basic details from existing profile without overwriting user's active typing
-    if (!document.getElementById("sv-contact").value) document.getElementById("sv-contact").value = targetCompany.contact || "";
-    if (!document.getElementById("sv-corp-type").value) document.getElementById("sv-corp-type").value = targetCompany.corpType || "예비창업자";
-    if (!document.getElementById("sv-est-date").value) document.getElementById("sv-est-date").value = targetCompany.establishmentDate || "";
-    if (!document.getElementById("sv-address").value) document.getElementById("sv-address").value = targetCompany.address || "";
-    if (!document.getElementById("sv-sales").value) document.getElementById("sv-sales").value = "매출 미발생 (R&D, 기술 개발 및 제품 기획 단계)";
-    if (!document.getElementById("sv-employees").value) document.getElementById("sv-employees").value = "0명 (단독 창업)";
-    if (!document.getElementById("sv-restartup").value) document.getElementById("sv-restartup").value = (targetCompany.metrics && targetCompany.metrics.reStartup) || "아니오";
+    // 사전 조사가 미제출된 기업인 경우 깔끔하게 해당 기업 기본 정보만 바인딩 후 텍스트필드 초기화
+    document.getElementById("sv-contact").value = targetCompany.contact || "";
+    document.getElementById("sv-corp-type").value = targetCompany.corpType || "예비창업자";
+    document.getElementById("sv-est-date").value = targetCompany.establishmentDate || "";
+    document.getElementById("sv-address").value = targetCompany.address || "";
+    document.getElementById("sv-sales").value = (targetCompany.metrics && targetCompany.metrics.sales) || "매출 미발생 (R&D, 기술 개발 및 제품 기획 단계)";
+    document.getElementById("sv-employees").value = (targetCompany.metrics && targetCompany.metrics.employees) || "0명 (단독 창업)";
+    document.getElementById("sv-restartup").value = (targetCompany.metrics && targetCompany.metrics.reStartup) || "아니오";
+
+    document.getElementById("sv-item-intro").value = "";
+    document.getElementById("sv-item-target").value = "";
+    document.getElementById("sv-item-model").value = "";
+    document.getElementById("sv-market-target").value = "";
+    document.getElementById("sv-team-comp").value = "";
+    document.getElementById("sv-team-core").value = "";
+    document.getElementById("sv-team-needs").value = "";
+    document.getElementById("sv-need-pain").value = "";
+    document.getElementById("sv-need-goal").value = "";
+    document.getElementById("sv-need-deliverable").value = "";
+    document.getElementById("sv-edu-content").value = "";
+    if (strategyTextarea) strategyTextarea.value = "";
+    document.querySelectorAll("input[name='sv-finance-source-chk']").forEach(chk => chk.checked = false);
+    document.querySelectorAll("input[name='sv-edu-method-chk']").forEach(chk => chk.checked = false);
   }
   refreshIcons();
 }
