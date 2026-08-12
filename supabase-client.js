@@ -91,21 +91,39 @@
     },
     async saveState(companies, milestones, notices, coachName, eduNames) {
       const client = await getClient();
-      const rows = companies.map(company => {
-        const taskNumber = String(company.repDesc || "").match(/과제번호:\s*([^\)]+)/)?.[1]?.trim();
-        return ({
-        id: company.id,
-        representative: company.representative || "-",
-        login_email: company.loginEmail || (taskNumber ? `${taskNumber}@onboard.com` : `${company.id}@onboard.com`),
-        invitation_key: company.invitationKey || `DISABLED-${company.id}`,
-        data: company,
-        updated_at: new Date().toISOString()
-      });
-      });
-      const { error: companyError } = await client.from("companies").upsert(rows, { onConflict: "id" });
-      if (companyError) throw companyError;
       const { data: authData } = await client.auth.getUser();
-      const { data: profile } = await client.from("profiles").select("role").eq("id", authData.user.id).single();
+      if (!authData.user) throw new Error("로그인 세션이 만료되었습니다.");
+      const { data: profile, error: profileError } = await client
+        .from("profiles")
+        .select("role,company_id")
+        .eq("id", authData.user.id)
+        .single();
+      if (profileError || !profile) throw profileError || new Error("사용자 프로필을 찾을 수 없습니다.");
+
+      if (profile.role === "coach") {
+        const rows = companies.map(company => {
+          const taskNumber = String(company.repDesc || "").match(/과제번호:\s*([^\)]+)/)?.[1]?.trim();
+          return ({
+            id: company.id,
+            representative: company.representative || "-",
+            login_email: company.loginEmail || (taskNumber ? `${taskNumber}@onboard.com` : `${company.id}@onboard.com`),
+            invitation_key: company.invitationKey || `DISABLED-${company.id}`,
+            data: company,
+            updated_at: new Date().toISOString()
+          });
+        });
+        const { error: companyError } = await client.from("companies").upsert(rows, { onConflict: "id" });
+        if (companyError) throw companyError;
+      } else {
+        const ownCompany = companies.find(company => Number(company.id) === Number(profile.company_id));
+        if (!ownCompany) throw new Error("연결된 기업 정보를 찾을 수 없습니다.");
+        const { error: companyError } = await client
+          .from("companies")
+          .update({ data: ownCompany, updated_at: new Date().toISOString() })
+          .eq("id", profile.company_id);
+        if (companyError) throw companyError;
+      }
+
       if (profile && profile.role === "coach") {
         const configRows = [
           { key: "coach_name", value: coachName, updated_at: new Date().toISOString() },
