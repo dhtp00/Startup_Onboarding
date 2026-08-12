@@ -33,7 +33,13 @@
     },
     async signup(payload) {
       const response = await fetch("/api/signup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      const data = await response.json();
+      const responseText = await response.text();
+      let data = {};
+      try {
+        data = responseText ? JSON.parse(responseText) : {};
+      } catch (_) {
+        throw new Error(`가입 서버 오류 (${response.status}). Vercel Function 로그를 확인해 주세요.`);
+      }
       if (!response.ok) throw new Error(data.error || "회원가입에 실패했습니다.");
       return data;
     },
