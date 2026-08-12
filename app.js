@@ -1871,8 +1871,8 @@ btnArchiveChat.addEventListener("click", () => {
   
   activeCompany.coachingLogs.push({
     id: Date.now(),
-    type: "멘토링",
-    field: "BM고도화",
+    type: "모니터링",
+    field: "기업 애로사항 및 후속지원 연계",
     date: new Date().toISOString().split('T')[0],
     content: archiveContent
   });
