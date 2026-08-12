@@ -822,7 +822,7 @@ let isSyncingCloud = false;
 
 function applySecureBackendData(data) {
   if (!data || !data.profile) return false;
-  companies = Array.isArray(data.companies) ? data.companies : [];
+  companies = Array.isArray(data.companies) ? data.companies.map(sanitizeCompany) : [];
   milestones = normalizeProgramNotices(data.milestones);
   notices = normalizeNoticePosts(data.notices || [], "integrated");
   coachName = data.coachName || coachName;
@@ -843,8 +843,26 @@ function applySecureBackendData(data) {
 async function loadCloudData() {
   if (window.secureBackend) {
     try {
+      const isInitialLogin = !currentUser;
       const data = await window.secureBackend.loadData();
-      if (applySecureBackendData(data)) enterPlatform();
+      if (applySecureBackendData(data)) {
+        if (isInitialLogin) {
+          enterPlatform();
+        } else {
+          // Background synchronization must preserve the section the user is viewing.
+          const activeSection = document.querySelector(".content-section.active");
+          if (activeSection === sectionDash || activeSection === sectionEdu) renderDashboard();
+          else if (activeSection === sectionChat) renderChatSection();
+          else if (activeSection === sectionSurvey) {
+            const overallView = document.getElementById("survey-overall-view");
+            if (overallView && overallView.style.display === "block") renderOverallSurveyResults();
+            else renderSurveySection();
+          }
+          else if (activeSection === sectionReport) renderReportSection();
+          else if (activeSection === sectionStrategyReport) renderStrategyReportSection();
+          else if (activeSection === sectionSetting) renderSettingSection();
+        }
+      }
     } catch (error) {
       console.error("Supabase 동기화 실패:", error);
     }
