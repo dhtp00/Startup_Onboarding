@@ -3,19 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="한남대학교 창업지원단 2026년 창업중심대학 스타트업 코치 온보딩 모니터링 시스템">
-  <meta name="author" content="한남대학교 창업지원단">
-  <meta name="robots" content="noindex, nofollow">
   <title>START-UP ONBOARD : 한남대학교 창업지원단</title>
   <!-- Google Fonts Outfit & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20260811_3">
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Supabase JS Client -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -30,14 +25,14 @@
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">2026년 창업중심대학 스타트업 코치 온보딩</p>
       </div>
       
-      <form id="login-form">
+      <form id="login-form" autocomplete="off">
         <div class="form-group" style="margin-bottom: 16px;">
-          <label for="login-email">아이디 (스타트업: 대표자명 / 코치: 이메일)</label>
-          <input type="text" id="login-email" placeholder="스타트업: 대표자명(예: 박지훈) / 코치: osy0922@hnu.kr" required>
+          <label for="login-email">아이디</label>
+          <input type="text" id="login-email" placeholder="아이디 입력" autocomplete="off" autocapitalize="none" spellcheck="false" required>
         </div>
         <div class="form-group" style="margin-bottom: 20px;">
-          <label for="login-password">비밀번호 (과제번호 또는 설정한 비밀번호)</label>
-          <input type="password" id="login-password" placeholder="스타트업: 과제번호 / 코치: osy0922" required>
+          <label for="login-password">비밀번호</label>
+          <input type="password" id="login-password" placeholder="비밀번호 입력" autocomplete="new-password" required>
         </div>
         
         <div id="login-loading-status" style="font-size: 0.82rem; color: var(--accent-color); text-align: center; margin-bottom: 12px; font-weight: 500; display: none;">
@@ -202,7 +197,17 @@
             <button class="action-btn" id="btn-add-company" style="background-color: var(--accent-color); border: none; display: none; color: #fff; align-items: center; gap: 4px;"><i data-lucide="plus" style="width: 14px; height: 14px;"></i>신규 기업 등록</button>
           </div>
           <div class="table-container">
-            <table>
+            <table class="company-dashboard-table">
+              <colgroup>
+                <col class="col-company-name">
+                <col class="col-company-type">
+                <col class="col-representative">
+                <col class="col-metrics">
+                <col class="col-budget-checks">
+                <col class="col-education">
+                <col class="col-coaching">
+                <col class="col-management">
+              </colgroup>
               <thead>
                 <tr>
                   <th>창업기업명</th>
@@ -222,13 +227,16 @@
           </div>
         </div>
 
-        <!-- 2026 Milestone Check & Quick Notice Board -->
+        <!-- Program notices & integrated notices -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 8px;">
-          <!-- Milestones Card -->
+          <!-- Startup Coaching Program Notices Card -->
           <div class="card" style="background-color: #ffffff;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-              <h3 style="font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 8px;"><i data-lucide="flag" style="width: 18px; height: 18px; color: var(--accent-color);"></i>2026년 프로그램 주요 이정표 (Milestone)</h3>
-              <button class="action-btn" id="btn-edit-milestone" style="font-size:0.75rem; padding: 4px 8px; display:none; align-items: center; gap: 4px;"><i data-lucide="edit" style="width: 12px; height: 12px;"></i>이정표 수정</button>
+              <h3 style="font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 8px;"><i data-lucide="messages-square" style="width: 18px; height: 18px; color: var(--accent-color);"></i>스타트업 코칭 프로그램 공지사항</h3>
+              <div style="display:flex; gap:6px;">
+                <button class="action-btn" id="btn-view-program-notices" style="font-size:0.75rem; padding: 4px 8px; display:inline-flex; align-items: center; gap: 4px;"><i data-lucide="list" style="width: 12px; height: 12px;"></i>전체보기</button>
+                <button class="action-btn" id="btn-edit-milestone" style="font-size:0.75rem; padding: 4px 8px; display:none; align-items: center; gap: 4px;"><i data-lucide="plus" style="width: 12px; height: 12px;"></i>글쓰기</button>
+              </div>
             </div>
             <ul id="milestone-list" style="list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 0.85rem;">
               <!-- Dynamic Milestones -->
@@ -237,7 +245,13 @@
 
           <!-- Notice Board Card -->
           <div class="card" style="background-color: #ffffff;">
-            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;"><i data-lucide="megaphone" style="width: 18px; height: 18px; color: var(--accent-color);"></i>창업중심대학 통합 공지사항</h3>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+              <h3 style="font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 8px;"><i data-lucide="megaphone" style="width: 18px; height: 18px; color: var(--accent-color);"></i>창업중심대학 통합 공지사항</h3>
+              <div style="display:flex; gap:6px;">
+                <button class="action-btn" id="btn-view-integrated-notices" style="font-size:0.75rem; padding: 4px 8px; display:inline-flex; align-items: center; gap: 4px;"><i data-lucide="list" style="width: 12px; height: 12px;"></i>전체보기</button>
+                <button class="action-btn" id="btn-edit-notices" style="font-size:0.75rem; padding: 4px 8px; display:none; align-items: center; gap: 4px;"><i data-lucide="plus" style="width: 12px; height: 12px;"></i>글쓰기</button>
+              </div>
+            </div>
             <div style="display: flex; flex-direction: column; gap: 12px;" id="notice-board-container">
               <div style="border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
                 <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 4px;">
@@ -307,21 +321,21 @@
       <!-- SECTION 3: 필수 교육 & 멘토링 이수 현황 -->
       <section id="section-edu" class="view-section">
         <div class="section-title">
-          <span>창업 기본 및 필수 교육 이수 상황 (노무, 회계, 법률)</span>
+          <span>스타트업 필수 교육 이수 현황</span>
         </div>
         <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr);">
           <div class="card">
-            <div class="card-title">기본 노무 실무 교육</div>
+            <div class="card-title" id="edu-summary-title-1">1차 교육</div>
             <div class="card-value" id="edu-stat-hr">80%</div>
             <div class="card-desc">5개사 중 4개사 이수 완료</div>
           </div>
           <div class="card">
-            <div class="card-title">스타트업 회계/세무 기초</div>
+            <div class="card-title" id="edu-summary-title-2">2차 교육</div>
             <div class="card-value" id="edu-stat-acc">60%</div>
             <div class="card-desc">5개사 중 3개사 이수 완료</div>
           </div>
           <div class="card">
-            <div class="card-title">창업 법률 및 계약서 검토</div>
+            <div class="card-title" id="edu-summary-title-3">3차 교육</div>
             <div class="card-value" id="edu-stat-law">40%</div>
             <div class="card-desc">5개사 중 2개사 이수 완료</div>
           </div>
@@ -333,9 +347,9 @@
               <thead>
                 <tr>
                   <th>창업기업명</th>
-                  <th>노무 교육 상태</th>
-                  <th>회계 교육 상태</th>
-                  <th>법률 교육 상태</th>
+                  <th>1차 교육</th>
+                  <th>2차 교육</th>
+                  <th>3차 교육</th>
                   <th>추천 온라인 콘텐츠 (자기주도 학습 연계)</th>
                   <th class="coach-only-cell" style="display:none;">관리</th>
                 </tr>
@@ -353,6 +367,10 @@
         <div class="section-title">
           <span style="display: flex; align-items: center; gap: 8px;"><i data-lucide="clipboard-signature" style="width: 20px; height: 20px; color: var(--accent-color);"></i>창업기업 기초 사전 조사 및 멘토링 요구사항 진단</span>
         </div>
+        <div id="survey-view-toggle" style="display:none; gap:8px; margin-bottom:16px;">
+          <button type="button" class="action-btn active" id="btn-survey-individual">기업별 조사 결과</button>
+          <button type="button" class="action-btn" id="btn-survey-overall"><i data-lucide="bar-chart-3" style="width:14px;height:14px;"></i> 전체 결과</button>
+        </div>
         <!-- 코치 전용 기업 선택 드롭다운 -->
         <div id="survey-company-select-container" style="display: none; background: var(--bg-secondary); padding: 16px 24px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 20px; align-items: center; gap: 12px;">
           <label for="survey-company-select" style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary); text-transform: none; margin-bottom: 0;">조회 대상 기업 선택:</label>
@@ -361,7 +379,7 @@
           </select>
         </div>
 
-        <div class="survey-card">
+        <div class="survey-card" id="survey-individual-view">
           <div id="survey-startup-info" style="margin-bottom: 20px; padding: 12px; background: rgba(79, 70, 229, 0.05); border-radius: 8px; border: 1px solid rgba(79, 70, 229, 0.1); display: flex; align-items: center; gap: 6px;">
             <i data-lucide="info" style="width: 16px; height: 16px; color: var(--accent-color); flex-shrink: 0;"></i>
             <span><strong>안내:</strong> 본 설문조사는 기업의 현재 역량을 정확하게 진단하고 맞춤형 성장 전략을 수립하기 위한 서식입니다.</span>
@@ -424,10 +442,8 @@
               <div class="form-group">
                 <label for="sv-restartup">재창업 여부</label>
                 <select id="sv-restartup" required>
-                  <option value="아니오 (첫 창업)">아니오 (첫 창업)</option>
-                  <option value="예 (재창업 기업)">예 (재창업 기업)</option>
-                  <option value="아니오">아니오</option>
-                  <option value="예">예</option>
+                  <option value="아니오">아니오 (첫 창업)</option>
+                  <option value="예">예 (재창업 기업)</option>
                 </select>
               </div>
             </div>
@@ -551,6 +567,7 @@
             </div>
           </form>
         </div>
+        <div id="survey-overall-view" style="display:none;"></div>
       </section>
 
       <!-- SECTION 5: 모니터링 보고서 -->
@@ -574,7 +591,7 @@
           
           <!-- 보고서 단계 구분 탭 -->
           <div class="view-toggle" style="align-self: flex-start; background-color: rgba(0, 0, 0, 0.04); padding: 4px; border-radius: 8px; border: 1px solid var(--border-color); display: flex; gap: 4px;">
-            <button type="button" class="toggle-btn active" id="btn-report-1st" style="border: none; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">중간 모니터링 보고서 (7~10월)</button>
+            <button type="button" class="toggle-btn active" id="btn-report-1st" style="border: none; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">중간 모니터링 보고서</button>
             <button type="button" class="toggle-btn" id="btn-report-final" style="border: none; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">최종 종합 결과보고서 (전체)</button>
           </div>
         </div>
@@ -588,7 +605,7 @@
           </div>
 
           <!-- Section 1: 기업 기본 현황 -->
-          <div class="report-section-header">1. 기업 기본 정보 및 프로필</div>
+          <div class="report-section-header">기업 기본 정보 및 프로필</div>
           <table class="report-table">
             <tr>
               <th style="width: 20%;">창업기업명</th>
@@ -615,7 +632,7 @@
           </table>
 
           <!-- Section 2: 비즈니스 핵심 지표 & 연계 현황 -->
-          <div class="report-section-header">2. 비즈니스 핵심 성과 및 원스톱 센터 연계 현황</div>
+          <div class="report-section-header">비즈니스 핵심 성과 및 원스톱 센터 연계 현황</div>
           <table class="report-table">
             <tr>
               <th style="width: 25%;">매출 규모</th>
@@ -630,7 +647,7 @@
           </table>
 
           <!-- Section 3: 필수 교육 이수 상황 -->
-          <div class="report-section-header">3. 창업 기본 3대 분야 필수 교육 이수 현황 및 맞춤형 추천 교육 로그</div>
+          <div class="report-section-header">필수 교육 이수 현황 및 맞춤형 추천 교육</div>
           <table class="report-table" style="text-align: center;">
             <thead>
               <tr>
@@ -651,7 +668,7 @@
           </table>
 
           <!-- Section 4: 월별 사업비 집행 점검표 -->
-          <div class="report-section-header">4. 월별 사업비(정부지원금) 집행 모니터링 점검표</div>
+          <div class="report-section-header">월별 사업비(정부지원금) 집행 모니터링 점검표</div>
           <table class="report-table" style="text-align: center;">
             <thead>
               <tr>
@@ -680,7 +697,7 @@
           </table>
 
           <!-- Section 5: 사전 수요조사 결과 및 맞춤형 지원 전략 -->
-          <div class="report-section-header">5. 데이터 기반 사전 수요조사 및 맞춤형 지원 전략</div>
+          <div class="report-section-header">데이터 기반 사전 수요조사 및 맞춤형 지원 전략</div>
           <table class="report-table">
             <tr>
               <th colspan="4" style="background-color: #f1f5f9; text-align: left; font-weight: 700; color: #1e293b;">[아이템 및 사업 개요]</th>
@@ -751,7 +768,7 @@
           </table>
 
           <!-- Section 6: 누적 밀착 코칭/멘토링 상세 히스토리 -->
-          <div class="report-section-header">6. 누적 밀착 코칭 및 자문 일지 히스토리</div>
+          <div class="report-section-header">누적 밀착 코칭 및 자문 일지 히스토리</div>
           <table class="report-table">
             <thead>
               <tr>
@@ -792,58 +809,27 @@
             <div class="survey-section-title">2. 창업 필수 교육 3대 분야 과목 명칭 설정</div>
             <div class="survey-grid-2" style="gap: 16px; margin-bottom: 20px;">
               <div class="form-group">
-                <label for="cfg-edu-hr">분야 1. 노무 실무 과목명</label>
-                <input type="text" id="cfg-edu-hr" required placeholder="예: 기본 노무 실무">
+                <label for="cfg-edu-hr">1차 교육 명칭</label>
+                <input type="text" id="cfg-edu-hr" required placeholder="예: 1차 교육">
               </div>
               <div class="form-group">
-                <label for="cfg-edu-acc">분야 2. 회계/세무 과목명</label>
-                <input type="text" id="cfg-edu-acc" required placeholder="예: 스타트업 회계/세무 기초">
+                <label for="cfg-edu-acc">2차 교육 명칭</label>
+                <input type="text" id="cfg-edu-acc" required placeholder="예: 2차 교육">
               </div>
               <div class="form-group" style="grid-column: span 2;">
-                <label for="cfg-edu-law">분야 3. 법률/특허 과목명</label>
-                <input type="text" id="cfg-edu-law" required placeholder="예: 창업 법률 및 계약서 검토" style="width: 100%; max-width: 400px;">
+                <label for="cfg-edu-law">3차 교육 명칭</label>
+                <input type="text" id="cfg-edu-law" required placeholder="예: 3차 교육" style="width: 100%; max-width: 400px;">
               </div>
             </div>
             
-            <!-- 통합 공지사항 설정 -->
-            <div class="survey-section-title">3. 통합 공지사항 관리</div>
-            <div style="background: rgba(0,0,0,0.01); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
-              <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-                <select id="cfg-notice-type" style="width: 120px;">
-                  <option value="[공지]">[공지]</option>
-                  <option value="[안내]">[안내]</option>
-                </select>
-                <input type="text" id="cfg-notice-title" placeholder="새 공지사항 제목 입력..." style="flex-grow: 1;">
-                <button type="button" class="action-btn" id="btn-add-notice" style="background-color: var(--accent-color); border:none; color:#fff; cursor:pointer;">추가</button>
-              </div>
-              <ul id="cfg-notice-list" style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; max-height: 180px; overflow-y: auto; padding-left: 0; margin: 0;">
-                <!-- dynamic notices -->
-              </ul>
-            </div>
-
-            <!-- 주요 이정표 설정 -->
-            <div class="survey-section-title">4. 프로그램 주요 이정표 (Milestone) 설정</div>
-            <div style="background: rgba(0,0,0,0.01); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin-bottom: 24px; display: flex; flex-direction: column; gap: 12px;">
-              <div class="form-group">
-                <label for="cfg-ms-step1">1단계 문구</label>
-                <input type="text" id="cfg-ms-step1" required>
-              </div>
-              <div class="form-group">
-                <label for="cfg-ms-step2">2단계 문구</label>
-                <input type="text" id="cfg-ms-step2" required>
-              </div>
-              <div class="form-group">
-                <label for="cfg-ms-step3">3단계 문구</label>
-                <input type="text" id="cfg-ms-step3" required>
-              </div>
-              <div class="form-group">
-                <label for="cfg-ms-step4">4단계 문구</label>
-                <input type="text" id="cfg-ms-step4" required>
-              </div>
+            <div class="survey-section-title">3. 공지사항 게시판 관리</div>
+            <div style="background: rgba(79,70,229,0.04); border: 1px solid rgba(79,70,229,0.15); border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+              <p style="font-size:0.82rem; color:var(--text-secondary); line-height:1.5; margin-bottom:12px;">공지사항은 대시보드의 각 게시판에서 제목, 본문, 첨부 문서를 포함해 등록·수정·삭제할 수 있습니다.</p>
+              <button type="button" class="action-btn" id="btn-open-notice-manager" style="background:var(--accent-color); color:#fff; border:none; display:inline-flex; align-items:center; gap:6px;"><i data-lucide="megaphone" style="width:14px; height:14px;"></i>공지사항 게시판 열기</button>
             </div>
             
             <!-- 이메일 알림 연동 테스트 -->
-            <div class="survey-section-title">5. 이메일 알림 연동 테스트</div>
+            <div class="survey-section-title">4. 이메일 알림 연동 테스트</div>
             <div style="background: rgba(0,0,0,0.01); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin-bottom: 24px;">
               <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4;">
                 구글 앱스 스크립트(GAS)와의 이메일 알림 연동을 직접 검증해 볼 수 있습니다.<br>
@@ -890,7 +876,7 @@
           </div>
 
           <!-- Section 1: 기업 기본 현황 -->
-          <div class="report-section-header">1. 기업 기본 정보 및 프로필</div>
+          <div class="report-section-header">기업 기본 정보 및 프로필</div>
           <table class="report-table">
             <tr>
               <th style="width: 20%;">창업기업명</th>
@@ -917,7 +903,7 @@
           </table>
 
           <!-- Section 2: 사전 수요조사 결과 및 맞춤형 지원 전략 -->
-          <div class="report-section-header">2. 데이터 기반 사전 수요조사 및 맞춤형 지원 전략</div>
+          <div class="report-section-header">데이터 기반 사전 수요조사 및 맞춤형 지원 전략</div>
           <table class="report-table">
             <tr>
               <th colspan="4" style="background-color: #f1f5f9; text-align: left; font-weight: 700; color: #1e293b;">[아이템 및 사업 개요]</th>
@@ -1105,28 +1091,28 @@
     </div>
   </div>
 
-  <!-- MODAL: 이정표(Milestone) 편집 모달 -->
+  <!-- MODAL: 스타트업 코칭 프로그램 공지 편집 모달 -->
   <div class="modal-overlay" id="milestone-modal">
     <div class="modal">
       <div class="modal-header">
-        <h3 style="display: flex; align-items: center; gap: 6px;"><i data-lucide="milestone" style="width: 18px; height: 18px; color: var(--accent-color);"></i>2026년 이정표(Milestone) 편집</h3>
+        <h3 style="display: flex; align-items: center; gap: 6px;"><i data-lucide="messages-square" style="width: 18px; height: 18px; color: var(--accent-color);"></i>스타트업 코칭 프로그램 공지 편집</h3>
         <button class="close-btn" id="btn-close-milestone">&times;</button>
       </div>
       <form id="milestone-form">
         <div class="form-group">
-          <label for="ms-step1">1단계 (수요조사)</label>
+          <label for="ms-step1">공지 1</label>
           <input type="text" id="ms-step1" required>
         </div>
         <div class="form-group">
-          <label for="ms-step2">2단계 (전담코칭)</label>
+          <label for="ms-step2">공지 2</label>
           <input type="text" id="ms-step2" required>
         </div>
         <div class="form-group">
-          <label for="ms-step3">3단계 (필수교육)</label>
+          <label for="ms-step3">공지 3</label>
           <input type="text" id="ms-step3" required>
         </div>
         <div class="form-group">
-          <label for="ms-step4">4단계 (모니터링 보고서)</label>
+          <label for="ms-step4">공지 4</label>
           <input type="text" id="ms-step4" required>
         </div>
         <div class="modal-footer">
@@ -1166,8 +1152,8 @@
           <input type="text" id="c-rep-desc" required placeholder="예: 홍길동 (34세, 남성)">
         </div>
         <div class="form-group">
-          <label for="c-password">스타트업 로그인 비밀번호</label>
-          <input type="text" id="c-password" required placeholder="기본 비밀번호 지정 (예: 1234)">
+          <label for="c-login-email">Supabase 로그인 이메일</label>
+          <input type="email" id="c-login-email" required placeholder="예: 20424601@onboard.com" autocomplete="off">
         </div>
         <div class="form-group">
           <label for="c-key">가입 키 (Invitation Key)</label>
@@ -1266,7 +1252,7 @@
         <input type="hidden" id="edu-modal-company-id">
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label for="edu-hr">노무 교육 상태</label>
+            <label for="edu-hr" id="edu-modal-label-1">1차 교육 상태</label>
             <select id="edu-hr" required>
               <option value="이수">이수</option>
               <option value="대기">대기</option>
@@ -1274,7 +1260,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="edu-acc">회계 교육 상태</label>
+            <label for="edu-acc" id="edu-modal-label-2">2차 교육 상태</label>
             <select id="edu-acc" required>
               <option value="이수">이수</option>
               <option value="대기">대기</option>
@@ -1282,7 +1268,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="edu-law">법률 교육 상태</label>
+            <label for="edu-law" id="edu-modal-label-3">3차 교육 상태</label>
             <select id="edu-law" required>
               <option value="이수">이수</option>
               <option value="대기">대기</option>
@@ -1291,9 +1277,14 @@
           </div>
         </div>
         <div class="form-group" style="margin-top: 12px;">
-          <label for="edu-content">추천 온라인 교육 및 연계 안내</label>
-          <input type="text" id="edu-content" required placeholder="예: 창업에듀 노무기초 및 정부지원금 강좌 연계 수강중">
+          <label for="edu-subject">추천 과목</label>
+          <input type="text" id="edu-subject" required placeholder="예: 정부지원사업 정산 실무">
         </div>
+        <div class="form-group" style="margin-top: 12px;">
+          <label for="edu-content">추천 내용</label>
+          <textarea id="edu-content" rows="3" required placeholder="추천 이유, 학습 범위, 수강 방법 등을 입력해 주세요."></textarea>
+        </div>
+        <label style="display:flex; align-items:center; gap:8px; margin-top:14px; font-size:0.82rem; font-weight:600; text-transform:none;"><input type="checkbox" id="edu-log-coaching" checked> 저장 내용을 코칭로그로 함께 등록</label>
         <div class="modal-footer" style="border-top: 1px solid var(--border-color); padding-top: 16px;">
           <button type="button" class="action-btn" id="btn-cancel-edu">취소</button>
           <button type="submit" class="action-btn" style="background-color: var(--accent-color); border: none;">저장</button>
@@ -1302,6 +1293,79 @@
     </div>
   </div>
 
-  <script src="app.js?v=20260708_9"></script>
+  <!-- MODAL: 추천 온라인 콘텐츠 상세 -->
+  <div class="modal-overlay" id="edu-content-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="edu-content-modal-title">추천 온라인 콘텐츠</h3>
+        <button class="close-btn" id="btn-close-edu-content">&times;</button>
+      </div>
+      <div id="edu-content-view">
+        <div class="survey-section-title" style="margin-top:0;">추천 과목</div>
+        <p id="edu-content-subject" style="font-weight:700; margin-bottom:20px;">-</p>
+        <div class="survey-section-title">내용</div>
+        <p id="edu-content-description" style="white-space:pre-wrap; line-height:1.7;">-</p>
+      </div>
+      <form id="edu-content-edit-form" style="display:none; flex-direction:column; gap:16px;">
+        <input type="hidden" id="edu-content-company-id">
+        <div class="form-group"><label for="edu-content-edit-subject">추천 과목</label><input type="text" id="edu-content-edit-subject" required placeholder="추천 과목명을 입력해 주세요."></div>
+        <div class="form-group"><label for="edu-content-edit-description">내용</label><textarea id="edu-content-edit-description" rows="6" required placeholder="추천 이유, 학습 범위, 수강 방법 등을 입력해 주세요."></textarea></div>
+        <label style="display:flex; align-items:center; gap:8px; font-size:0.82rem; font-weight:600; text-transform:none;"><input type="checkbox" id="edu-content-log-coaching" checked> 저장 내용을 코칭로그로 함께 등록</label>
+        <div class="modal-footer"><button type="button" class="action-btn" id="btn-cancel-edu-content-edit">취소</button><button type="submit" class="action-btn" style="background:var(--accent-color); color:#fff; border:none;">저장</button></div>
+      </form>
+      <div class="modal-footer" id="edu-content-view-footer"><button class="action-btn" id="btn-edit-edu-content" style="display:none;"><i data-lucide="edit" style="width:14px;height:14px;"></i> 추가/수정</button><button class="action-btn" id="btn-close-edu-content-footer">확인</button></div>
+    </div>
+  </div>
+
+  <!-- MODAL: 공지사항 게시판 -->
+  <div class="modal-overlay" id="notice-center-modal">
+    <div class="modal notice-center-modal-panel">
+      <div class="modal-header">
+        <h3 id="notice-center-title">공지사항</h3>
+        <button class="close-btn" id="btn-close-notice-center">&times;</button>
+      </div>
+      <div class="notice-center-toolbar">
+        <span id="notice-center-count" class="tag tag-early">0건</span>
+        <button type="button" class="action-btn" id="btn-new-notice-post" style="display:none; background:var(--accent-color); color:#fff; border:none;"><i data-lucide="plus" style="width:14px; height:14px;"></i> 새 글 작성</button>
+      </div>
+      <div class="notice-center-layout">
+        <div id="notice-center-list" class="notice-center-list"></div>
+        <article id="notice-center-detail" class="notice-center-detail">
+          <p class="notice-empty-message">왼쪽 목록에서 공지사항을 선택해 주세요.</p>
+        </article>
+      </div>
+      <form id="notice-post-form" class="notice-post-form" style="display:none;">
+        <input type="hidden" id="notice-post-id">
+        <div class="form-group">
+          <label for="notice-post-type">구분</label>
+          <select id="notice-post-type">
+            <option value="[공지]">[공지]</option>
+            <option value="[안내]">[안내]</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="notice-post-title">제목</label>
+          <input type="text" id="notice-post-title" maxlength="120" required placeholder="공지사항 제목을 입력해 주세요.">
+        </div>
+        <div class="form-group">
+          <label for="notice-post-content">글 내용</label>
+          <textarea id="notice-post-content" rows="8" required placeholder="공지 내용을 입력해 주세요."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="notice-post-file">첨부 문서 (최대 3MB)</label>
+          <input type="file" id="notice-post-file" accept=".pdf,.hwp,.hwpx,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,image/*">
+          <span id="notice-current-file" style="font-size:0.78rem; color:var(--text-secondary);"></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="action-btn" id="btn-cancel-notice-post">취소</button>
+          <button type="submit" class="action-btn" style="background:var(--accent-color); color:#fff; border:none;">공지 저장</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js?v=20260811_1"></script>
+  <script src="app.js?v=20260811_5"></script>
 </body>
 </html>

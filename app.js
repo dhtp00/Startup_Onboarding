@@ -1,75 +1,33 @@
-
-// 🛡️ Security Guard: Anti-Inspection & Anti-DevTools Protection
-(function() {
-  document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'u')) {
-      e.preventDefault();
-      return false;
-    }
-  });
-  setInterval(function() {
-    const startTime = performance.now();
-    (function(){ return false; })['constructor']('debugger')();
-    const endTime = performance.now();
-    if (endTime - startTime > 100) {
-      console.warn("⚠️ Security Warning: Inspector Detected.");
-    }
-  }, 1000);
-})();
-
-/* Protected & Encrypted by Hannam Univ Security Module */
-(function(){
-  const _0x9a8f = ["b3N5MDkyMkBobnUua3I=","b3N5MDkyMg==","MjA0MjQ2MDFAb25ib2FyZC5jb20=","MjA0MjUxNjJAb25ib2FyZC5jb20=","MjA0MTg3MTZAb25ib2FyZC5jb20=","MjA0MjA3MjlAb25ib2FyZC5jb20=","MjA0Mjk0NzNAb25ib2FyZC5jb20=","MjA0MjA5MDlAb25ib2FyZC5jb20=","MjA0MTcwNjVAb25ib2FyZC5jb20=","MjA0MTU1NjJAb25ib2FyZC5jb20=","MjA0MTE5ODlAb25ib2FyZC5jb20=","MjA0MTc1MDVAb25ib2FyZC5jb20=","MjA0MjY5ODNAb25ib2FyZC5jb20=","MjA0MzMyNzVAb25ib2FyZC5jb20=","MjA0MzAxOTBAb25ib2FyZC5jb20=","MjA0MTkxNThAb25ib2FyZC5jb20=","MjA0Mjc2MjdAb25ib2FyZC5jb20=","MjA0MjI3NTRAb25ib2FyZC5jb20=","MjA0MzE0MzVAb25ib2FyZC5jb20=","MDQyNjI5ODUxMEBvbmJvYXJkLmNvbQ==","MjA0MjQ2MDE=","MjA0MjUxNjI=","MjA0MTg3MTY=","MjA0MjA3Mjk=","MjA0Mjk0NzM=","MjA0MjA5MDk=","MjA0MTcwNjU=","MjA0MTU1NjI=","MjA0MTE5ODk=","MjA0MTc1MDU=","MjA0MjY5ODM=","MjA0MzMyNzU=","MjA0MzAxOTA=","MjA0MTkxNTg=","MjA0Mjc2Mjc=","MjA0MjI3NTQ=","MjA0MzE0MzU=","MDQyNjI5ODUxMA==","aHR0cHM6Ly9qdnd0YXZobm1sdml5ZW15b2Fqdy5zdXBhYmFzZS5jby9yZXN0L3YxL2FwcF9zdG9yZQ==","c2JfcHVibGlzaGFibGVfVnhBbERVRk1iNTVGVENZMENNV1lyZ19qVUc4N0o1dQ==","aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3TU8waDVtMjQ3bUJVd1RrdF95RFdxeE9LYWpPVjd4TU81X2xDaUdVR1otTDFpdlFGRnhrd3VNZ3FqTEtFbF9TQkQvZXhlYw=="];
-  window._0xdecode = function(idx) {
-    try { return atob(_0x9a8f[idx]); } catch(e) { return ""; }
-  };
-})();
+// Security cleanup: never retain legacy plaintext user/password caches.
+localStorage.removeItem("USERS");
 
 // --- AUTO STORAGE MIGRATION FOR NEW DATASET ---
-// ⚠️ 아래 코드는 의도치 않게 데이터를 삭제하므로 주석 처리합니다.
-// if (localStorage.getItem("COMPANIES") && (localStorage.getItem("COMPANIES")?.includes("뉴로모먼트") || localStorage.getItem("COMPANIES")?.includes("사전조사 작성 완료했습니다") || !localStorage.getItem("USERS")?.includes(_0xdecode(17)))) {
-//   localStorage.removeItem("COMPANIES");
-//   localStorage.removeItem("USERS");
-// }
+if (localStorage.getItem("COMPANIES") && (localStorage.getItem("COMPANIES")?.includes("뉴로모먼트") || localStorage.getItem("COMPANIES")?.includes("사전조사 작성 완료했습니다") || !localStorage.getItem("USERS")?.includes("20422754@onboard.com"))) {
+  localStorage.removeItem("COMPANIES");
+  localStorage.removeItem("USERS");
+}
 
 // --- DEMO USER ACCOUNT DATA (Simulation of Supabase Auth) ---
 let USERS = JSON.parse(localStorage.getItem("USERS")) || {
-  [_0xdecode(0)]: { role: "coach", name: "오세연 코치", companyId: null, password: _0xdecode(1), isFirstLogin: true },
-  [_0xdecode(2)]: { role: "startup", name: "박지훈 대표", companyId: 1, password: _0xdecode(20), isFirstLogin: true },
-  [_0xdecode(3)]: { role: "startup", name: "신상호 대표", companyId: 2, password: _0xdecode(21), isFirstLogin: true },
-  [_0xdecode(4)]: { role: "startup", name: "오영웅 대표", companyId: 3, password: _0xdecode(22), isFirstLogin: true },
-  [_0xdecode(5)]: { role: "startup", name: "염준 대표", companyId: 4, password: _0xdecode(23), isFirstLogin: true },
-  [_0xdecode(6)]: { role: "startup", name: "이준석 대표", companyId: 5, password: _0xdecode(24), isFirstLogin: true },
-  [_0xdecode(7)]: { role: "startup", name: "최성환 대표", companyId: 6, password: _0xdecode(25), isFirstLogin: true },
-  [_0xdecode(8)]: { role: "startup", name: "이서진 대표", companyId: 7, password: _0xdecode(26), isFirstLogin: true },
-  [_0xdecode(9)]: { role: "startup", name: "이수빈 대표", companyId: 8, password: _0xdecode(27), isFirstLogin: true },
-  [_0xdecode(10)]: { role: "startup", name: "정수민 대표", companyId: 9, password: _0xdecode(28), isFirstLogin: true },
-  [_0xdecode(11)]: { role: "startup", name: "지세빈 대표", companyId: 10, password: _0xdecode(29), isFirstLogin: true },
-  [_0xdecode(12)]: { role: "startup", name: "김영준 대표", companyId: 11, password: _0xdecode(30), isFirstLogin: true },
-  [_0xdecode(13)]: { role: "startup", name: "이광록 대표", companyId: 12, password: _0xdecode(31), isFirstLogin: true },
-  [_0xdecode(14)]: { role: "startup", name: "권태균 대표", companyId: 13, password: _0xdecode(32), isFirstLogin: true },
-  [_0xdecode(15)]: { role: "startup", name: "신민준 대표", companyId: 14, password: _0xdecode(33), isFirstLogin: true },
-  [_0xdecode(16)]: { role: "startup", name: "이남주 대표", companyId: 15, password: _0xdecode(34), isFirstLogin: true },
-  [_0xdecode(17)]: { role: "startup", name: "Gupta 대표", companyId: 16, password: _0xdecode(35), isFirstLogin: true },
-  [_0xdecode(18)]: { role: "startup", name: "이준원 대표", companyId: 17, password: _0xdecode(36), isFirstLogin: true },
-  [_0xdecode(19)]: { role: "startup", name: "워터링크 대표", companyId: 18, password: _0xdecode(37), isFirstLogin: true }
+  "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "" },
+  "20424601@onboard.com": { role: "startup", name: "박지훈 대표", companyId: 1, password: "", isFirstLogin: true },
+  "20425162@onboard.com": { role: "startup", name: "신상호 대표", companyId: 2, password: "", isFirstLogin: true },
+  "20418716@onboard.com": { role: "startup", name: "오영웅 대표", companyId: 3, password: "", isFirstLogin: true },
+  "20420729@onboard.com": { role: "startup", name: "염준 대표", companyId: 4, password: "", isFirstLogin: true },
+  "20429473@onboard.com": { role: "startup", name: "이준석 대표", companyId: 5, password: "", isFirstLogin: true },
+  "20420909@onboard.com": { role: "startup", name: "최성환 대표", companyId: 6, password: "", isFirstLogin: true },
+  "20417065@onboard.com": { role: "startup", name: "이서진 대표", companyId: 7, password: "", isFirstLogin: true },
+  "20415562@onboard.com": { role: "startup", name: "이수빈 대표", companyId: 8, password: "", isFirstLogin: true },
+  "20411989@onboard.com": { role: "startup", name: "정수민 대표", companyId: 9, password: "", isFirstLogin: true },
+  "20417505@onboard.com": { role: "startup", name: "지세빈 대표", companyId: 10, password: "", isFirstLogin: true },
+  "20426983@onboard.com": { role: "startup", name: "김영준 대표", companyId: 11, password: "", isFirstLogin: true },
+  "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 12, password: "", isFirstLogin: true },
+  "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 13, password: "", isFirstLogin: true },
+  "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 14, password: "", isFirstLogin: true },
+  "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "", isFirstLogin: true },
+  "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "", isFirstLogin: true },
+  "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "", isFirstLogin: true }
 };
-
-// ⚠️ 로컬 스토리지에 남아있던 구형 '오세연 대표' 캐시 자동 정정 및 코치 패스워드 세팅
-if (USERS[_0xdecode(0)]) {
-  USERS[_0xdecode(0)].password = _0xdecode(1);
-}
-Object.keys(USERS).forEach(key => {
-  const taskNum = key.split("@")[0];
-  if (USERS[key].role === "startup" && (!USERS[key].password || USERS[key].password === "")) {
-    USERS[key].password = taskNum;
-  }
-  if (key === _0xdecode(19) && USERS[key].name.includes("오세연")) {
-    USERS[key].name = "워터링크 대표";
-  }
-});
-localStorage.setItem("USERS", JSON.stringify(USERS));
 
 let currentUser = null; // Session storage
 
@@ -554,21 +512,18 @@ function smartMergeCompaniesData(cloudCompanies, localCompanies) {
 
     const mergedC = { ...cloudC };
 
-    // 1. Survey Data merging (timestamp-based merge)
+    // 1. Survey Data merging
     if (!cloudC.surveyData && localC.surveyData) {
       mergedC.surveyData = localC.surveyData;
       hasNewLocalData = true;
-    } else if (cloudC.surveyData && !localC.surveyData) {
-      mergedC.surveyData = cloudC.surveyData;
     } else if (cloudC.surveyData && localC.surveyData) {
-      const cloudTime = cloudC.surveyData.lastModified || 0;
-      const localTime = localC.surveyData.lastModified || 0;
-      mergedC.surveyData = localTime >= cloudTime 
-        ? { ...cloudC.surveyData, ...localC.surveyData } 
-        : { ...localC.surveyData, ...cloudC.surveyData };
-      if (localTime > cloudTime) {
-        hasNewLocalData = true;
+      // 만약 로컬에 작성 중인 사전조사(또는 임시저장)가 있다면 우선 적용
+      mergedC.surveyData = { ...cloudC.surveyData, ...localC.surveyData };
+      if (localC.surveyData.isDraft && !cloudC.surveyData.isDraft) {
+        mergedC.surveyData = { ...cloudC.surveyData, ...localC.surveyData };
       }
+    } else if (cloudC.surveyData) {
+      mergedC.surveyData = cloudC.surveyData;
     }
 
     // 2. Chat Messages merging (filter dummy test messages)
@@ -622,25 +577,25 @@ if (hasOldDemoData) {
   console.log("⚙️ 구식 데이터 감지: 기존 대화 내역 및 데이터를 보존하며 18개사 구조로 지능형 머지(Merge)를 실행합니다.");
   companies = mergeOldDataToDefault(companies, defaultCompanies);
   USERS = {
-    [_0xdecode(0)]: { role: "coach", name: "오세연 코치", companyId: null, password: "", isFirstLogin: true },
-    [_0xdecode(2)]: { role: "startup", name: "박지훈 대표", companyId: 1, password: "", isFirstLogin: true },
-    [_0xdecode(3)]: { role: "startup", name: "신상호 대표", companyId: 2, password: "", isFirstLogin: true },
-    [_0xdecode(4)]: { role: "startup", name: "오영웅 대표", companyId: 3, password: "", isFirstLogin: true },
-    [_0xdecode(5)]: { role: "startup", name: "염준 대표", companyId: 4, password: "", isFirstLogin: true },
-    [_0xdecode(6)]: { role: "startup", name: "이준석 대표", companyId: 5, password: "", isFirstLogin: true },
-    [_0xdecode(7)]: { role: "startup", name: "최성환 대표", companyId: 6, password: "", isFirstLogin: true },
-    [_0xdecode(8)]: { role: "startup", name: "이서진 대표", companyId: 7, password: "", isFirstLogin: true },
-    [_0xdecode(9)]: { role: "startup", name: "이수빈 대표", companyId: 8, password: "", isFirstLogin: true },
-    [_0xdecode(10)]: { role: "startup", name: "정수민 대표", companyId: 9, password: "", isFirstLogin: true },
-    [_0xdecode(11)]: { role: "startup", name: "지세빈 대표", companyId: 10, password: "", isFirstLogin: true },
-    [_0xdecode(12)]: { role: "startup", name: "김영준 대표", companyId: 11, password: "", isFirstLogin: true },
-    [_0xdecode(13)]: { role: "startup", name: "이광록 대표", companyId: 12, password: "", isFirstLogin: true },
-    [_0xdecode(14)]: { role: "startup", name: "권태균 대표", companyId: 13, password: "", isFirstLogin: true },
-    [_0xdecode(15)]: { role: "startup", name: "신민준 대표", companyId: 14, password: "", isFirstLogin: true },
-    [_0xdecode(16)]: { role: "startup", name: "이남주 대표", companyId: 15, password: "", isFirstLogin: true },
-    [_0xdecode(17)]: { role: "startup", name: "Gupta 대표", companyId: 16, password: "", isFirstLogin: true },
-    [_0xdecode(18)]: { role: "startup", name: "이준원 대표", companyId: 17, password: "", isFirstLogin: true },
-    [_0xdecode(19)]: { role: "startup", name: "워터링크 대표", companyId: 18, password: "", isFirstLogin: true }
+    "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "" },
+    "20424601@onboard.com": { role: "startup", name: "박지훈 대표", companyId: 1, password: "", isFirstLogin: true },
+    "20425162@onboard.com": { role: "startup", name: "신상호 대표", companyId: 2, password: "", isFirstLogin: true },
+    "20418716@onboard.com": { role: "startup", name: "오영웅 대표", companyId: 3, password: "", isFirstLogin: true },
+    "20420729@onboard.com": { role: "startup", name: "염준 대표", companyId: 4, password: "", isFirstLogin: true },
+    "20429473@onboard.com": { role: "startup", name: "이준석 대표", companyId: 5, password: "", isFirstLogin: true },
+    "20420909@onboard.com": { role: "startup", name: "최성환 대표", companyId: 6, password: "", isFirstLogin: true },
+    "20417065@onboard.com": { role: "startup", name: "이서진 대표", companyId: 7, password: "", isFirstLogin: true },
+    "20415562@onboard.com": { role: "startup", name: "이수빈 대표", companyId: 8, password: "", isFirstLogin: true },
+    "20411989@onboard.com": { role: "startup", name: "정수민 대표", companyId: 9, password: "", isFirstLogin: true },
+    "20417505@onboard.com": { role: "startup", name: "지세빈 대표", companyId: 10, password: "", isFirstLogin: true },
+    "20426983@onboard.com": { role: "startup", name: "김영준 대표", companyId: 11, password: "", isFirstLogin: true },
+    "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 12, password: "", isFirstLogin: true },
+    "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 13, password: "", isFirstLogin: true },
+    "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 14, password: "", isFirstLogin: true },
+    "20427627@onboard.com": { role: "startup", name: "이남주 대표", companyId: 15, password: "", isFirstLogin: true },
+    "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "", isFirstLogin: true },
+    "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "", isFirstLogin: true },
+    "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "", isFirstLogin: true }
   };
   localStorage.setItem("COMPANIES", JSON.stringify(companies));
   localStorage.setItem("USERS", JSON.stringify(USERS));
@@ -654,26 +609,59 @@ if (!coachName || coachName.includes("\uFFFD") || coachName.includes("?") || coa
 }
 
 let defaultEduNames = {
-  hr: "기본 노무 실무",
-  accounting: "스타트업 회계/세무 기초",
-  law: "창업 법률 및 계약서 검토"
+  hr: "1차 교육",
+  accounting: "2차 교육",
+  law: "3차 교육"
 };
-let eduNames = JSON.parse(localStorage.getItem("EDU_NAMES")) || defaultEduNames;
+const normalizeEduNames = names => {
+  if (!names || /노무|회계|세무|법률|특허/.test(Object.values(names).join(" "))) return { ...defaultEduNames };
+  return names;
+};
+let eduNames = normalizeEduNames(JSON.parse(localStorage.getItem("EDU_NAMES")));
+localStorage.setItem("EDU_NAMES", JSON.stringify(eduNames));
 
 let defaultNotices = [
-  { type: "[공지]", date: "2026-06-18", title: "노무·세무 실무 드림비즈 필수 교육 동영상 강의 시청 기간 안내" },
-  { type: "[안내]", date: "2026-06-10", title: "6월 오프라인 대면 네트워킹 데이 일정 및 수요 분야별 멘토링 신청 방법 안내" }
+  { id: "integrated-1", type: "[공지]", date: "2026-06-18", title: "노무·세무 실무 드림비즈 필수 교육 동영상 강의 시청 기간 안내", content: "필수 교육 동영상 강의 시청 기간과 수강 방법을 확인해 주세요.", attachment: null },
+  { id: "integrated-2", type: "[안내]", date: "2026-06-10", title: "6월 오프라인 대면 네트워킹 데이 일정 및 수요 분야별 멘토링 신청 방법 안내", content: "네트워킹 데이 일정과 분야별 멘토링 신청 방법을 안내합니다.", attachment: null }
 ];
-let notices = JSON.parse(localStorage.getItem("NOTICES")) || defaultNotices;
+const normalizeNoticePosts = (items, prefix) => Array.isArray(items) ? items.map((item, idx) => ({
+  id: item.id || `${prefix}-${idx}-${Date.now()}`,
+  type: item.type || "[공지]",
+  date: item.date || new Date().toISOString().split("T")[0],
+  title: item.title || String(item),
+  content: item.content || "",
+  attachment: item.attachment || null
+})) : [];
+let notices = normalizeNoticePosts(JSON.parse(localStorage.getItem("NOTICES")) || defaultNotices, "integrated");
 
-// MILESTONES
+// STARTUP COACHING PROGRAM NOTICES (legacy storage key retained for compatibility)
 let defaultMilestones = [
-  "<strong>1단계:</strong> 기업 사전 실태 및 교육 수요조사 완료 (26.6)",
-  "<strong>2단계:</strong> 전담 코칭(멘토링/교육) 및 상시 피드백 운영 (진행중)",
-  "<strong>3단계:</strong> 필수 3대 분야(노무, 회계, 법률) 교육 이수 달성 (진행중)",
-  "<strong>4단계:</strong> 기업별 사업화 정착 모니터링 결과보고서 1건 필수 제출 (~27.1)"
+  { id: "program-1", type: "[공지]", date: "2026-08-11", title: "기업별 전담 코칭 일정 안내", content: "기업별 전담 코칭 일정은 담당 코치와 협의하여 진행해 주세요.", attachment: null },
+  { id: "program-2", type: "[안내]", date: "2026-08-11", title: "상시 소통 채널 이용 안내", content: "코칭 관련 문의는 상시 소통 채널을 통해 남겨 주세요.", attachment: null },
+  { id: "program-3", type: "[공지]", date: "2026-08-11", title: "필수 교육 이수 안내", content: "필수 교육 이수 현황을 확인하고 기한 내 수강을 완료해 주세요.", attachment: null },
+  { id: "program-4", type: "[안내]", date: "2026-08-11", title: "모니터링 보고서 제출 안내", content: "모니터링 보고서 제출 일정은 추후 공지를 확인해 주세요.", attachment: null }
 ];
-let milestones = JSON.parse(localStorage.getItem("MILESTONES")) || defaultMilestones;
+const normalizeProgramNotices = items => {
+  if (!Array.isArray(items) || items.length === 0) return [...defaultMilestones];
+  const isLegacyMilestone = items.some(item => /\d+단계:|Milestone|이정표/.test(String(item)));
+  if (isLegacyMilestone) return [...defaultMilestones];
+  return items.map((item, idx) => typeof item === "string" ? {
+    id: `program-${idx}-${Date.now()}`,
+    type: "[공지]",
+    date: new Date().toISOString().split("T")[0],
+    title: item,
+    content: item,
+    attachment: null
+  } : {
+    id: item.id || `program-${idx}-${Date.now()}`,
+    type: item.type || "[공지]",
+    date: item.date || new Date().toISOString().split("T")[0],
+    title: item.title || "제목 없음",
+    content: item.content || "",
+    attachment: item.attachment || null
+  });
+};
+let milestones = normalizeProgramNotices(JSON.parse(localStorage.getItem("MILESTONES")));
 
 let selectedCompanyId = 1;
 let currentAttachedFile = null;
@@ -685,23 +673,9 @@ function refreshIcons() {
   }
 }
 
-// --- SUPABASE REALTIME CLOUD DB CONNECTION ---
-const SUPABASE_URL = "https://jvwtavhnmlviyemyoajw.supabase.co";
-const SUPABASE_ANON_KEY = _0xdecode(39);
-
-let supabaseClient = null;
-if (window.supabase && window.supabase.createClient) {
-  try {
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    console.log("⚡ Supabase 클라우드 클라이언트 연동 성공!");
-  } catch (err) {
-    console.warn("⚠️ Supabase 연동 초기화 경고:", err);
-  }
-}
-
 // --- GOOGLE SCRIPT URL FOR FREE API CONNECTION ---
 // 여기에 깃허브 배포 가이드라인에 따라 복사한 구글 웹앱 URL을 입력하시면 실서비스 연동이 완료됩니다!
-const GOOGLE_SCRIPT_URL = _0xdecode(40);
+const GOOGLE_SCRIPT_URL = ""; // Disabled: migrated to Supabase Auth + RLS
 
 // --- DOM ELEMENTS ---
 const loginOverlayScreen = document.getElementById("login-overlay-screen");
@@ -800,7 +774,19 @@ const dCombinedHistory = document.getElementById("detail-combined-history");
 // BUTTONS
 const btnAddCompany = document.getElementById("btn-add-company");
 const btnEditMilestone = document.getElementById("btn-edit-milestone");
+const btnEditNotices = document.getElementById("btn-edit-notices");
+const btnViewProgramNotices = document.getElementById("btn-view-program-notices");
+const btnViewIntegratedNotices = document.getElementById("btn-view-integrated-notices");
 const milestoneListContainer = document.getElementById("milestone-list");
+
+const noticeCenterModal = document.getElementById("notice-center-modal");
+const noticeCenterTitle = document.getElementById("notice-center-title");
+const noticeCenterCount = document.getElementById("notice-center-count");
+const noticeCenterList = document.getElementById("notice-center-list");
+const noticeCenterDetail = document.getElementById("notice-center-detail");
+const btnCloseNoticeCenter = document.getElementById("btn-close-notice-center");
+const btnNewNoticePost = document.getElementById("btn-new-notice-post");
+const noticePostForm = document.getElementById("notice-post-form");
 
 // Milestone Modal
 const milestoneModal = document.getElementById("milestone-modal");
@@ -834,7 +820,36 @@ const attachmentPreviewArea = document.getElementById("attachment-preview-area")
 // --- LOCAL STORAGE SYNC & GOOGLE SHEET BACKUP ---
 let isSyncingCloud = false;
 
+function applySecureBackendData(data) {
+  if (!data || !data.profile) return false;
+  companies = Array.isArray(data.companies) ? data.companies : [];
+  milestones = normalizeProgramNotices(data.milestones);
+  notices = normalizeNoticePosts(data.notices || [], "integrated");
+  coachName = data.coachName || coachName;
+  eduNames = normalizeEduNames(data.eduNames || eduNames);
+  currentUser = {
+    role: data.profile.role,
+    name: data.profile.name,
+    companyId: data.profile.company_id,
+    email: data.profile.email,
+    isFirstLogin: false
+  };
+  USERS = { [data.profile.email]: { ...currentUser } };
+  localStorage.removeItem("USERS");
+  localStorage.setItem("COMPANIES", JSON.stringify(companies));
+  return true;
+}
+
 async function loadCloudData() {
+  if (window.secureBackend) {
+    try {
+      const data = await window.secureBackend.loadData();
+      if (applySecureBackendData(data)) enterPlatform();
+    } catch (error) {
+      console.error("Supabase 동기화 실패:", error);
+    }
+    return;
+  }
   if (!GOOGLE_SCRIPT_URL) return;
   
   isSyncingCloud = true;
@@ -873,24 +888,24 @@ async function loadCloudData() {
         console.log("⚙️ 클라우드 데이터가 구식입니다. 기존 데이터(대화/로그)를 새 17개사 명단으로 병합(Merge)하여 클라우드를 업데이트합니다.");
         companies = mergeOldDataToDefault(data.COMPANIES, defaultCompanies);
         USERS = {
-          [_0xdecode(0)]: { role: "coach", name: "오세연 코치", companyId: null, password: "" },
-          [_0xdecode(2)]: { role: "startup", name: "박지훈 대표", companyId: 1, password: "", isFirstLogin: true },
-          [_0xdecode(3)]: { role: "startup", name: "신상호 대표", companyId: 2, password: "", isFirstLogin: true },
-          [_0xdecode(4)]: { role: "startup", name: "오영웅 대표", companyId: 3, password: "", isFirstLogin: true },
-          [_0xdecode(5)]: { role: "startup", name: "염준 대표", companyId: 4, password: "", isFirstLogin: true },
-          [_0xdecode(6)]: { role: "startup", name: "이준석 대표", companyId: 5, password: "", isFirstLogin: true },
-          [_0xdecode(7)]: { role: "startup", name: "최성환 대표", companyId: 6, password: "", isFirstLogin: true },
-          [_0xdecode(8)]: { role: "startup", name: "이서진 대표", companyId: 7, password: "", isFirstLogin: true },
-          [_0xdecode(9)]: { role: "startup", name: "이수빈 대표", companyId: 8, password: "", isFirstLogin: true },
-          [_0xdecode(10)]: { role: "startup", name: "정수민 대표", companyId: 9, password: "", isFirstLogin: true },
-          [_0xdecode(11)]: { role: "startup", name: "지세빈 대표", companyId: 10, password: "", isFirstLogin: true },
-          [_0xdecode(12)]: { role: "startup", name: "김영준 대표", companyId: 11, password: "", isFirstLogin: true },
-          [_0xdecode(13)]: { role: "startup", name: "이광록 대표", companyId: 12, password: "", isFirstLogin: true },
-          [_0xdecode(14)]: { role: "startup", name: "권태균 대표", companyId: 13, password: "", isFirstLogin: true },
-          [_0xdecode(15)]: { role: "startup", name: "신민준 대표", companyId: 14, password: "", isFirstLogin: true },
-          [_0xdecode(17)]: { role: "startup", name: "Gupta 대표", companyId: 16, password: "", isFirstLogin: true },
-          [_0xdecode(18)]: { role: "startup", name: "이준원 대표", companyId: 17, password: "", isFirstLogin: true },
-          [_0xdecode(19)]: { role: "startup", name: "오세연 대표", companyId: 18, password: "", isFirstLogin: true }
+          "osy0922@hnu.kr": { role: "coach", name: "오세연 코치", companyId: null, password: "" },
+          "20424601@onboard.com": { role: "startup", name: "박지훈 대표", companyId: 1, password: "", isFirstLogin: true },
+          "20425162@onboard.com": { role: "startup", name: "신상호 대표", companyId: 2, password: "", isFirstLogin: true },
+          "20418716@onboard.com": { role: "startup", name: "오영웅 대표", companyId: 3, password: "", isFirstLogin: true },
+          "20420729@onboard.com": { role: "startup", name: "염준 대표", companyId: 4, password: "", isFirstLogin: true },
+          "20429473@onboard.com": { role: "startup", name: "이준석 대표", companyId: 5, password: "", isFirstLogin: true },
+          "20420909@onboard.com": { role: "startup", name: "최성환 대표", companyId: 6, password: "", isFirstLogin: true },
+          "20417065@onboard.com": { role: "startup", name: "이서진 대표", companyId: 7, password: "", isFirstLogin: true },
+          "20415562@onboard.com": { role: "startup", name: "이수빈 대표", companyId: 8, password: "", isFirstLogin: true },
+          "20411989@onboard.com": { role: "startup", name: "정수민 대표", companyId: 9, password: "", isFirstLogin: true },
+          "20417505@onboard.com": { role: "startup", name: "지세빈 대표", companyId: 10, password: "", isFirstLogin: true },
+          "20426983@onboard.com": { role: "startup", name: "김영준 대표", companyId: 11, password: "", isFirstLogin: true },
+          "20433275@onboard.com": { role: "startup", name: "이광록 대표", companyId: 12, password: "", isFirstLogin: true },
+          "20430190@onboard.com": { role: "startup", name: "권태균 대표", companyId: 13, password: "", isFirstLogin: true },
+          "20419158@onboard.com": { role: "startup", name: "신민준 대표", companyId: 14, password: "", isFirstLogin: true },
+          "20422754@onboard.com": { role: "startup", name: "Gupta 대표", companyId: 16, password: "", isFirstLogin: true },
+          "20431435@onboard.com": { role: "startup", name: "이준원 대표", companyId: 17, password: "", isFirstLogin: true },
+          "0426298510@onboard.com": { role: "startup", name: "오세연 대표", companyId: 18, password: "", isFirstLogin: true }
         };
         localStorage.setItem("COMPANIES", JSON.stringify(companies));
         localStorage.setItem("USERS", JSON.stringify(USERS));
@@ -911,7 +926,7 @@ async function loadCloudData() {
           }
         }
         if (data.MILESTONES) {
-          milestones = data.MILESTONES;
+          milestones = normalizeProgramNotices(data.MILESTONES);
           localStorage.setItem("MILESTONES", JSON.stringify(milestones));
         }
         if (data.coachName) {
@@ -919,11 +934,11 @@ async function loadCloudData() {
           localStorage.setItem("COACH_NAME", coachName);
         }
         if (data.eduNames) {
-          eduNames = data.eduNames;
+          eduNames = normalizeEduNames(data.eduNames);
           localStorage.setItem("EDU_NAMES", JSON.stringify(eduNames));
         }
         if (data.notices) {
-          notices = data.notices;
+          notices = normalizeNoticePosts(data.notices, "integrated");
           localStorage.setItem("NOTICES", JSON.stringify(notices));
         }
       }
@@ -975,48 +990,23 @@ window.addEventListener("DOMContentLoaded", () => {
 
 function saveToLocalStorage() {
   localStorage.setItem("COMPANIES", JSON.stringify(companies));
-  localStorage.setItem("USERS", JSON.stringify(USERS));
+  localStorage.removeItem("USERS");
   localStorage.setItem("MILESTONES", JSON.stringify(milestones));
   localStorage.setItem("COACH_NAME", coachName);
   localStorage.setItem("EDU_NAMES", JSON.stringify(eduNames));
   localStorage.setItem("NOTICES", JSON.stringify(notices));
-  
-  // Supabase 클라우드 동기화 (REST API 직접 통신으로 실시간 메시지/데이터 100% 저장)
-  if (currentUser) {
-    try {
-      const dbPayload = JSON.stringify({
-        id: 1,
-        USERS: USERS,
-        COMPANIES: companies,
-        MILESTONES: milestones,
-        coachName: coachName,
-        eduNames: eduNames,
-        notices: notices,
-        updated_at: new Date().toISOString()
-      });
-      fetch(_0xdecode(38), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": _0xdecode(39),
-          "Authorization": "Bearer sb_publishable_VxAlDUFMb55FTCY0CMWYrg_jUG87J5u",
-          "Prefer": "resolution=merge-duplicates"
-        },
-        body: dbPayload
-      }).then(res => {
-        if (res.ok) console.log("⚡ Supabase 클라우드 실시간 동기화 성공!");
-        else console.warn("Supabase sync HTTP status:", res.status);
-      }).catch(err => console.error("Supabase sync error:", err));
-    } catch(e) {}
-  }
 
+  if (window.secureBackend && currentUser) {
+    window.secureBackend.saveState(companies, milestones, notices, coachName, eduNames).catch(error => {
+      console.error("Supabase 저장 실패:", error);
+      alert("데이터를 Supabase에 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.");
+    });
+    return;
+  }
+  
+  // 만약 구글 API 주소가 세팅되어 있다면 자동으로 백그라운드 클라우드 동기화 수행
   // 만약 구글 API 주소가 세팅되어 있고 로그인 상태라면 클라우드 동기화 수행
   if (GOOGLE_SCRIPT_URL && currentUser) {
-    if (isSyncingCloud) {
-      console.log("⏳ 클라우드 동기화 진행 중... 동기화 요청을 대기합니다.");
-      return;
-    }
-    isSyncingCloud = true;
     fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
       mode: "cors",
@@ -1041,10 +1031,7 @@ function saveToLocalStorage() {
         console.log("✔ 클라우드 동기화 성공");
       }
     })
-    .catch(err => console.log("Google sync delay: ", err))
-    .finally(() => {
-      isSyncingCloud = false;
-    });
+    .catch(err => console.log("Google sync delay: ", err));
   }
 }
 
@@ -1066,36 +1053,27 @@ loginForm.addEventListener("submit", async (e) => {
   const emailInput = loginEmail.value.trim();
   const password = loginPassword.value.trim();
   
-  // 1. 코치 계정 성명 단독 입력 보안 차단
-  if (emailInput === "오세연" || emailInput === "오세연 코치" || emailInput === "오세연코치") {
-    alert("❌ 코치 전담 계정은 보안을 위해 성명 로그인이 불가능합니다.\n반드시 이메일 주소(osy0922@hnu.kr 또는 osy0922)로 로그인해 주세요.");
-    return;
-  }
-
-  // 2. 계정 매칭 찾기 (코치는 무조건 이메일/ID로만, 스타트업은 기업 대표자명 또는 과제번호/이메일 지원)
+  // 1. 입력값을 이메일 포맷으로 찾기
   let targetEmail = "";
   const matchedUserKey = Object.keys(USERS).find(key => {
     const u = USERS[key];
-    const keyPrefix = key.split("@")[0].toLowerCase();
-    const inputLower = emailInput.toLowerCase();
-    const repName = u.name ? u.name.split(" ")[0].toLowerCase() : "";
-    const cleanName = u.name ? u.name.replace(/\s+/g, "").toLowerCase() : "";
-
     if (u.role === "coach") {
-      // 코치 전담 계정: 무조건 이메일(osy0922@hnu.kr) 또는 ID(osy0922)로만 허용
-      return (key.toLowerCase() === inputLower) || (keyPrefix === inputLower);
+      // 코치 계정은 이름 매칭 대상에서 제외 (이메일로만 로그인 허용)
+      return (key.toLowerCase() === emailInput.toLowerCase()) ||
+             (key.split("@")[0].toLowerCase() === emailInput.toLowerCase());
     } else {
-      // 스타트업 계정: 기업 대표자명('박지훈', '신상호' 등) 또는 과제번호/이메일 지원
-      return (key.toLowerCase() === inputLower) ||
-             (keyPrefix === inputLower) ||
-             (repName === inputLower) ||
-             (cleanName === inputLower);
+      // 스타트업 계정은 대표자 실명 또는 이메일 매칭 허용
+      return (key.toLowerCase() === emailInput.toLowerCase()) ||
+             (key.split("@")[0].toLowerCase() === emailInput.toLowerCase()) ||
+             (u.name.split(" ")[0] === emailInput) ||
+             (u.name.replace(/\s+/g, "") === emailInput.replace(/\s+/g, ""));
     }
   });
   
   if (matchedUserKey) {
     targetEmail = matchedUserKey;
   } else {
+    // USERS 매핑 테이블에 없는 경우 이메일 직접 입력으로 간주
     targetEmail = emailInput;
   }
   
@@ -1106,6 +1084,12 @@ loginForm.addEventListener("submit", async (e) => {
   if (loginSubmitBtn) loginSubmitBtn.disabled = true;
   
   try {
+    if (window.secureBackend) {
+      const secureData = await window.secureBackend.signIn(targetEmail, password);
+      if (!applySecureBackendData(secureData)) throw new Error("사용자 프로필을 찾을 수 없습니다.");
+      enterPlatform();
+      return;
+    }
     const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=loadData&email=${encodeURIComponent(targetEmail)}&password=${encodeURIComponent(password)}`, {
       method: "GET",
       mode: "cors"
@@ -1119,40 +1103,33 @@ loginForm.addEventListener("submit", async (e) => {
     if (resData && resData.status === "success" && resData.data) {
       const data = resData.data;
       
-      // 3. 데이터 로드 및 렌더링 준비
+      // 3. 로그인 성공 시 반환받은 필터링된 데이터셋 로컬에 적재 (로컬 데이터 스마트 병합)
       const localComps = JSON.parse(localStorage.getItem("COMPANIES") || "[]");
       const { mergedCompanies } = smartMergeCompaniesData(data.COMPANIES || [], localComps);
       companies = mergedCompanies;
-      milestones = data.milestones || [];
+      milestones = normalizeProgramNotices(data.milestones);
       coachName = data.coachName || "오세연 코치";
-      eduNames = data.eduNames || eduNames;
-      notices = data.notices || notices;
+      eduNames = normalizeEduNames(data.eduNames || eduNames);
+      notices = normalizeNoticePosts(data.notices || notices, "integrated");
       
-      // 4. 비밀번호 엄격 검증 (계정이 존재할 경우 설정된 패스워드 검사)
-      const cloudUsers = data.USERS || {};
-      const returnedUser = cloudUsers[targetEmail] || USERS[targetEmail];
-      
-      if (!returnedUser) {
-        throw new Error("등록되지 않은 사용자 계정입니다. 아이디(이메일 또는 대표자명)를 다시 확인해 주세요.");
+      // (중요) 서버에서 반환해준 내 프로필 정보로 로컬 USERS 정보 동기화 및 임시 비밀번호 세팅
+      // (비밀번호 변경 요청을 위해 currentUser.password는 메모리에 임시 보관해야 함)
+      const returnedUser = data.USERS[targetEmail];
+      if (returnedUser) {
+        // 이미 비밀번호가 설정되었거나 isFirstLogin이 false인 경우 초기 비밀번호 변경 창 생략
+        const hasCustomPassword = (returnedUser.password && returnedUser.password !== "") || (password && password !== "");
+        const isFirst = (returnedUser.isFirstLogin === true) && !hasCustomPassword;
+
+        currentUser = { ...returnedUser, password: password, email: targetEmail, isFirstLogin: isFirst };
+        USERS[targetEmail] = { ...returnedUser, password: password, isFirstLogin: isFirst };
+      } else {
+        currentUser = { role: targetEmail.includes("osy0922") ? "coach" : "startup", name: "사용자", password: password, email: targetEmail, isFirstLogin: false };
       }
-
-      // 이미 비밀번호가 설정되어 있는 경우(비밀번호가 비어있지 않음) 입력된 패스워드와 일치해야 함
-      if (returnedUser.password && returnedUser.password !== "") {
-        if (returnedUser.password !== password) {
-          throw new Error("비밀번호가 올바르지 않습니다. 정확한 비밀번호를 입력해 주세요.");
-        }
-      }
-
-      const hasCustomPassword = (returnedUser.password && returnedUser.password !== "");
-      const isFirst = (returnedUser.isFirstLogin === true) || !hasCustomPassword;
-
-      currentUser = { ...returnedUser, password: password, email: targetEmail, isFirstLogin: isFirst };
-      USERS[targetEmail] = { ...returnedUser, password: password, isFirstLogin: isFirst };
       
       localStorage.setItem("COMPANIES", JSON.stringify(companies));
       localStorage.setItem("USERS", JSON.stringify(USERS));
       
-      // 첫 로그인 시 비밀번호 필수 변경창으로 이동
+      // 첫 로그인 패스워드 변경 확인
       if (currentUser.isFirstLogin) {
         if (loadingStatus) loadingStatus.style.display = "none";
         if (loginSubmitBtn) loginSubmitBtn.disabled = false;
@@ -1180,13 +1157,24 @@ loginForm.addEventListener("submit", async (e) => {
 
 const changePasswordForm = document.getElementById("change-password-form");
 if (changePasswordForm) {
-  changePasswordForm.addEventListener("submit", (e) => {
+  changePasswordForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const newPassword = document.getElementById("new-password").value.trim();
     const newPasswordConfirm = document.getElementById("new-password-confirm").value.trim();
     
     if (newPassword !== newPasswordConfirm) {
       alert("❌ 비밀번호가 일치하지 않습니다. 다시 입력해 주세요.");
+      return;
+    }
+    if (window.secureBackend) {
+      try {
+        await window.secureBackend.updatePassword(newPassword);
+        alert("🎉 비밀번호가 안전하게 변경되었습니다!");
+        document.getElementById("card-change-password").style.display = "none";
+        enterPlatform();
+      } catch (error) {
+        alert(`❌ 비밀번호 변경 실패: ${error.message}`);
+      }
       return;
     }
     
@@ -1210,11 +1198,24 @@ if (changePasswordForm) {
 }
 
 // --- SIGNUP ACTION ---
-signupForm.addEventListener("submit", (e) => {
+signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const representativeName = signupEmail.value.trim();
   const password = signupPassword.value.trim();
   const keyInput = signupKey.value.trim().toUpperCase();
+
+  if (window.secureBackend) {
+    try {
+      const result = await window.secureBackend.signup({ representativeName, password, invitationKey: keyInput });
+      alert(`🎉 회원가입이 완료되었습니다.\n로그인 아이디: ${result.email}`);
+      signupForm.reset();
+      cardSignup.style.display = "none";
+      cardLogin.style.display = "block";
+    } catch (error) {
+      alert(`❌ 회원가입 실패: ${error.message}`);
+    }
+    return;
+  }
 
   const matchedCompany = companies.find(c => c.invitationKey === keyInput);
 
@@ -1270,8 +1271,11 @@ function enterPlatform() {
       userRoleBadge.className = "tag tag-early";
       btnAddCompany.style.display = "inline-block";
       btnEditMilestone.style.display = "inline-block";
+      if (btnEditNotices) btnEditNotices.style.display = "inline-flex";
       if (menuStrategyReport) menuStrategyReport.style.display = "block"; // 코치인 경우 노출
       if (menuSetting) menuSetting.style.display = "block";
+      const surveyViewToggle = document.getElementById("survey-view-toggle");
+      if (surveyViewToggle) surveyViewToggle.style.display = "flex";
       document.querySelectorAll(".coach-only-cell").forEach(c => c.style.display = "table-cell");
       selectedCompanyId = companies[0] ? companies[0].id : 1;
     } else {
@@ -1279,8 +1283,11 @@ function enterPlatform() {
       userRoleBadge.className = "tag tag-pre";
       btnAddCompany.style.display = "none";
       btnEditMilestone.style.display = "none";
+      if (btnEditNotices) btnEditNotices.style.display = "none";
       if (menuStrategyReport) menuStrategyReport.style.display = "none"; // 스타트업인 경우 비노출
       if (menuSetting) menuSetting.style.display = "none";
+      const surveyViewToggle = document.getElementById("survey-view-toggle");
+      if (surveyViewToggle) surveyViewToggle.style.display = "none";
       document.querySelectorAll(".coach-only-cell").forEach(c => c.style.display = "none");
       selectedCompanyId = currentUser.companyId;
     }
@@ -1304,7 +1311,8 @@ function enterPlatform() {
   }
 }
 
-btnLogout.addEventListener("click", () => {
+btnLogout.addEventListener("click", async () => {
+  if (window.secureBackend) await window.secureBackend.signOut();
   currentUser = null;
   localStorage.removeItem("COMPANIES");
   localStorage.removeItem("USERS");
@@ -1318,23 +1326,29 @@ function renderNoticeBoard() {
   if (!container) return;
   container.innerHTML = "";
   
-  notices.forEach(notice => {
+  notices.slice(0, 4).forEach(notice => {
     const div = document.createElement("div");
     div.style.borderBottom = "1px solid var(--border-color)";
     div.style.paddingBottom = "8px";
+    div.style.cursor = "pointer";
     
     const isNotice = notice.type.includes("공지");
     const color = isNotice ? "var(--accent-color)" : "var(--text-secondary)";
     
     div.innerHTML = `
       <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 4px;">
-        <strong style="color: ${color};">${notice.type}</strong>
-        <span style="color: var(--text-secondary);">${notice.date}</span>
+        <strong style="color: ${color};">${escapeNoticeHtml(notice.type)}</strong>
+        <span style="color: var(--text-secondary);">${escapeNoticeHtml(notice.date)}</span>
       </div>
-      <p style="font-size: 0.8rem; color: var(--text-primary);">${notice.title}</p>
+      <p style="font-size: 0.8rem; color: var(--text-primary);">${escapeNoticeHtml(notice.title)}</p>
     `;
+    div.addEventListener("click", () => openNoticeCenter("integrated", notice.id));
     container.appendChild(div);
   });
+
+  if (notices.length === 0) {
+    container.innerHTML = `<p style="font-size:0.8rem; color:var(--text-secondary);">등록된 공지사항이 없습니다.</p>`;
+  }
 }
 
 function applyDynamicConfigs() {
@@ -1349,6 +1363,18 @@ function applyDynamicConfigs() {
   if (eduHrTh) eduHrTh.innerText = eduNames.hr;
   if (eduAccTh) eduAccTh.innerText = eduNames.accounting;
   if (eduLawTh) eduLawTh.innerText = eduNames.law;
+  const eduSummary1 = document.getElementById("edu-summary-title-1");
+  const eduSummary2 = document.getElementById("edu-summary-title-2");
+  const eduSummary3 = document.getElementById("edu-summary-title-3");
+  if (eduSummary1) eduSummary1.innerText = eduNames.hr;
+  if (eduSummary2) eduSummary2.innerText = eduNames.accounting;
+  if (eduSummary3) eduSummary3.innerText = eduNames.law;
+  const eduModalLabel1 = document.getElementById("edu-modal-label-1");
+  const eduModalLabel2 = document.getElementById("edu-modal-label-2");
+  const eduModalLabel3 = document.getElementById("edu-modal-label-3");
+  if (eduModalLabel1) eduModalLabel1.innerText = `${eduNames.hr} 상태`;
+  if (eduModalLabel2) eduModalLabel2.innerText = `${eduNames.accounting} 상태`;
+  if (eduModalLabel3) eduModalLabel3.innerText = `${eduNames.law} 상태`;
 
   // 모니터링 보고서 내의 교육 과목명 헤더 동적화
   const repEdu1 = document.getElementById("rep-hdr-edu1");
@@ -1378,16 +1404,18 @@ function applyDynamicConfigs() {
 }
 function renderMilestones() {
   milestoneListContainer.innerHTML = "";
-  milestones.forEach((step, idx) => {
+  milestones.slice(0, 4).forEach((notice, idx) => {
     const li = document.createElement("li");
-    let iconName = "check-circle-2";
-    let color = "var(--success)";
-    if (idx === 2) { iconName = "clock"; color = "var(--warning)"; }
-    if (idx === 3) { iconName = "circle"; color = "var(--text-secondary)"; }
-    li.style.cssText = "display: flex; align-items: center; gap: 10px;";
-    li.innerHTML = `<i data-lucide="${iconName}" style="width: 16px; height: 16px; color: ${color}; flex-shrink: 0;"></i> ${step}`;
+    const iconName = "bell";
+    const color = idx === 0 ? "var(--accent-color)" : "var(--text-secondary)";
+    li.style.cssText = "display: flex; align-items: center; gap: 10px; cursor:pointer; padding-bottom:8px; border-bottom:1px solid var(--border-color);";
+    li.innerHTML = `<i data-lucide="${iconName}" style="width: 16px; height: 16px; color: ${color}; flex-shrink: 0;"></i><span style="flex:1;">${escapeNoticeHtml(notice.title)}</span><span style="font-size:0.72rem; color:var(--text-secondary);">${escapeNoticeHtml(notice.date)}</span>`;
+    li.addEventListener("click", () => openNoticeCenter("program", notice.id));
     milestoneListContainer.appendChild(li);
   });
+  if (milestones.length === 0) {
+    milestoneListContainer.innerHTML = `<li style="color:var(--text-secondary);">등록된 공지사항이 없습니다.</li>`;
+  }
   refreshIcons();
 }
 
@@ -1469,8 +1497,18 @@ function renderDashboard() {
     // Unified education check indicator
     const isEducationFinished = company.education && company.education.hr === "이수" && company.education.accounting === "이수" && company.education.law === "이수";
     const eduBadgeHTML = isEducationFinished 
-      ? `<span class="tag tag-success"><i data-lucide="check-circle" style="width: 14px; height: 14px;"></i>이수 완료</span>` 
-      : `<span class="tag tag-pre"><i data-lucide="clock" style="width: 14px; height: 14px;"></i>과정 진행중</span>`;
+      ? `<span class="tag tag-success dashboard-edu-badge"><i data-lucide="check-circle" style="width: 14px; height: 14px;"></i><span>이수<br>완료</span></span>` 
+      : `<span class="tag tag-pre dashboard-edu-badge"><i data-lucide="clock" style="width: 14px; height: 14px;"></i><span>과정<br>진행 중</span></span>`;
+
+    const typeParts = (company.type || "").match(/^\s*([^()]+?)\s*(\(.*\))\s*$/);
+    const typeHTML = typeParts
+      ? `<span class="dashboard-type-main">${typeParts[1]}</span><span class="dashboard-type-detail">${typeParts[2]}</span>`
+      : `<span class="dashboard-type-main">${company.type || "-"}</span>`;
+
+    const representativeParts = (company.repDesc || "").match(/^\s*(.*?)\s*(\(과제번호:.*\))\s*$/);
+    const representativeHTML = representativeParts
+      ? `<span class="dashboard-representative-name">${representativeParts[1]}</span><span class="dashboard-task-number">${representativeParts[2]}</span>`
+      : `<span class="dashboard-representative-name">${company.repDesc || "-"}</span>`;
 
     // Monthly checklist circle badges (Coded iteratively)
     let checksHTML = `<div style="display:flex; gap: 4px; align-items:center;">`;
@@ -1495,14 +1533,14 @@ function renderDashboard() {
 
     tr.innerHTML = `
       <td><span class="company-name">${company.name}</span></td>
-      <td><span class="tag ${isPre ? 'tag-pre' : 'tag-early'}">${company.type}</span></td>
-      <td style="font-size: 0.85rem; color: var(--text-secondary);">${company.repDesc}</td>
+      <td><span class="tag dashboard-type-badge ${isPre ? 'tag-pre' : 'tag-early'}">${typeHTML}</span></td>
+      <td class="dashboard-representative">${representativeHTML}</td>
       <td style="font-size: 0.82rem;">매출: ${company.metrics.sales}<br>고용: ${company.metrics.employees}</td>
       <td>${checksHTML}</td>
       <td>${eduBadgeHTML}</td>
       <td style="text-align: center; font-weight: 600;">${company.coachingCount}회</td>
       <td>
-        <div style="display:flex; gap: 4px; align-items: center;">
+        <div class="dashboard-management-actions">
           <button class="action-btn table-action-btn" onclick="openDetailModal(${company.id})" style="background-color: var(--bg-primary); display: flex; align-items: center; gap: 4px;"><i data-lucide="search" style="width: 12px; height: 12px;"></i>상세조회</button>
           <button class="action-btn table-action-btn" onclick="openCoachingModal(${company.id})" style="display: flex; align-items: center; gap: 4px;">
             ${currentUser.role === "coach" ? '<i data-lucide="edit-3" style="width: 12px; height: 12px;"></i>코칭등록' : '<i data-lucide="eye" style="width: 12px; height: 12px;"></i>내역보기'}
@@ -1525,7 +1563,7 @@ function renderDashboard() {
       <td><span class="tag ${c.education.hr === '이수' ? 'tag-early' : 'tag-pre'}">${c.education.hr}</span></td>
       <td><span class="tag ${c.education.accounting === '이수' ? 'tag-early' : 'tag-pre'}">${c.education.accounting}</span></td>
       <td><span class="tag ${c.education.law === '이수' ? 'tag-early' : 'tag-pre'}">${c.education.law}</span></td>
-      <td style="font-size: 0.85rem; color: var(--text-secondary);">${c.education.content}</td>
+      <td><div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;"><button class="action-btn" onclick="openEducationContent(${c.id})" style="font-size:0.75rem; display:inline-flex; align-items:center; gap:4px;"><i data-lucide="external-link" style="width:12px;height:12px;"></i>${c.education.subject || '추천 콘텐츠 보기'}</button>${currentUser.role === "coach" ? `<button class="action-btn" onclick="openEditEducationContent(${c.id})" style="font-size:0.72rem; display:inline-flex; align-items:center; gap:4px; color:var(--accent-color); border-color:var(--accent-color);"><i data-lucide="edit" style="width:12px;height:12px;"></i>추가/수정</button>` : ""}</div></td>
       ${currentUser.role === "coach" ? `
         <td class="coach-only-cell">
           <button class="action-btn" onclick="openEditEduModal(${c.id})" style="font-size: 0.75rem; display: flex; align-items: center; gap: 4px;"><i data-lucide="settings" style="width: 12px; height: 12px;"></i>변경</button>
@@ -2006,15 +2044,178 @@ coachLogForm.addEventListener("submit", (e) => {
   }
 });
 
-// MILESTONES EDIT
-btnEditMilestone.addEventListener("click", () => {
-  const strip = html => html.replace(/<[^>]*>/g, "");
-  document.getElementById("ms-step1").value = strip(milestones[0] || "");
-  document.getElementById("ms-step2").value = strip(milestones[1] || "");
-  document.getElementById("ms-step3").value = strip(milestones[2] || "");
-  document.getElementById("ms-step4").value = strip(milestones[3] || "");
-  milestoneModal.style.display = "flex";
+// NOTICE CENTER
+let currentNoticeBoard = "program";
+
+const escapeNoticeHtml = value => String(value || "")
+  .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+  .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+
+const getCurrentNoticePosts = () => currentNoticeBoard === "program" ? milestones : notices;
+
+function openNoticeAttachmentDb() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("HNU_NOTICE_ATTACHMENTS", 1);
+    request.onupgradeneeded = () => request.result.createObjectStore("files");
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function saveNoticeAttachment(key, file) {
+  const db = await openNoticeAttachmentDb();
+  await new Promise((resolve, reject) => {
+    const tx = db.transaction("files", "readwrite");
+    tx.objectStore("files").put(file, key);
+    tx.oncomplete = resolve;
+    tx.onerror = () => reject(tx.error);
+  });
+  db.close();
+}
+
+async function downloadNoticeAttachment(attachment) {
+  const db = await openNoticeAttachmentDb();
+  const file = await new Promise((resolve, reject) => {
+    const request = db.transaction("files", "readonly").objectStore("files").get(attachment.key);
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+  db.close();
+  if (!file) {
+    alert("이 첨부 문서는 등록한 브라우저에 저장되어 있습니다. 현재 기기에서는 파일을 찾을 수 없습니다.");
+    return;
+  }
+  const url = URL.createObjectURL(file);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = attachment.name;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function renderNoticeCenter(selectedId) {
+  const posts = getCurrentNoticePosts();
+  noticeCenterTitle.innerText = currentNoticeBoard === "program" ? "스타트업 코칭 프로그램 공지사항" : "창업중심대학 통합 공지사항";
+  noticeCenterCount.innerText = `${posts.length}건`;
+  btnNewNoticePost.style.display = currentUser && currentUser.role === "coach" ? "inline-flex" : "none";
+  noticeCenterList.innerHTML = "";
+
+  posts.forEach(post => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `notice-list-item${post.id === selectedId ? " active" : ""}`;
+    button.innerHTML = `<span class="notice-list-item-meta">${escapeNoticeHtml(post.type)} · ${escapeNoticeHtml(post.date)}</span><span class="notice-list-item-title">${escapeNoticeHtml(post.title)}</span><span class="notice-list-item-meta">${post.attachment ? "첨부 문서 있음" : "첨부 없음"}</span>`;
+    button.addEventListener("click", () => renderNoticeCenter(post.id));
+    noticeCenterList.appendChild(button);
+  });
+
+  if (posts.length === 0) {
+    noticeCenterList.innerHTML = `<p class="notice-empty-message">등록된 공지사항이 없습니다.</p>`;
+    noticeCenterDetail.innerHTML = `<p class="notice-empty-message">새 공지사항을 기다려 주세요.</p>`;
+    return;
+  }
+
+  const selected = posts.find(post => post.id === selectedId) || posts[0];
+  const attachmentHTML = selected.attachment
+    ? `<div class="notice-attachment-box"><strong>첨부 문서</strong><br><button type="button" class="chat-file-link" id="btn-download-notice-file"><i data-lucide="download" style="width:14px;height:14px;"></i>${escapeNoticeHtml(selected.attachment.name)}</button></div>`
+    : `<div class="notice-attachment-box" style="color:var(--text-secondary);">첨부 문서 없음</div>`;
+  const coachActions = currentUser && currentUser.role === "coach" ? `<div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;"><button type="button" class="action-btn" id="btn-edit-selected-notice">수정</button><button type="button" class="action-btn" id="btn-delete-selected-notice" style="color:var(--danger);">삭제</button></div>` : "";
+
+  noticeCenterDetail.innerHTML = `<div class="notice-detail-header"><div style="display:flex; justify-content:space-between; gap:12px; margin-bottom:8px;"><span class="tag tag-early">${escapeNoticeHtml(selected.type)}</span><span style="font-size:0.78rem; color:var(--text-secondary);">${escapeNoticeHtml(selected.date)}</span></div><h2 style="font-size:1.2rem; line-height:1.45;">${escapeNoticeHtml(selected.title)}</h2></div><div class="notice-detail-content">${escapeNoticeHtml(selected.content) || "등록된 상세 내용이 없습니다."}</div>${attachmentHTML}${coachActions}`;
+  const downloadButton = document.getElementById("btn-download-notice-file");
+  if (downloadButton) downloadButton.addEventListener("click", () => downloadNoticeAttachment(selected.attachment));
+  const editButton = document.getElementById("btn-edit-selected-notice");
+  const deleteButton = document.getElementById("btn-delete-selected-notice");
+  if (editButton) editButton.addEventListener("click", () => openNoticePostForm(selected));
+  if (deleteButton) deleteButton.addEventListener("click", () => deleteNoticePost(selected.id));
+  refreshIcons();
+}
+
+function openNoticeCenter(board, selectedId = null, compose = false) {
+  currentNoticeBoard = board;
+  noticePostForm.style.display = "none";
+  document.querySelector(".notice-center-layout").style.display = "grid";
+  noticeCenterModal.style.display = "flex";
+  renderNoticeCenter(selectedId);
+  if (compose && currentUser && currentUser.role === "coach") openNoticePostForm();
+}
+
+function openNoticePostForm(post = null) {
+  if (!currentUser || currentUser.role !== "coach") return;
+  noticePostForm.reset();
+  document.getElementById("notice-post-id").value = post ? post.id : "";
+  document.getElementById("notice-post-type").value = post ? post.type : "[공지]";
+  document.getElementById("notice-post-title").value = post ? post.title : "";
+  document.getElementById("notice-post-content").value = post ? post.content : "";
+  document.getElementById("notice-current-file").innerText = post && post.attachment ? `현재 첨부: ${post.attachment.name}` : "첨부된 문서가 없습니다.";
+  noticePostForm.dataset.attachment = post && post.attachment ? JSON.stringify(post.attachment) : "";
+  document.querySelector(".notice-center-layout").style.display = "none";
+  noticePostForm.style.display = "flex";
+  noticePostForm.style.flexDirection = "column";
+  noticePostForm.style.gap = "14px";
+  document.getElementById("notice-post-title").focus();
+}
+
+function deleteNoticePost(id) {
+  if (!currentUser || currentUser.role !== "coach" || !confirm("이 공지사항을 삭제하시겠습니까?")) return;
+  if (currentNoticeBoard === "program") milestones = milestones.filter(post => post.id !== id);
+  else notices = notices.filter(post => post.id !== id);
+  saveToLocalStorage();
+  renderMilestones();
+  renderNoticeBoard();
+  renderNoticeCenter();
+}
+
+btnViewProgramNotices.addEventListener("click", () => openNoticeCenter("program"));
+btnViewIntegratedNotices.addEventListener("click", () => openNoticeCenter("integrated"));
+btnEditMilestone.addEventListener("click", () => openNoticeCenter("program", null, true));
+btnEditNotices.addEventListener("click", () => openNoticeCenter("integrated", null, true));
+btnCloseNoticeCenter.addEventListener("click", () => noticeCenterModal.style.display = "none");
+btnNewNoticePost.addEventListener("click", () => openNoticePostForm());
+document.getElementById("btn-cancel-notice-post").addEventListener("click", () => {
+  noticePostForm.style.display = "none";
+  document.querySelector(".notice-center-layout").style.display = "grid";
+  renderNoticeCenter();
 });
+
+noticePostForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!currentUser || currentUser.role !== "coach") return;
+  const posts = getCurrentNoticePosts();
+  const id = document.getElementById("notice-post-id").value;
+  const existing = posts.find(post => post.id === id);
+  const file = document.getElementById("notice-post-file").files[0];
+  if (file && file.size > 3 * 1024 * 1024) {
+    alert("첨부 문서는 3MB 이하만 등록할 수 있습니다.");
+    return;
+  }
+  let attachment = noticePostForm.dataset.attachment ? JSON.parse(noticePostForm.dataset.attachment) : null;
+  if (file) {
+    const key = `notice-file-${Date.now()}-${file.name}`;
+    await saveNoticeAttachment(key, file);
+    attachment = { name: file.name, type: file.type, size: file.size, key };
+  }
+  const post = {
+    id: existing ? existing.id : `${currentNoticeBoard}-${Date.now()}`,
+    type: document.getElementById("notice-post-type").value,
+    date: existing ? existing.date : new Date().toISOString().split("T")[0],
+    title: document.getElementById("notice-post-title").value.trim(),
+    content: document.getElementById("notice-post-content").value.trim(),
+    attachment
+  };
+  const nextPosts = existing ? posts.map(item => item.id === existing.id ? post : item) : [post, ...posts];
+  if (currentNoticeBoard === "program") milestones = nextPosts;
+  else notices = nextPosts;
+  saveToLocalStorage();
+  renderMilestones();
+  renderNoticeBoard();
+  noticePostForm.style.display = "none";
+  document.querySelector(".notice-center-layout").style.display = "grid";
+  renderNoticeCenter(post.id);
+});
+
+const btnOpenNoticeManager = document.getElementById("btn-open-notice-manager");
+if (btnOpenNoticeManager) btnOpenNoticeManager.addEventListener("click", () => openNoticeCenter("program"));
 
 const closeMilestoneModal = () => milestoneModal.style.display = "none";
 btnCloseMilestone.addEventListener("click", closeMilestoneModal);
@@ -2025,10 +2226,10 @@ milestoneForm.addEventListener("submit", (e) => {
   if (currentUser.role !== "coach") return;
 
   milestones = [
-    `<strong>1단계:</strong> ${document.getElementById("ms-step1").value}`,
-    `<strong>2단계:</strong> ${document.getElementById("ms-step2").value}`,
-    `<strong>3단계:</strong> ${document.getElementById("ms-step3").value}`,
-    `<strong>4단계:</strong> ${document.getElementById("ms-step4").value}`
+    document.getElementById("ms-step1").value.trim(),
+    document.getElementById("ms-step2").value.trim(),
+    document.getElementById("ms-step3").value.trim(),
+    document.getElementById("ms-step4").value.trim()
   ];
 
   saveToLocalStorage();
@@ -2044,7 +2245,7 @@ btnAddCompany.addEventListener("click", () => {
   
   const randNum = Math.floor(1000 + Math.random() * 9000);
   document.getElementById("c-key").value = `HN-NEW-${randNum}`;
-  document.getElementById("c-password").value = "1234";
+  document.getElementById("c-login-email").value = "";
 
   if (btnDeleteCompanyModal) btnDeleteCompanyModal.style.display = "none";
   companyModal.style.display = "flex";
@@ -2064,7 +2265,7 @@ window.openEditCompanyModal = function(id) {
   document.getElementById("c-rep-desc").value = target.repDesc;
   
   const matchedAccount = Object.keys(USERS).find(key => USERS[key].companyId === target.id);
-  document.getElementById("c-password").value = matchedAccount ? USERS[matchedAccount].password : "1234";
+  document.getElementById("c-login-email").value = target.loginEmail || matchedAccount || "";
 
   document.getElementById("c-key").value = target.invitationKey;
   document.getElementById("c-sales").value = target.metrics.sales;
@@ -2118,7 +2319,7 @@ companyForm.addEventListener("submit", (e) => {
   const type = document.getElementById("c-type").value;
   const representative = document.getElementById("c-rep").value;
   const repDesc = document.getElementById("c-rep-desc").value;
-  const password = document.getElementById("c-password").value;
+  const loginEmail = document.getElementById("c-login-email").value.trim().toLowerCase();
   const keyVal = document.getElementById("c-key").value.toUpperCase();
   const sales = document.getElementById("c-sales").value.trim() || "0원 (대기)";
   const emp = document.getElementById("c-emp").value.trim() || "대기";
@@ -2146,6 +2347,7 @@ companyForm.addEventListener("submit", (e) => {
       target.name = name;
       target.type = type;
       target.representative = representative;
+      target.loginEmail = loginEmail;
       target.repDesc = repDesc;
       target.invitationKey = keyVal;
       target.establishmentDate = estDate;
@@ -2158,10 +2360,7 @@ companyForm.addEventListener("submit", (e) => {
       target.budget.checks = checks;
 
       const matchedAccountKey = Object.keys(USERS).find(k => USERS[k].companyId === target.id);
-      if (matchedAccountKey) {
-        USERS[matchedAccountKey].name = `${representative} 대표`;
-        USERS[matchedAccountKey].password = password;
-      }
+      if (matchedAccountKey) USERS[matchedAccountKey].name = `${representative} 대표`;
     }
   } else {
     const newId = companies.length > 0 ? Math.max(...companies.map(c => c.id)) + 1 : 1;
@@ -2171,6 +2370,7 @@ companyForm.addEventListener("submit", (e) => {
       name: name,
       type: type,
       representative: representative,
+      loginEmail: loginEmail,
       repDesc: repDesc,
       invitationKey: keyVal,
       establishmentDate: estDate,
@@ -2194,13 +2394,9 @@ companyForm.addEventListener("submit", (e) => {
       ]
     });
 
-    const accountEmail = `${representative.toLowerCase()}@onboard.com`;
-    USERS[accountEmail] = {
-      role: "startup",
-      name: `${representative} 대표`,
-      companyId: newId,
-      password: password
-    };
+    if (!window.secureBackend) {
+      USERS[loginEmail] = { role: "startup", name: `${representative} 대표`, companyId: newId };
+    }
   }
 
   saveToLocalStorage();
@@ -2209,6 +2405,19 @@ companyForm.addEventListener("submit", (e) => {
 });
 
 // EDUCATION EDIT
+function registerEducationCoachingLog(target, content) {
+  if (!target || !currentUser || currentUser.role !== "coach") return;
+  if (!Array.isArray(target.coachingLogs)) target.coachingLogs = [];
+  target.coachingLogs.push({
+    id: Date.now(),
+    type: "교육",
+    field: "필수교육",
+    date: new Date().toISOString().split("T")[0],
+    content: `[필수교육 현황 연동] ${content}`
+  });
+  target.coachingCount = (target.coachingCount || 0) + 1;
+}
+
 window.openEditEduModal = function(id) {
   const target = companies.find(c => c.id === id);
   if (!target) return;
@@ -2219,7 +2428,9 @@ window.openEditEduModal = function(id) {
   document.getElementById("edu-hr").value = target.education.hr;
   document.getElementById("edu-acc").value = target.education.accounting;
   document.getElementById("edu-law").value = target.education.law;
+  document.getElementById("edu-subject").value = target.education.subject || "추천 온라인 교육";
   document.getElementById("edu-content").value = target.education.content;
+  document.getElementById("edu-log-coaching").checked = true;
 
   eduModal.style.display = "flex";
 };
@@ -2239,13 +2450,68 @@ eduForm.addEventListener("submit", (e) => {
     target.education.hr = document.getElementById("edu-hr").value;
     target.education.accounting = document.getElementById("edu-acc").value;
     target.education.law = document.getElementById("edu-law").value;
+    target.education.subject = document.getElementById("edu-subject").value.trim();
     target.education.content = document.getElementById("edu-content").value;
+
+    if (document.getElementById("edu-log-coaching").checked) {
+      registerEducationCoachingLog(target, `${eduNames.hr}: ${target.education.hr}, ${eduNames.accounting}: ${target.education.accounting}, ${eduNames.law}: ${target.education.law}. 추천 과목: ${target.education.subject}. ${target.education.content}`);
+    }
 
     saveToLocalStorage();
     closeEduModal();
     renderDashboard();
   }
 });
+
+const eduContentModal = document.getElementById("edu-content-modal");
+window.openEducationContent = function(id) {
+  const target = companies.find(c => c.id === id);
+  if (!target) return;
+  document.getElementById("edu-content-modal-title").innerText = `${target.name} 추천 온라인 콘텐츠`;
+  document.getElementById("edu-content-subject").innerText = target.education.subject || "추천 과목 미등록";
+  document.getElementById("edu-content-description").innerText = target.education.content || "등록된 추천 내용이 없습니다.";
+  document.getElementById("edu-content-company-id").value = target.id;
+  document.getElementById("edu-content-view").style.display = "block";
+  document.getElementById("edu-content-edit-form").style.display = "none";
+  document.getElementById("edu-content-view-footer").style.display = "flex";
+  document.getElementById("btn-edit-edu-content").style.display = currentUser && currentUser.role === "coach" ? "inline-flex" : "none";
+  eduContentModal.style.display = "flex";
+};
+window.openEditEducationContent = function(id) {
+  if (!currentUser || currentUser.role !== "coach") return;
+  window.openEducationContent(id);
+  const target = companies.find(c => c.id === id);
+  document.getElementById("edu-content-edit-subject").value = target.education.subject || "";
+  document.getElementById("edu-content-edit-description").value = target.education.content || "";
+  document.getElementById("edu-content-log-coaching").checked = true;
+  document.getElementById("edu-content-view").style.display = "none";
+  document.getElementById("edu-content-view-footer").style.display = "none";
+  document.getElementById("edu-content-edit-form").style.display = "flex";
+};
+document.getElementById("btn-edit-edu-content").addEventListener("click", () => {
+  window.openEditEducationContent(parseInt(document.getElementById("edu-content-company-id").value));
+});
+document.getElementById("btn-cancel-edu-content-edit").addEventListener("click", () => {
+  window.openEducationContent(parseInt(document.getElementById("edu-content-company-id").value));
+});
+document.getElementById("edu-content-edit-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (!currentUser || currentUser.role !== "coach") return;
+  const id = parseInt(document.getElementById("edu-content-company-id").value);
+  const target = companies.find(c => c.id === id);
+  if (!target) return;
+  target.education.subject = document.getElementById("edu-content-edit-subject").value.trim();
+  target.education.content = document.getElementById("edu-content-edit-description").value.trim();
+  if (document.getElementById("edu-content-log-coaching").checked) {
+    registerEducationCoachingLog(target, `추천 온라인 콘텐츠 등록 - 과목: ${target.education.subject}. 내용: ${target.education.content}`);
+  }
+  saveToLocalStorage();
+  renderDashboard();
+  window.openEducationContent(id);
+});
+const closeEduContentModal = () => eduContentModal.style.display = "none";
+document.getElementById("btn-close-edu-content").addEventListener("click", closeEduContentModal);
+document.getElementById("btn-close-edu-content-footer").addEventListener("click", closeEduContentModal);
 
 // --- SECTION SWITCHING & SIDEBAR MENU EVENT LISTENERS ---
 function switchSection(targetSection, activeMenu) {
@@ -2362,74 +2628,19 @@ function renderSurveySection() {
     }
   }
 
-  // 1. 폼 초기화 (다른 기업 선택 시 이전 기업 입력 데이터 잔상 잔류 버그 완전 해결)
-  const surveyFormEl = document.getElementById("survey-form-el");
-  if (surveyFormEl) surveyFormEl.reset();
-
-  // 2. 기업명 및 대표자 실명 자동 연동
+  // 기업명 및 대표자 실명 자동 연동
   document.getElementById("sv-company-name").value = targetCompany.name || "";
   document.getElementById("sv-representative").value = targetCompany.representative || "";
 
-  // 데이터 규격 자동 정규화 헬퍼 (CSV 포맷과 HTML5 Form 엘리먼트 100% 연동)
-  function normalizeDate(dStr) {
-    if (!dStr) return "";
-    const parts = String(dStr).replace(/[^0-9.]/g, "").split(".").filter(Boolean);
-    if (parts.length === 3) {
-      const y = parts[0].padStart(4, "20");
-      const m = parts[1].padStart(2, "0");
-      const d = parts[2].padStart(2, "0");
-      return `${y}-${m}-${d}`;
-    }
-    return dStr;
-  }
-
-  function normalizeSales(sStr) {
-    if (!sStr) return "매출 미발생 (R&D, 기술 개발 및 제품 기획 단계)";
-    const s = String(sStr);
-    if (s.includes("미발생")) return "매출 미발생 (R&D, 기술 개발 및 제품 기획 단계)";
-    if (s.includes("1천만 원 미만")) return "1천만 원 미만 (PoC 진행 및 초기 시장 반응 탐색)";
-    if (s.includes("1천만 원 이상") && s.includes("3천만 원 미만")) return "1천만 원 이상 ~ 3천만 원 미만 (시제품 출시 및 초기 유상 고객 확보)";
-    if (s.includes("3천만 원 이상") && s.includes("5천만 원 미만")) return "3천만 원 이상 ~ 5천만 원 미만 (초기 매출 검증 완료 및 BM 구체화)";
-    if (s.includes("5천만 원 이상") && s.includes("1억 원 미만")) return "5천만 원 이상 ~ 1억 원 미만 (시장 진입 안착 및 매출 본격화)";
-    if (s.includes("1억 원 이상")) return "1억 원 이상 ~ 3억 원 미만 (스케일업 및 성장 가속화)";
-    return s;
-  }
-
-  function normalizeEmployees(eStr) {
-    if (!eStr) return "0명 (단독 창업)";
-    const e = String(eStr);
-    if (e.includes("0명")) return "0명 (단독 창업)";
-    if (e.includes("1인") || e.includes("2인")) return "1인 ~ 2인";
-    if (e.includes("3인") || e.includes("5인")) return "3인 ~ 5인";
-    if (e.includes("6인") || e.includes("10인")) return "6인 ~ 10인";
-    if (e.includes("10인")) return "10인 이상";
-    return e;
-  }
-
-  function normalizeReStartup(rStr) {
-    if (!rStr) return "아니오 (첫 창업)";
-    const r = String(rStr);
-    if (r.includes("예")) return "예 (재창업 기업)";
-    return "아니오 (첫 창업)";
-  }
-
-  function normalizeCorpType(cStr) {
-    if (!cStr) return "예비창업자";
-    const c = String(cStr);
-    if (c.includes("법인")) return "법인사업자";
-    if (c.includes("개인")) return "개인사업자";
-    return "예비창업자";
-  }
-
-  // 3. 설문 데이터 유무에 따른 개별 독립 바인딩
+  // Pre-populate if survey data exists
   if (targetCompany.surveyData) {
     document.getElementById("sv-contact").value = targetCompany.surveyData.contact || targetCompany.contact || "";
-    document.getElementById("sv-corp-type").value = normalizeCorpType(targetCompany.surveyData.corpType || targetCompany.corpType);
-    document.getElementById("sv-est-date").value = normalizeDate(targetCompany.surveyData.estDate || targetCompany.establishmentDate);
+    document.getElementById("sv-corp-type").value = targetCompany.surveyData.corpType || targetCompany.corpType || "예비창업자";
+    document.getElementById("sv-est-date").value = targetCompany.surveyData.estDate || targetCompany.establishmentDate || "";
     document.getElementById("sv-address").value = targetCompany.surveyData.address || targetCompany.address || "";
-    document.getElementById("sv-sales").value = normalizeSales(targetCompany.surveyData.sales);
-    document.getElementById("sv-employees").value = normalizeEmployees(targetCompany.surveyData.employees);
-    document.getElementById("sv-restartup").value = normalizeReStartup(targetCompany.surveyData.reStartup);
+    document.getElementById("sv-sales").value = targetCompany.surveyData.sales || "매출 미발생 (R&D, 기술 개발 및 제품 기획 단계)";
+    document.getElementById("sv-employees").value = targetCompany.surveyData.employees || "0명 (단독 창업)";
+    document.getElementById("sv-restartup").value = targetCompany.surveyData.reStartup || (targetCompany.metrics && targetCompany.metrics.reStartup) || "아니오";
 
     document.getElementById("sv-item-intro").value = targetCompany.surveyData.itemIntro || "";
     document.getElementById("sv-item-target").value = targetCompany.surveyData.itemTarget || "";
@@ -2458,33 +2669,81 @@ function renderSurveySection() {
     document.querySelectorAll("input[name='sv-edu-method-chk']").forEach(chk => {
       chk.checked = eduMethodStr.includes(chk.value);
     });
-    if (strategyTextarea) strategyTextarea.value = targetCompany.surveyData.customStrategy || "";
+    strategyTextarea.value = targetCompany.surveyData.customStrategy || "";
   } else {
-    // 사전 조사가 미제출된 기업인 경우 깔끔하게 해당 기업 기본 정보만 바인딩 후 텍스트필드 초기화
-    document.getElementById("sv-contact").value = targetCompany.contact || "";
-    document.getElementById("sv-corp-type").value = normalizeCorpType(targetCompany.corpType);
-    document.getElementById("sv-est-date").value = normalizeDate(targetCompany.establishmentDate);
-    document.getElementById("sv-address").value = targetCompany.address || "";
-    document.getElementById("sv-sales").value = normalizeSales(targetCompany.metrics && targetCompany.metrics.sales);
-    document.getElementById("sv-employees").value = normalizeEmployees(targetCompany.metrics && targetCompany.metrics.employees);
-    document.getElementById("sv-restartup").value = normalizeReStartup(targetCompany.metrics && targetCompany.metrics.reStartup);
-
-    document.getElementById("sv-item-intro").value = "";
-    document.getElementById("sv-item-target").value = "";
-    document.getElementById("sv-item-model").value = "";
-    document.getElementById("sv-market-target").value = "";
-    document.getElementById("sv-team-comp").value = "";
-    document.getElementById("sv-team-core").value = "";
-    document.getElementById("sv-team-needs").value = "";
-    document.getElementById("sv-need-pain").value = "";
-    document.getElementById("sv-need-goal").value = "";
-    document.getElementById("sv-need-deliverable").value = "";
-    document.getElementById("sv-edu-content").value = "";
-    if (strategyTextarea) strategyTextarea.value = "";
-    document.querySelectorAll("input[name='sv-finance-source-chk']").forEach(chk => chk.checked = false);
-    document.querySelectorAll("input[name='sv-edu-method-chk']").forEach(chk => chk.checked = false);
+    // Fill basic details from existing profile without overwriting user's active typing
+    if (!document.getElementById("sv-contact").value) document.getElementById("sv-contact").value = targetCompany.contact || "";
+    if (!document.getElementById("sv-corp-type").value) document.getElementById("sv-corp-type").value = targetCompany.corpType || "예비창업자";
+    if (!document.getElementById("sv-est-date").value) document.getElementById("sv-est-date").value = targetCompany.establishmentDate || "";
+    if (!document.getElementById("sv-address").value) document.getElementById("sv-address").value = targetCompany.address || "";
+    if (!document.getElementById("sv-sales").value) document.getElementById("sv-sales").value = "매출 미발생 (R&D, 기술 개발 및 제품 기획 단계)";
+    if (!document.getElementById("sv-employees").value) document.getElementById("sv-employees").value = "0명 (단독 창업)";
+    if (!document.getElementById("sv-restartup").value) document.getElementById("sv-restartup").value = (targetCompany.metrics && targetCompany.metrics.reStartup) || "아니오";
   }
   refreshIcons();
+}
+
+function buildSurveyDistribution(title, responses, field, splitValues = false) {
+  const counts = {};
+  responses.forEach(company => {
+    const raw = company.surveyData && company.surveyData[field];
+    const values = splitValues && raw ? raw.split(", ") : [raw];
+    values.filter(Boolean).forEach(value => { counts[value] = (counts[value] || 0) + 1; });
+  });
+  const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const max = Math.max(1, ...entries.map(([, count]) => count));
+  const rows = entries.length ? entries.map(([label, count]) => {
+    const percent = responses.length ? Math.round(count / responses.length * 100) : 0;
+    return `<div class="survey-chart-row"><div class="survey-chart-label">${escapeNoticeHtml(label)}</div><div class="survey-chart-track"><div class="survey-chart-bar" style="width:${count / max * 100}%"></div></div><strong>${count}개사 (${percent}%)</strong></div>`;
+  }).join("") : `<p style="color:var(--text-secondary);">집계할 응답이 없습니다.</p>`;
+  return `<div class="survey-aggregate-card"><h3>${title}</h3><p class="survey-response-count">응답 ${responses.length}개사</p><div class="survey-chart">${rows}</div></div>`;
+}
+
+function renderOverallSurveyResults() {
+  if (!currentUser || currentUser.role !== "coach") return;
+  const container = document.getElementById("survey-overall-view");
+  const responses = companies.filter(company => company.surveyData && !company.surveyData.isDraft);
+  const submitted = companies.filter(company => company.surveyData);
+  const tableRows = companies.map(company => {
+    const sv = company.surveyData;
+    return `<tr><td>${escapeNoticeHtml(company.name)}</td><td><span class="tag ${sv ? 'tag-success' : 'tag-pre'}">${sv ? (sv.isDraft ? '임시저장' : '제출완료') : '미제출'}</span></td><td>${escapeNoticeHtml(sv && sv.sales || '-')}</td><td>${escapeNoticeHtml(sv && sv.employees || '-')}</td><td>${escapeNoticeHtml(sv && sv.financeRunway || '-')}</td><td>${escapeNoticeHtml(sv && sv.eduMethod || '-')}</td></tr>`;
+  }).join("");
+  container.innerHTML = `
+    <div class="summary-grid survey-aggregate-summary">
+      <div class="card"><div class="card-title">전체 기업</div><div class="card-value">${companies.length}개사</div></div>
+      <div class="card"><div class="card-title">응답 기업</div><div class="card-value">${submitted.length}개사</div></div>
+      <div class="card"><div class="card-title">최종 제출</div><div class="card-value">${responses.length}개사</div></div>
+    </div>
+    <div class="survey-aggregate-grid">
+      ${buildSurveyDistribution("현재 매출액", responses, "sales")}
+      ${buildSurveyDistribution("현재 고용 인원수", responses, "employees")}
+      ${buildSurveyDistribution("고정비 파악 여부", responses, "financeFixedcost")}
+      ${buildSurveyDistribution("생존 자금 런웨이", responses, "financeRunway")}
+      <div style="grid-column:1/-1;">${buildSurveyDistribution("선호하는 학습 방법", responses, "eduMethod", true)}</div>
+    </div>
+    <div class="survey-aggregate-card" style="margin-top:18px;"><h3>기업별 사전조사 응답표</h3><div class="table-container"><table><thead><tr><th>기업명</th><th>상태</th><th>매출액</th><th>고용</th><th>런웨이</th><th>선호 학습 방법</th></tr></thead><tbody>${tableRows}</tbody></table></div></div>`;
+}
+
+const btnSurveyIndividual = document.getElementById("btn-survey-individual");
+const btnSurveyOverall = document.getElementById("btn-survey-overall");
+if (btnSurveyIndividual && btnSurveyOverall) {
+  btnSurveyIndividual.addEventListener("click", () => {
+    document.getElementById("survey-individual-view").style.display = "block";
+    document.getElementById("survey-overall-view").style.display = "none";
+    document.getElementById("survey-company-select-container").style.display = "flex";
+    btnSurveyIndividual.classList.add("active");
+    btnSurveyOverall.classList.remove("active");
+    renderSurveySection();
+  });
+  btnSurveyOverall.addEventListener("click", () => {
+    if (!currentUser || currentUser.role !== "coach") return;
+    document.getElementById("survey-individual-view").style.display = "none";
+    document.getElementById("survey-company-select-container").style.display = "none";
+    document.getElementById("survey-overall-view").style.display = "block";
+    btnSurveyOverall.classList.add("active");
+    btnSurveyIndividual.classList.remove("active");
+    renderOverallSurveyResults();
+  });
 }
 
 // Submit Survey Form Listener
@@ -2549,8 +2808,6 @@ document.getElementById("survey-form-el").addEventListener("submit", (e) => {
   targetCompany.metrics.reStartup = restartup;
   
   targetCompany.surveyData = {
-    lastModified: Date.now(),
-    isDraft: false,
     contact,
     corpType,
     estDate,
@@ -2680,7 +2937,6 @@ if (btnSaveDraftEl) {
 
     // Save as draft
     targetCompany.surveyData = {
-      lastModified: Date.now(),
       isDraft: true,
       contact,
       corpType,
@@ -3058,12 +3314,6 @@ function renderSettingSection() {
   document.getElementById("cfg-edu-acc").value = eduNames.accounting;
   document.getElementById("cfg-edu-law").value = eduNames.law;
   
-  const strip = html => html ? html.replace(/<[^>]*>/g, "").replace(/^\d+단계:\s*/, "") : "";
-  document.getElementById("cfg-ms-step1").value = strip(milestones[0]);
-  document.getElementById("cfg-ms-step2").value = strip(milestones[1]);
-  document.getElementById("cfg-ms-step3").value = strip(milestones[2]);
-  document.getElementById("cfg-ms-step4").value = strip(milestones[3]);
-  
   renderConfigNoticeList();
 }
 
@@ -3088,6 +3338,7 @@ function renderConfigNoticeList() {
 }
 
 window.deleteNotice = function(idx) {
+  if (!currentUser || currentUser.role !== "coach") return;
   notices.splice(idx, 1);
   renderConfigNoticeList();
 };
@@ -3095,6 +3346,7 @@ window.deleteNotice = function(idx) {
 const btnAddNotice = document.getElementById("btn-add-notice");
 if (btnAddNotice) {
   btnAddNotice.addEventListener("click", () => {
+    if (!currentUser || currentUser.role !== "coach") return;
     const type = document.getElementById("cfg-notice-type").value;
     const titleInput = document.getElementById("cfg-notice-title");
     const title = titleInput.value.trim();
@@ -3127,13 +3379,6 @@ if (settingFormEl) {
     eduNames.hr = document.getElementById("cfg-edu-hr").value.trim();
     eduNames.accounting = document.getElementById("cfg-edu-acc").value.trim();
     eduNames.law = document.getElementById("cfg-edu-law").value.trim();
-    
-    milestones = [
-      `<strong>1단계:</strong> ${document.getElementById("cfg-ms-step1").value.trim()}`,
-      `<strong>2단계:</strong> ${document.getElementById("cfg-ms-step2").value.trim()}`,
-      `<strong>3단계:</strong> ${document.getElementById("cfg-ms-step3").value.trim()}`,
-      `<strong>4단계:</strong> ${document.getElementById("cfg-ms-step4").value.trim()}`
-    ];
     
     // 저장 및 실시간 연동
     saveToLocalStorage();
@@ -3188,44 +3433,3 @@ if (btnTestEmail) {
 // Initial Setup
 renderMilestones();
 applyDynamicConfigs();
-
-
-// 📥 Auto-Inject CSV Pre-Diagnosis Survey Responses into Memory & Default Companies
-(function() {
-  const surveyMap = {"1":{"contact":"010-6851-7595","corpType":"법인사업자","estDate":"2025. 5. 23","address":"세종특별자치시 집현중앙7로 6, A동 6층 601호","sales":"5천만 원 이상 ~ 1억 원 미만 (시장 진입 안착 및 매출 본격화)","employees":"3인~5인","reStartup":"아니오 (첫 창업)","itemIntro":"AI기반 안티드론 시스템, 센서융합 통합관제","itemTarget":"안티드론 시스템 도입 관공서 (공항, 청사, 항만 등)","itemModel":"SW 판매, 구독, 유지보수, HW 제품 판매","marketTarget":"국내외 안티드론 솔루션 시장","teamComp":"대표2명 (CEO/CTO 공동대표) 팀원 5명 (하드웨어설계, 전자설계, SW, AI, 재무)","teamCore":"동종업계 정부출연연구소 R&D 경력, 현업 대학 전임교수 기술력","teamNeeds":"제품 판매 실적 확보,팁스(TIPS) 연계 및 기관 투자 유치(AC/VC) 진행 중","financeSource":"매월 연구원 급여, 임차료, 시제품 제작비 등 고정비 내역을 정기적으로 파악 중","financeFixedcost":"매월 연구원 급여, 임차료, 시제품 제작비 등 고정비 내역을 정기적으로 파악 중","financeRunway":"1년 이상 (자금 안정적)","needPain":"인력채용","needGoal":"매출/인력 스케일업 방안 구체화","needDeliverable":"투자 IR Deck 피드백","eduContent":"투자유치, 영업","eduMethod":"온라인 교육 (VOD 시청, 실시간 Zoom 웨비나)","lastModified":1785667137527,"isDraft":false},"2":{"contact":"01085311183","corpType":"법인사업자","estDate":"2026. 6. 2","address":"대전광역시 유성구 가정북로 156 한국기계연구원 s8동 108호","sales":"1천만 원 미만 (PoC 진행 및 초기 시장 반응 탐색)","employees":"0명 (단독 창업)","reStartup":"아니오 (첫 창업)","itemIntro":"AI MACE 자동화 플랫폼","itemTarget":"국내 연구소및 기업 학교, 해외기관","itemModel":"장비 판매","marketTarget":"국내 및 국외 센서및 반도체 연구기관에 B2B 장비 판매 및 SaaS","teamComp":"기획 rnd 총괄","teamCore":"원천특허 공정 설계기술 보유","teamNeeds":"시리즈 투자","financeSource":"없음 (정부지원금 및 R&D 자금 위주로 운영), 팁스(TIPS) 연계 및 기관 투자 유치(AC/VC) 진행 중","financeFixedcost":"아직 구체적인 고정비 계산 체계가 마련되지 않음","financeRunway":"3개월 미만 (신속한 후속 투자 및 R&D 자금 수급 필요)","needPain":"투자유치전략","needGoal":"투자유치","needDeliverable":"기술스케일업을위한 정부 지원사업 추천,투자유치 IR","eduContent":"","eduMethod":"온라인 교육 (VOD 시청, 실시간 Zoom 웨비나), 오프라인 교육 (전문가 초청 세미나, 집체 워크숍)","lastModified":1785667137527,"isDraft":false},"4":{"contact":"010-7207-7537","corpType":"예비창업자","estDate":"2026. 8. 3","address":"대전","sales":"매출 미발생(R&D, 기술 개발 및 제품 기획 단계)","employees":"3인~5인","reStartup":"아니오 (첫 창업)","itemIntro":"고객이 차량 사진 비전AI를 통해 모델을 특정해 견적 요청을 하고 딜러간 AI 이미지 인식으로 견적 데이터를 정형화하여 딜러 간 실시간 가격경쟁을 유도하여 중간유통구조를 생략시키는 신차 구매 시스템","itemTarget":"신차를 구매하려는 일반 고객과 제조사 딜러들을 다이렉트 매칭하는 서비스로 캐피탈과 자동차 제조사, 다나와, 등 여러 업체에 매각 가능합니다","itemModel":"출고수수료(딜러에게 받음), 금융연계수수료(캐피탈에게 받음), 중고차연계수수료(중고딜러에게 받음), 차량용품 수수료(차량용품 판매업자에게 받음)","marketTarget":"신차를 구매하려는 고객중에서 온라인(유튜브, 커뮤니티)을 통해 가격정보와 차량정보를 탐색하는 30-50대 고객","teamComp":"대표1명(사업총괄), CTO 1명(개발총괄), CM0 1명(유튜브채널 보유), 개발자 2명, 디자이너1명","teamCore":"신차 영업사원 경험이 있는 대표와 신차관련 유튜브채널을 보유한 임원, 그리고 이러한 업계전문성을 뒷받침할수있는 기술력(평균경력 10년의 개발자3명과 UXUI디자이너1명)","teamNeeds":"IR 관련 덱 작성 및 발표, 마케팅 전략 전문 멘토링, IP권리화 전문 멘토링","financeSource":"없음 (정부지원금 및 R&D 자금 위주로 운영), 자기자본 추가 투입 / 융자(보증기금 등)","financeFixedcost":"아직 구체적인 고정비 계산 체계가 마련되지 않음","financeRunway":"3개월 미만 (신속한 후속 투자 및 R&D 자금 수급 필요)","needPain":"특허 출원 및 분쟁, 투자 유치 전략 수립(어느 시기에 투자를 받는것이 좋은지, 대출이 좋은지 투자가 좋은지 등)","needGoal":"사업계획을 기준으로 대출, 투자 등의 자금조달 계획을 좀 더 핏하게 맞추고싶습니다","needDeliverable":"투자용 IR Deck 피드백, 팁스(TIPS) 제안서 초안 고도화, 기술 스케일업을 위한 정부 지원사업 추천 리스트","eduContent":"정부지원사업 정산 실무, 투자유치/IR, 마케팅/영업, 세무/회계","eduMethod":"온라인 교육 (VOD 시청, 실시간 Zoom 웨비나), 오프라인 교육 (전문가 초청 세미나, 집체 워크숍), 1:1 맞춤형 밀착 코칭 (사무실 현장 지도), 서면/텍스트 학습 (가이드라인, 체크리스트 자료독학)","lastModified":1785667137527,"isDraft":false},"5":{"contact":"010-9079-7821","corpType":"법인사업자","estDate":"2025. 5. 22","address":"대전광역시 유성구 노은로 173, 1006호","sales":"1천만 원 미만 (PoC 진행 및 초기 시장 반응 탐색)","employees":"3인~5인","reStartup":"아니오 (첫 창업)","itemIntro":"글로벌 10~30 여성 타겟 고감도 가방브랜드 \"LEFACE\"","itemTarget":"10대~30대 여성","itemModel":"D2C 가방 판매","marketTarget":"국내 및 해외","teamComp":"대표1명(R&D 총괄), COO 1명(경영지원), CDO 1명(가방 기획), 팀원 2명(디자이너1인&MD1인)","teamCore":"핵심 인력의 동종업계 사업 진행이력","teamNeeds":"양산 공정 전문가","financeSource":"팁스(TIPS) 연계 및 기관 투자 유치(AC/VC) 진행 중","financeFixedcost":"매월 연구원 급여, 임차료, 시제품 제작비 등 고정비 내역을 정기적으로 파악 중","financeRunway":"3개월~6개월","needPain":"해외생산 공정 핸들링","needGoal":"생산 체계 안정화","needDeliverable":"생산 안정화에 따른 매출개선","eduContent":"마케팅/영업","eduMethod":"서면/텍스트 학습 (가이드라인, 체크리스트 자료독학)","lastModified":1785667137527,"isDraft":false},"7":{"contact":"010-7764-2172","corpType":"예비창업자","estDate":"2026. 7. 28","address":"대전광역시 유성구 계룡로 105번길 13","sales":"매출 미발생(R&D, 기술 개발 및 제품 기획 단계)","employees":"1인~~2인","reStartup":"아니오 (첫 창업)","itemIntro":"음악 제작 협업 플랫폼","itemTarget":"음악 레이블 및 기획사(A&R·제작팀), 프로듀서·믹싱 엔지니어 등 전문 음악 제작자, 그리고 AI 툴로 곡을 만드는 인디 아티스트·크리에이터","itemModel":"B2C Saas 구독료 및 B2B Enterprise 요금제","marketTarget":"여러 이해관계자가 협업하는 음악 제작·협업 SaaS 시장","teamComp":"대표 1명(자금 조달), CTO 1명(AI 개발), COO(프로그램 기획)","teamCore":"카이스트 Soundlab 연구실","teamNeeds":"회계, 세무, 지적재산권등의 법률 상담","financeSource":"없음 (정부지원금 및 R&D 자금 위주로 운영), 자기자본 추가 투입 / 융자(보증기금 등)","financeFixedcost":"아직 구체적인 고정비 계산 체계가 마련되지 않음","financeRunway":"3개월~6개월","needPain":"투자 유치 전략 수립, 초기 고객 확보","needGoal":"초기 고객 확보를 위한 구체적인 마일스톤 설정","needDeliverable":"투자용 IR Deck 피드백, 기술 스케일업을 위한 정부 지원사업 추천 리스트","eduContent":"세무/회계, 특허/지식재산권","eduMethod":"온라인 교육 (VOD 시청, 실시간 Zoom 웨비나), 오프라인 교육 (전문가 초청 세미나, 집체 워크숍), 1:1 맞춤형 밀착 코칭 (사무실 현장 지도)","lastModified":1785667137527,"isDraft":false},"11":{"contact":"01093322325","corpType":"법인사업자","estDate":"2026. 1. 16","address":"충청북도 청주시 흥덕구 오송읍 연제1길 24-35, 1층 111호","sales":"매출 미발생(R&D, 기술 개발 및 제품 기획 단계)","employees":"3인~5인","reStartup":"예 (재창업 기업)","itemIntro":"REM 기반 Interaction RAG 기술을 적용한 사용자 맞춤형 물물 교환 AI 플랫폼 (APP : 골목사장)","itemTarget":"전국의 소상공인","itemModel":"교환 수수료 (5%), 광고 미 SaaS 수수료, 교환 데이터","marketTarget":"국내 및 해외 (베트남,인도네시아,태국) 소상공인 맞춤형 B2B 물물교환 AI 플랫폼","teamComp":"대표 1명(기획/R&D 총괄), CTO 2명(APP 개발 및 AI 전문인력), COO 1명 (기획/운영)","teamCore":"소상공인 200억 스케일업 경영진과 300억 급 금융 IT 아키텍트가 결합하여, 원천 특허와 AI 교환 엔진으로 설립 6개월 만에 SEED 유치 및 TIPS 추천까지 이끌어낸 압도적 실행력의 팀입니다. 결제 관련 원천 특허 1건 출원 완료 상태입니다.","teamNeeds":"Pre-A 투자를 위한 IR 패키징,팁스(TIPS) 연계 및 기관 투자 유치(AC/VC) 진행 중","financeSource":"매월 연구원 급여, 임차료, 시제품 제작비 등 고정비 내역을 정기적으로 파악 중","financeFixedcost":"매월 연구원 급여, 임차료, 시제품 제작비 등 고정비 내역을 정기적으로 파악 중","financeRunway":"1년 이상 (자금 안정적)","needPain":"기술 인력 채용, 투자 유치 전략 수립","needGoal":"공신력 있는 곳에서 투자를 받고 이를 통해 기업을 성장 시키고 싶습니다.","needDeliverable":"기술 스케일업을 위한 정부 지원사업 추천 리스트","eduContent":"정부지원사업 정산 실무, 투자유치/IR","eduMethod":"온라인 교육 (VOD 시청, 실시간 Zoom 웨비나)","lastModified":1785667137527,"isDraft":false},"12":{"contact":"010-3399-2543","corpType":"예비창업자","estDate":"2026. 10. 1","address":"대전","sales":"매출 미발생(R&D, 기술 개발 및 제품 기획 단계)","employees":"0명 (단독 창업)","reStartup":"아니오 (첫 창업)","itemIntro":"면역 항암 치료제 개발","itemTarget":"글로벌 빅파마","itemModel":"기술 라이선싱","marketTarget":"글로벌 면역 항암 시장","teamComp":"팀원 2 명","teamCore":"항암 항체 개발","teamNeeds":"시드 및 preA 투자 유치","financeSource":"팁스(TIPS) 연계 및 기관 투자 유치(AC/VC) 진행 중","financeFixedcost":"매월 연구원 급여, 임차료, 시제품 제작비 등 고정비 내역을 정기적으로 파악 중","financeRunway":"3개월 미만 (신속한 후속 투자 및 R&D 자금 수급 필요)","needPain":"투자 유치","needGoal":"성공적인 사업 모델개발 및 투자 유치.","needDeliverable":"투자용 IR Deck 피드백, 팁스제안서 초안 고도화","eduContent":"특허 지적 재산권 교육","eduMethod":"온라인 교육 (VOD 시청, 실시간 Zoom 웨비나), 1:1 맞춤형 밀착 코칭 (사무실 현장 지도)","lastModified":1785667137527,"isDraft":false},"14":{"contact":"010-8233-3776","corpType":"법인사업자","estDate":"2025. 12. 15","address":"대전광역시 유성구 대학로 99, 709호(궁동, 충남대학교 산학연교육연구관)","sales":"3천만 원 이상 ~ 5천만 원 미만 (초기 매출 검증 완료 및 BM 구체화)","employees":"1인~~2인","reStartup":"아니오 (첫 창업)","itemIntro":"고기능성 와사비 바이오소재 사업화","itemTarget":"천연 기능성 원료를 활용한 제품 개발 수요가 있는 국내 식품·반려동물 영양제 및 바이오소재 제조기업","itemModel":"조직배양 기반 와사비 배양체·무병묘 판매, 기능성 성분이 표준화된 와사비 추출물·분말·페이스트의 B2B 원료 공급 및 기업 맞춤형 소재 공동개발","marketTarget":"국내 식품·반려동물 영양제·화장품 제조기업을 대상으로 한 국내산 기능성 원료 및 표준화 식물 바이오소재 시장","teamComp":"대표 1명 (사업화/R&D 총괄), 이사 1명(스마트팜 구축·운영 및 재배 실증), 직원 1명(행정 및 사업 운영 지원)","teamCore":"식물 조직배양·기능성 식물소재 R&D 경력, 와사비 무병묘 및 균일 배양체 생산 기술, 정밀제어 스마트팜 구축·재배 실증 경험, 기능성 성분 분석 및 추출·가공 기술 보유","teamNeeds":"와사비 기능성 원료의 표준화 및 양산 공정 확립, 식품·반려동물 영양제 제조기업과의 공동개발·실증 연계, B2B 판로 개척과 투자유치를 위한 IR 패키징","financeSource":"없음 (정부지원금 및 R&D 자금 위주로 운영), 글로벌/대기업 펀딩 및 전략적 투자(SI) 유치 계획","financeFixedcost":"매월 연구원 급여, 임차료, 시제품 제작비 등 고정비 내역을 정기적으로 파악 중","financeRunway":"3개월~6개월","needPain":"와사비 원료 양산 공정 확립, 지표성분·효능·안전성 표준화, 식품·반려동물 영양제 기업과의 PoC 및 B2B 판로 확보","needGoal":"핵심 제품·고객군 및 수익모델 구체화, 와사비 기능성 원료의 표준화 로드맵 수립, 식품·반려동물 영양제 제조기업 2~3개사와의 PoC·공동개발 연계 및 투자유치용 사업계획 고도화","needDeliverable":"액트 맞춤형 투자·사업소개 IR Deck 피드백본, 식품·반려동물 영양제 기업 PoC 후보 및 연계 전략, 와사비 원료 표준화·양산을 위한 정부지원사업 추천 리스트","eduContent":"정부지원사업 정산 실무, 투자유치/IR","eduMethod":"온라인 교육 (VOD 시청, 실시간 Zoom 웨비나), 오프라인 교육 (전문가 초청 세미나, 집체 워크숍), 1:1 맞춤형 밀착 코칭 (사무실 현장 지도)","lastModified":1785667137527,"isDraft":false},"17":{"contact":"010-7623-8990","corpType":"법인사업자","estDate":"2026. 1. 1","address":"대전 대덕구 한남로 70, 24-01-02(오정동, 산학인재교육원)","sales":"1천만 원 이상 ~ 3천만 원 미만 (시제품 출시 및 초기 유상 고객 확보)","employees":"1인~~2인","reStartup":"아니오 (첫 창업)","itemIntro":"무기체계 CBM+ 패러다임 전환을 위한 자율형 예측정비 AI Agent 통합 플랫폼 개발","itemTarget":"군 기동/화력 장비 운용 부대 및 종합정비창","itemModel":"온프레미스 통합 플랫폼 라이선스(구축/유지보수비) 및 수출 무기 내장형 런닝 로열티","marketTarget":"군 무기체계 운용 부대 및 종합정비창과 방산 체계종합기업 및 전장품 제조사","teamComp":"대표(기획/R&D 총괄), 전략기획실장1명(전략기획 및 IR, 마케팅 등), 팀원1명(하드웨어 설계) 등","teamCore":"동종 업계 최고의 경력 보유자와 언론사(신문사) 경제부장 출신의 인프라 등","teamNeeds":"인재양성","financeSource":"없음 (정부지원금 및 R&D 자금 위주로 운영), 자기자본 추가 투입 / 융자(보증기금 등)","financeFixedcost":"매월 연구원 급여, 임차료, 시제품 제작비 등 고정비 내역을 정기적으로 파악 중","financeRunway":"1년 이상 (자금 안정적)","needPain":"기술 인력 채용, 대기업 PoC연계 등","needGoal":"음.....","needDeliverable":"기술 스케일업을 위한 정부 지원사업 추천 리스트","eduContent":"인재채용 분야","eduMethod":"오프라인 교육 (전문가 초청 세미나, 집체 워크숍)","lastModified":1785667137527,"isDraft":false}};
-  if (typeof defaultCompanies !== 'undefined' && Array.isArray(defaultCompanies)) {
-    defaultCompanies.forEach(c => {
-      if (surveyMap[c.id]) {
-        const data = surveyMap[c.id];
-        c.surveyData = data;
-        c.contact = data.contact || c.contact;
-        c.corpType = data.corpType || c.corpType;
-        c.establishmentDate = data.estDate || c.establishmentDate;
-        c.address = data.address || c.address;
-        c.metrics.sales = data.sales || c.metrics.sales;
-        c.metrics.employees = data.employees || c.metrics.employees;
-        c.metrics.reStartup = data.reStartup || c.metrics.reStartup;
-        c.monitoringDoc = "사전조사 제출완료";
-      }
-    });
-  }
-  if (typeof companies !== 'undefined' && Array.isArray(companies)) {
-    companies.forEach(c => {
-      if (surveyMap[c.id]) {
-        const data = surveyMap[c.id];
-        if (!c.surveyData || !c.surveyData.lastModified || c.surveyData.lastModified <= data.lastModified) {
-          c.surveyData = data;
-          c.contact = data.contact || c.contact;
-          c.corpType = data.corpType || c.corpType;
-          c.establishmentDate = data.estDate || c.establishmentDate;
-          c.address = data.address || c.address;
-          c.metrics.sales = data.sales || c.metrics.sales;
-          c.metrics.employees = data.employees || c.metrics.employees;
-          c.metrics.reStartup = data.reStartup || c.metrics.reStartup;
-          c.monitoringDoc = "사전조사 제출완료";
-        }
-      }
-    });
-    localStorage.setItem("COMPANIES", JSON.stringify(companies));
-  }
-})();
