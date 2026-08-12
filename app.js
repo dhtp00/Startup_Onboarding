@@ -1017,7 +1017,7 @@ function saveToLocalStorage() {
   if (window.secureBackend && currentUser) {
     window.secureBackend.saveState(companies, milestones, notices, coachName, eduNames).catch(error => {
       console.error("Supabase 저장 실패:", error);
-      alert("데이터를 Supabase에 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.");
+      alert(`Supabase 저장 실패: ${error.message || "알 수 없는 오류"}`);
     });
     return;
   }

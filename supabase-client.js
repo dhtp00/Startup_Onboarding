@@ -1,5 +1,7 @@
 (function () {
   let clientPromise;
+  let lastSyncedState = null;
+  const stableJson = value => JSON.stringify(value ?? null);
   async function getClient() {
     if (!clientPromise) clientPromise = fetch("/api/config", { cache: "no-store" })
       .then(async response => {
@@ -80,7 +82,7 @@
       if (profileError) throw profileError;
       if (companyError) throw companyError;
       const config = Object.fromEntries((configRows || []).map(row => [row.key, row.value]));
-      return {
+      const result = {
         profile,
         companies: (companyRows || []).map(row => ({ ...row.data, id: row.id })),
         milestones: (noticeRows || []).filter(row => row.board === "program").map(row => row.payload),
@@ -88,6 +90,14 @@
         coachName: config.coach_name || "전담코치",
         eduNames: config.edu_names || { hr: "1차 교육", accounting: "2차 교육", law: "3차 교육" }
       };
+      lastSyncedState = {
+        companies: Object.fromEntries(result.companies.map(company => [String(company.id), stableJson(company)])),
+        coachName: stableJson(result.coachName),
+        eduNames: stableJson(result.eduNames),
+        milestones: stableJson(result.milestones),
+        notices: stableJson(result.notices)
+      };
+      return result;
     },
     async saveState(companies, milestones, notices, coachName, eduNames) {
       const client = await getClient();
@@ -101,19 +111,28 @@
       if (profileError || !profile) throw profileError || new Error("사용자 프로필을 찾을 수 없습니다.");
 
       if (profile.role === "coach") {
-        const rows = companies.map(company => {
+        const changedCompanies = companies.filter(company => !lastSyncedState || lastSyncedState.companies[String(company.id)] !== stableJson(company));
+        for (const company of changedCompanies) {
           const taskNumber = String(company.repDesc || "").match(/과제번호:\s*([^\)]+)/)?.[1]?.trim();
-          return ({
-            id: company.id,
-            representative: company.representative || "-",
-            login_email: company.loginEmail || (taskNumber ? `${taskNumber}@onboard.com` : `${company.id}@onboard.com`),
-            invitation_key: company.invitationKey || `DISABLED-${company.id}`,
-            data: company,
-            updated_at: new Date().toISOString()
-          });
-        });
-        const { error: companyError } = await client.from("companies").upsert(rows, { onConflict: "id" });
-        if (companyError) throw companyError;
+          const { data: updatedRows, error: updateError } = await client
+            .from("companies")
+            .update({ data: company, updated_at: new Date().toISOString() })
+            .eq("id", company.id)
+            .select("id");
+          if (updateError) throw new Error(`기업 데이터 저장 실패: ${updateError.message}`);
+          if (!updatedRows || updatedRows.length === 0) {
+            const { error: insertError } = await client.from("companies").insert({
+              id: company.id,
+              representative: company.representative || "-",
+              login_email: company.loginEmail || (taskNumber ? `${taskNumber}@onboard.com` : `${company.id}@onboard.com`),
+              invitation_key: company.invitationKey || `DISABLED-${company.id}`,
+              data: company,
+              updated_at: new Date().toISOString()
+            });
+            if (insertError) throw new Error(`신규 기업 저장 실패: ${insertError.message}`);
+          }
+          if (lastSyncedState) lastSyncedState.companies[String(company.id)] = stableJson(company);
+        }
       } else {
         const ownCompany = companies.find(company => Number(company.id) === Number(profile.company_id));
         if (!ownCompany) throw new Error("연결된 기업 정보를 찾을 수 없습니다.");
@@ -121,25 +140,40 @@
           .from("companies")
           .update({ data: ownCompany, updated_at: new Date().toISOString() })
           .eq("id", profile.company_id);
-        if (companyError) throw companyError;
+        if (companyError) throw new Error(`기업 데이터 저장 실패: ${companyError.message}`);
+        if (lastSyncedState) lastSyncedState.companies[String(ownCompany.id)] = stableJson(ownCompany);
       }
 
       if (profile && profile.role === "coach") {
-        const configRows = [
-          { key: "coach_name", value: coachName, updated_at: new Date().toISOString() },
-          { key: "edu_names", value: eduNames, updated_at: new Date().toISOString() }
-        ];
-        const { error: configError } = await client.from("program_config").upsert(configRows, { onConflict: "key" });
-        if (configError) throw configError;
-        const noticeRows = [
-          ...milestones.map(item => ({ board: "program", payload: item })),
-          ...notices.map(item => ({ board: "integrated", payload: item }))
-        ];
-        const { error: deleteError } = await client.from("notices").delete().in("board", ["program", "integrated"]);
-        if (deleteError) throw deleteError;
-        if (noticeRows.length) {
-          const { error: noticeError } = await client.from("notices").insert(noticeRows);
-          if (noticeError) throw noticeError;
+        const configChanged = !lastSyncedState || lastSyncedState.coachName !== stableJson(coachName) || lastSyncedState.eduNames !== stableJson(eduNames);
+        if (configChanged) {
+          const configRows = [
+            { key: "coach_name", value: coachName, updated_at: new Date().toISOString() },
+            { key: "edu_names", value: eduNames, updated_at: new Date().toISOString() }
+          ];
+          const { error: configError } = await client.from("program_config").upsert(configRows, { onConflict: "key" });
+          if (configError) throw new Error(`환경설정 저장 실패: ${configError.message}`);
+          if (lastSyncedState) {
+            lastSyncedState.coachName = stableJson(coachName);
+            lastSyncedState.eduNames = stableJson(eduNames);
+          }
+        }
+        const noticesChanged = !lastSyncedState || lastSyncedState.milestones !== stableJson(milestones) || lastSyncedState.notices !== stableJson(notices);
+        if (noticesChanged) {
+          const noticeRows = [
+            ...milestones.map(item => ({ board: "program", payload: item })),
+            ...notices.map(item => ({ board: "integrated", payload: item }))
+          ];
+          const { error: deleteError } = await client.from("notices").delete().in("board", ["program", "integrated"]);
+          if (deleteError) throw new Error(`공지사항 기존 데이터 정리 실패: ${deleteError.message}`);
+          if (noticeRows.length) {
+            const { error: noticeError } = await client.from("notices").insert(noticeRows);
+            if (noticeError) throw new Error(`공지사항 저장 실패: ${noticeError.message}`);
+          }
+          if (lastSyncedState) {
+            lastSyncedState.milestones = stableJson(milestones);
+            lastSyncedState.notices = stableJson(notices);
+          }
         }
       }
     }
