@@ -1054,11 +1054,7 @@ function saveToLocalStorage() {
 }
 
 // --- LOGIN/SIGNUP SCREEN TOGGLE ---
-linkGoSignup.addEventListener("click", (e) => {
-  e.preventDefault();
-  cardLogin.style.display = "none";
-  cardSignup.style.display = "block";
-});
+if (linkGoSignup) linkGoSignup.addEventListener("click", (e) => e.preventDefault());
 
 linkGoLogin.addEventListener("click", (e) => {
   e.preventDefault();

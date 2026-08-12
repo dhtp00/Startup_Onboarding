@@ -17,7 +17,31 @@
     return clientPromise;
   }
 
-  const normalizeEmail = value => value.includes("@") ? value : `${value}@onboard.com`;
+  // Users type the representative name; Supabase still authenticates with its internal email ID.
+  const startupLoginEmails = {
+    "박지훈": "20424601@onboard.com",
+    "신상호": "20425162@onboard.com",
+    "오영웅": "20418716@onboard.com",
+    "염준": "20420729@onboard.com",
+    "이준석": "20429473@onboard.com",
+    "최성환": "20420909@onboard.com",
+    "이서진": "20417065@onboard.com",
+    "이수빈": "20415562@onboard.com",
+    "정수민": "20411989@onboard.com",
+    "지세빈": "20417505@onboard.com",
+    "김영준": "20426983@onboard.com",
+    "이광록": "20433275@onboard.com",
+    "권태균": "20430190@onboard.com",
+    "신민준": "20419158@onboard.com",
+    "GUPTA AMAR PRASAD": "20422754@onboard.com",
+    "이준원": "20431435@onboard.com",
+    "오세연": "0426298510@onboard.com"
+  };
+  const normalizeEmail = value => {
+    const identifier = String(value || "").trim();
+    if (identifier.includes("@")) return identifier.toLowerCase();
+    return startupLoginEmails[identifier] || startupLoginEmails[identifier.toUpperCase()] || `${identifier}@onboard.com`;
+  };
   window.secureBackend = {
     async signIn(identifier, password) {
       const client = await getClient();
